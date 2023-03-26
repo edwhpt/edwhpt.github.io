@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/conf/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/conf/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/conf/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/conf/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"style":null,"show_result":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JS 事件监听全局捕获示例：unhandledrejection123456789window.addEventListener(&amp;#x27;unhandledrejection&amp;#x27;, function(event) &amp;#123;  &#x2F;&#x2F; the event object has two special properties:  alert(event.promise); &#x2F;&#x2F; [obje">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JS】全局捕获 Promise 异常">
+<meta property="og:url" content="http://example.com/js-global-catch-promise-error/index.html">
+<meta property="og:site_name" content="Ed&#39;s Blog">
+<meta property="og:description" content="JS 事件监听全局捕获示例：unhandledrejection123456789window.addEventListener(&amp;#x27;unhandledrejection&amp;#x27;, function(event) &amp;#123;  &#x2F;&#x2F; the event object has two special properties:  alert(event.promise); &#x2F;&#x2F; [obje">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-03-26T21:08:34.000Z">
+<meta property="article:modified_time" content="2023-03-26T18:21:20.849Z">
+<meta property="article:author" content="Edward Wong">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="Promise">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/js-global-catch-promise-error/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/js-global-catch-promise-error/","path":"js-global-catch-promise-error/","title":"【JS】全局捕获 Promise 异常"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【JS】全局捕获 Promise 异常 | Ed's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ed's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JS-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC"><span class="nav-number">1.</span> <span class="nav-text">JS 事件监听</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%8D%95%E8%8E%B7%E7%A4%BA%E4%BE%8B%EF%BC%9Aunhandledrejection"><span class="nav-number">1.0.1.</span> <span class="nav-text">全局捕获示例：unhandledrejection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%B0%81%E8%A3%85%EF%BC%9A"><span class="nav-number">1.0.2.</span> <span class="nav-text">简单封装：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-%E9%92%A9%E5%AD%90%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">Vue 钩子函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue2%EF%BC%9AerrorHandler"><span class="nav-number">2.1.</span> <span class="nav-text">vue2：errorHandler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue3%EF%BC%9AwarnHandler"><span class="nav-number">2.2.</span> <span class="nav-text">vue3：warnHandler</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Edward Wong"
+      src="/images/conf/avatar.png">
+  <p class="site-author-name" itemprop="name">Edward Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edwhpt" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edwhpt" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edwhpt@gmail.com" title="E-Mail → mailto:edwhpt@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/js-global-catch-promise-error/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/conf/avatar.png">
+      <meta itemprop="name" content="Edward Wong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【JS】全局捕获 Promise 异常 | Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【JS】全局捕获 Promise 异常
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-03-26 21:08:34 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T21:08:34+00:00">2023-03-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/javascript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="JS-事件监听"><a href="#JS-事件监听" class="headerlink" title="JS 事件监听"></a>JS 事件监听</h2><h4 id="全局捕获示例：unhandledrejection"><a href="#全局捕获示例：unhandledrejection" class="headerlink" title="全局捕获示例：unhandledrejection"></a>全局捕获示例：unhandledrejection</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// the event object has two special properties:</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">promise</span>); <span class="comment">// [object Promise] - the promise that generated the error</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">reason</span>); <span class="comment">// Error: Whoops! - the unhandled error object</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Whoops!&quot;</span>);</span><br><span class="line">&#125;); <span class="comment">// no catch to handle the error</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h4 id="简单封装："><a href="#简单封装：" class="headerlink" title="简单封装："></a>简单封装：</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">myPromise</span> = (<span class="params">promise, callback</span>) =&gt; &#123;</span><br><span class="line">  promise.<span class="title function_">then</span>(callback).<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> <span class="title function_">reject</span>(<span class="string">&#x27;error&#x27;</span>))</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">cb</span> = (<span class="params"></span>) =&gt; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;callback&#x27;</span>)</span><br><span class="line"><span class="title function_">myPromise</span>(p, cb)  <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Vue-钩子函数"><a href="#Vue-钩子函数" class="headerlink" title="Vue 钩子函数"></a>Vue 钩子函数</h2><h3 id="vue2：errorHandler"><a href="#vue2：errorHandler" class="headerlink" title="vue2：errorHandler"></a>vue2：errorHandler</h3><p>在 Vue2 的全局配置中提供了一个 <code>errorHandler</code> 钩子可以用于捕获全局异常，但是最低版本要求 2.2.0+</p>
+<p><code>errorHandler</code> 第一个参数 <code>err</code> 是具体的错误信息，第二个参数 <code>vm</code> 是 Vue 组件信息，第三个参数 <code>info</code> 是 Vue 特定的错误信息，比如错误所在的生命周期钩子。一般为了捕获 Vue 特定的 <code>info</code> 信息，在内部处理时还会加上一层 <code>nextTick</code> ，确保捕获的是 DOM 渲染完成之后的信息。另外最好在根据不同环境配置判断是否需要捕获异常，增加程序的灵活性</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// errorHandler 使用示例</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置项形式：&#x27;development&#x27; | [&#x27;development&#x27;, &#x27;production&#x27;]</span></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">errorLog</span>: needErrorLog &#125; = settings</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据配置判断什么环境下需要捕获异常</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkNeedErrorLog</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> env = process.<span class="property">env</span>.<span class="property">NODE_ENV</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isString</span>(needErrorLog)) &#123;</span><br><span class="line">    <span class="keyword">return</span> env === needErrorLog</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isArray</span>(needErrorLog)) &#123;</span><br><span class="line">    <span class="keyword">return</span> needErrorLog.<span class="title function_">includes</span>(env)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局异常捕获</span></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_">checkNeedErrorLog</span>()) &#123;</span><br><span class="line">  <span class="title class_">Vue</span>.<span class="property">config</span>.<span class="property">errorHandler</span> = <span class="keyword">function</span> (<span class="params">err, vm, info</span>) &#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[<span class="subst">$&#123;projectName&#125;</span>]: <span class="subst">$&#123;err&#125;</span>。`</span>, <span class="string">`Vue info: <span class="subst">$&#123;info&#125;</span>`</span>, vm)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据<a href="https://link.juejin.cn/?target=https://cn.vuejs.org/v2/api/%23errorHandler">官网的描述</a>，不同的 Vue 版本捕获的信息不同，所以建议最好是更新 Vue 2.6.0 以上的版本，这样就可以全局捕获到 Promise 和 async &#x2F; await 抛出的异常了</p>
+<h3 id="vue3：warnHandler"><a href="#vue3：warnHandler" class="headerlink" title="vue3：warnHandler"></a>vue3：warnHandler</h3><p>在 Vue3 中，除了提供 <code>errorHandler</code> 钩子外，还提供了 <code>warnHandler</code> 钩子，两个钩子的用法相同，区别是是 <code>warnHandler</code> 只在开发环境生效，生产环境会被忽略</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="property">config</span>.<span class="property">warnHandler</span> = <span class="keyword">function</span>(<span class="params">msg, vm, trace</span>) &#123;</span><br><span class="line">  <span class="comment">// `trace` 是组件的继承关系追踪</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/js/" rel="tag"># JS</a>
+              <a href="/tags/promise/" rel="tag"># Promise</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/js-shallowcopy-deepcopy/" rel="prev" title="【JS】浅拷贝和深拷贝">
+                  <i class="fa fa-chevron-left"></i> 【JS】浅拷贝和深拷贝
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vue-router-guide/" rel="next" title="【Vue】路由（vue-router）">
+                  【Vue】路由（vue-router） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward Wong</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

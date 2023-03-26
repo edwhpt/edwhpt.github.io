@@ -141,7 +141,7 @@
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="Edward Wong"
-      src="/images/avatar.png">
+      src="/images/conf/avatar.png">
   <p class="site-author-name" itemprop="name">Edward Wong</p>
   <div class="site-description" itemprop="description"></div>
 </div>
@@ -194,10 +194,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue/vue-router-guide/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue-router-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -212,7 +212,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue/vue-router-guide/" class="post-title-link" itemprop="url">【Vue】路由（vue-router）</a>
+          <a href="/vue-router-guide/" class="post-title-link" itemprop="url">【Vue】路由（vue-router）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -224,7 +224,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-26 21:41:55 / Modified: 18:03:43" itemprop="dateCreated datePublished" datetime="2023-03-26T21:41:55+00:00">2023-03-26</time>
+      <time title="Created: 2023-03-26 21:41:55 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T21:41:55+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -249,7 +249,7 @@
           <h2 id="vue-router-是什么"><a href="#vue-router-是什么" class="headerlink" title="vue-router 是什么"></a>vue-router 是什么</h2><p>这里的路由并不是指我们平时所说的硬件路由器，<strong>这里的路由就是SPA（单页应用）的路径管理器</strong>。再通俗的说，vue-router就是WebApp的链接路径管理系统。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue/vue-router-guide/#more" rel="contents">
+              <a class="btn" href="/vue-router-guide/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -280,10 +280,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/javascript/js-global-catch-promise-error/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/js-global-catch-promise-error/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -298,7 +298,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/javascript/js-global-catch-promise-error/" class="post-title-link" itemprop="url">【JS】全局捕获 Promise 异常</a>
+          <a href="/js-global-catch-promise-error/" class="post-title-link" itemprop="url">【JS】全局捕获 Promise 异常</a>
         </h2>
 
         <div class="post-meta-container">
@@ -310,7 +310,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-26 21:08:34 / Modified: 18:03:43" itemprop="dateCreated datePublished" datetime="2023-03-26T21:08:34+00:00">2023-03-26</time>
+      <time title="Created: 2023-03-26 21:08:34 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T21:08:34+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -335,7 +335,7 @@
           <h2 id="JS-事件监听"><a href="#JS-事件监听" class="headerlink" title="JS 事件监听"></a>JS 事件监听</h2><h4 id="全局捕获示例：unhandledrejection"><a href="#全局捕获示例：unhandledrejection" class="headerlink" title="全局捕获示例：unhandledrejection"></a>全局捕获示例：unhandledrejection</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// the event object has two special properties:</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">promise</span>); <span class="comment">// [object Promise] - the promise that generated the error</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">reason</span>); <span class="comment">// Error: Whoops! - the unhandled error object</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Whoops!&quot;</span>);</span><br><span class="line">&#125;); <span class="comment">// no catch to handle the error</span></span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/javascript/js-global-catch-promise-error/#more" rel="contents">
+              <a class="btn" href="/js-global-catch-promise-error/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -366,10 +366,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/javascript/js-shallowcopy-deepcopy/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/js-shallowcopy-deepcopy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -384,7 +384,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/javascript/js-shallowcopy-deepcopy/" class="post-title-link" itemprop="url">【JS】浅拷贝和深拷贝</a>
+          <a href="/js-shallowcopy-deepcopy/" class="post-title-link" itemprop="url">【JS】浅拷贝和深拷贝</a>
         </h2>
 
         <div class="post-meta-container">
@@ -396,7 +396,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-26 20:59:17 / Modified: 18:03:43" itemprop="dateCreated datePublished" datetime="2023-03-26T20:59:17+00:00">2023-03-26</time>
+      <time title="Created: 2023-03-26 20:59:17 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T20:59:17+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -426,7 +426,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/javascript/js-shallowcopy-deepcopy/#more" rel="contents">
+              <a class="btn" href="/js-shallowcopy-deepcopy/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -457,10 +457,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/javascript/js-cookie-webstorage/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/js-cookie-webstorage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -475,7 +475,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/javascript/js-cookie-webstorage/" class="post-title-link" itemprop="url">【JS】Cookie 和 WebStorage 的区别</a>
+          <a href="/js-cookie-webstorage/" class="post-title-link" itemprop="url">【JS】Cookie 和 WebStorage 的区别</a>
         </h2>
 
         <div class="post-meta-container">
@@ -487,7 +487,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-26 13:59:27 / Modified: 18:03:43" itemprop="dateCreated datePublished" datetime="2023-03-26T13:59:27+00:00">2023-03-26</time>
+      <time title="Created: 2023-03-26 13:59:27 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T13:59:27+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -518,7 +518,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/javascript/js-cookie-webstorage/#more" rel="contents">
+              <a class="btn" href="/js-cookie-webstorage/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -549,10 +549,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/javascript/js-eventloop/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/js-eventloop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -567,7 +567,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/javascript/js-eventloop/" class="post-title-link" itemprop="url">【JS】Event-Loop 事件循环（宏任务/微任务）</a>
+          <a href="/js-eventloop/" class="post-title-link" itemprop="url">【JS】Event-Loop 事件循环（宏任务/微任务）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -579,7 +579,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-26 13:26:52 / Modified: 18:03:43" itemprop="dateCreated datePublished" datetime="2023-03-26T13:26:52+00:00">2023-03-26</time>
+      <time title="Created: 2023-03-26 13:26:52 / Modified: 18:21:20" itemprop="dateCreated datePublished" datetime="2023-03-26T13:26:52+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -610,7 +610,7 @@
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/javascript/js-eventloop/#more" rel="contents">
+              <a class="btn" href="/js-eventloop/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -641,10 +641,10 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/tools/github-hexo-blog/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/github-hexo-blog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/images/conf/avatar.png">
       <meta itemprop="name" content="Edward Wong">
     </span>
 
@@ -659,7 +659,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/tools/github-hexo-blog/" class="post-title-link" itemprop="url">GitHub + Hexo（NexT）搭建博客</a>
+          <a href="/github-hexo-blog/" class="post-title-link" itemprop="url">GitHub + Hexo（NexT）搭建博客</a>
         </h2>
 
         <div class="post-meta-container">
@@ -677,7 +677,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-26 18:03:43" itemprop="dateModified" datetime="2023-03-26T18:03:43+00:00">2023-03-26</time>
+      <time title="Modified: 2023-03-26 18:21:20" itemprop="dateModified" datetime="2023-03-26T18:21:20+00:00">2023-03-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -704,7 +704,7 @@
 <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a target="_blank" rel="noopener" href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/tools/github-hexo-blog/#more" rel="contents">
+              <a class="btn" href="/github-hexo-blog/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

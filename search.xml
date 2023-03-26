@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>GitHub + Hexo（NexT）搭建博客</title>
-    <url>/tools/github-hexo-blog/</url>
+    <url>/github-hexo-blog/</url>
     <content><![CDATA[<p>使用 GitHub Pages + <a href="https://hexo.io/zh-cn/">Hexo</a> 搭建一个博客，采用 <a href="https://theme-next.js.org/">NexT</a> 主题。</p>
 <p>GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。</p>
 <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
@@ -90,7 +90,7 @@
   </entry>
   <entry>
     <title>【JS】Cookie 和 WebStorage 的区别</title>
-    <url>/javascript/js-cookie-webstorage/</url>
+    <url>/js-cookie-webstorage/</url>
     <content><![CDATA[<p>Cookie是在HTML4中使用的给客户端保存数据的，也可以和Session配合实现跟踪浏览器用户身份；</p>
 <p>WebStorage（LocalStorage&#x2F;SessionStorage）是在HTML5提出来的，纯粹为了保存数据，不会与服务器端通信。</p>
 <p>WebStorage两个主要目标：</p>
@@ -146,7 +146,7 @@
   </entry>
   <entry>
     <title>【JS】Event-Loop 事件循环（宏任务/微任务）</title>
-    <url>/javascript/js-eventloop/</url>
+    <url>/js-eventloop/</url>
     <content><![CDATA[<p>众所周知，JavaScript 是一门单线程语言，可是浏览器又能很好的处理异步请求，那么到底是为什么呢？</p>
 <p>JS 的执行环境一般是浏览器和 Node.js，两者稍有不同，这里只讨论浏览器环境下的情况。</p>
 <p>JS 执行过程中会产生两种任务，分别是：同步任务和异步任务。</p>
@@ -256,7 +256,7 @@
   </entry>
   <entry>
     <title>【JS】全局捕获 Promise 异常</title>
-    <url>/javascript/js-global-catch-promise-error/</url>
+    <url>/js-global-catch-promise-error/</url>
     <content><![CDATA[<h2 id="JS-事件监听"><a href="#JS-事件监听" class="headerlink" title="JS 事件监听"></a>JS 事件监听</h2><h4 id="全局捕获示例：unhandledrejection"><a href="#全局捕获示例：unhandledrejection" class="headerlink" title="全局捕获示例：unhandledrejection"></a>全局捕获示例：unhandledrejection</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// the event object has two special properties:</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">promise</span>); <span class="comment">// [object Promise] - the promise that generated the error</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">reason</span>); <span class="comment">// Error: Whoops! - the unhandled error object</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Whoops!&quot;</span>);</span><br><span class="line">&#125;); <span class="comment">// no catch to handle the error</span></span><br></pre></td></tr></table></figure>
 
 <span id="more"></span>
@@ -282,7 +282,7 @@
   </entry>
   <entry>
     <title>【JS】浅拷贝和深拷贝</title>
-    <url>/javascript/js-shallowcopy-deepcopy/</url>
+    <url>/js-shallowcopy-deepcopy/</url>
     <content><![CDATA[<p>浅拷贝和深拷贝都是创建一份数据的拷贝</p>
 <h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
 <li>浅拷贝和深拷贝都复制了值和地址，都是为了解决引用类型赋值后互相影响的问题。</li>
@@ -345,7 +345,7 @@
   </entry>
   <entry>
     <title>【优化】网站加载速度</title>
-    <url>/optimization/optimization-web-page-speed/</url>
+    <url>/optimization-web-page-speed/</url>
     <content><![CDATA[<p>网站前端的用户体验，决定了用户是否想要继续使用网站以及网站的其他功能，网站的用户体验佳，可留住更多的用户。除此之外，前端优化得好，还可以为企业节约成本。那么我们应该如何对我们前端的页面进行性能优化呢？</p>
 <p>前端性能优化可以分为三个方面：接口访问优化、静态资源优化和页面渲染速度优化。</p>
 <span id="more"></span>
@@ -395,7 +395,7 @@
   </entry>
   <entry>
     <title>【优化】Webpack构建性能</title>
-    <url>/optimization/optimization-webpack/</url>
+    <url>/optimization-webpack/</url>
     <content><![CDATA[<p>当项目越来越复杂时，会面临着构建速度慢和构建出来的文件体积大的问题。webapck构建优化对于大项目是必须要考虑的一件事，下面就从速度和体积两方面来探讨构建优化的策略</p>
 <span id="more"></span>
 
@@ -564,7 +564,7 @@
   </entry>
   <entry>
     <title>【Q&amp;A】SSR 服务端渲染获取不到 Window 对象</title>
-    <url>/q-a/qa-ssr-window/</url>
+    <url>/qa-ssr-window/</url>
     <content><![CDATA[<h3 id="获取不到Window对象，怎么解决？"><a href="#获取不到Window对象，怎么解决？" class="headerlink" title="获取不到Window对象，怎么解决？"></a>获取不到Window对象，怎么解决？</h3><ol>
 <li><p>在客户端代码中对 window 对象进行特殊处理，使其在服务端渲染时不会被引用。</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">window</span> !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">  <span class="comment">// Your code that uses the window object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -598,7 +598,7 @@
   </entry>
   <entry>
     <title>【Vue】组件通信</title>
-    <url>/vue/vue-component-communication/</url>
+    <url>/vue-component-communication/</url>
     <content><![CDATA[<h2 id="父子组件传值"><a href="#父子组件传值" class="headerlink" title="父子组件传值"></a>父子组件传值</h2><ul>
 <li><p>父传子：通过props</p>
 </li>
@@ -632,7 +632,7 @@
   </entry>
   <entry>
     <title>【Vue】基本原理</title>
-    <url>/vue/vue-fundamental/</url>
+    <url>/vue-fundamental/</url>
     <content><![CDATA[<h2 id="Vue响应式原理"><a href="#Vue响应式原理" class="headerlink" title="Vue响应式原理"></a>Vue响应式原理</h2><p>当一个Vue实例创建时，vue会遍历data选项的属性，用Object.defineProperty（vue3.0使用proxy）将它们转为 getter&#x2F;setter 并且在内部追踪相关依赖，在属性被访问和修改时通知变化。每个组件实例都有相应的watcher程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的setter被调用时，会通知watcher重新计算，从而致使它关联的组件得以更新。</p>
 <span id="more"></span>
 
@@ -710,7 +710,7 @@
   </entry>
   <entry>
     <title>【Vue】keep-alive</title>
-    <url>/vue/vue-keepalive/</url>
+    <url>/vue-keepalive/</url>
     <content><![CDATA[<h2 id="什么是-keep-alive"><a href="#什么是-keep-alive" class="headerlink" title="什么是 keep-alive ?"></a>什么是 <code>keep-alive</code> ?</h2><p>在平常开发中，有部分组件没有必要多次初始化，这时，我们需要将组件进行持久化，<strong>使组件的状态维持不变</strong>，在下一次展示时，也不会进行重新初始化组件。</p>
 <span id="more"></span>
 
@@ -835,7 +835,7 @@
   </entry>
   <entry>
     <title>【Vue】生命周期</title>
-    <url>/vue/vue-lifecycle/</url>
+    <url>/vue-lifecycle/</url>
     <content><![CDATA[<h2 id="什么是Vue生命周期？"><a href="#什么是Vue生命周期？" class="headerlink" title="什么是Vue生命周期？"></a>什么是Vue生命周期？</h2><p>Vue实例从创建到销毁的过程，就是生命周期。从开始创建、初始化数据、编译模版、挂载DOM -&gt; 渲染、更新 -&gt; 渲染、销毁等一系列过程，称之为Vue的生命周期。</p>
 <span id="more"></span>
 
@@ -861,7 +861,7 @@
   </entry>
   <entry>
     <title>【Vue】nextTick()</title>
-    <url>/vue/vue-nexttick/</url>
+    <url>/vue-nexttick/</url>
     <content><![CDATA[<h2 id="什么是-Vue-nextTick-？"><a href="#什么是-Vue-nextTick-？" class="headerlink" title="什么是 Vue.nextTick() ？"></a>什么是 Vue.nextTick() ？</h2><p><strong>定义：</strong>在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。</p>
 <span id="more"></span>
 
@@ -902,7 +902,7 @@
   </entry>
   <entry>
     <title>【Vue】路由（vue-router）</title>
-    <url>/vue/vue-router-guide/</url>
+    <url>/vue-router-guide/</url>
     <content><![CDATA[<h2 id="vue-router-是什么"><a href="#vue-router-是什么" class="headerlink" title="vue-router 是什么"></a>vue-router 是什么</h2><p>这里的路由并不是指我们平时所说的硬件路由器，<strong>这里的路由就是SPA（单页应用）的路径管理器</strong>。再通俗的说，vue-router就是WebApp的链接路径管理系统。</p>
 <span id="more"></span>
 <p>vue-router是Vue.js官方的路由插件，它和vue.js是深度集成的，适合用于构建单页面应用。vue的单页面应用是基于路由和组件的，路由用于设定访问路径，并将路径和组件映射起来。传统的页面应用，是用一些超链接来实现页面切换和跳转的。在vue-router单页面应用中，则是路径之间的切换，也就是组件的切换。<strong>路由模块的本质 就是建立起url和页面之间的映射关系</strong>。<br>至于我们为啥不能用a标签，这是因为用Vue做的都是单页应用，就相当于只有一个主的index.html页面，所以你写的<a></a>标签是不起作用的，你必须使用vue-router来进行管理。</p>
@@ -1014,7 +1014,7 @@
   </entry>
   <entry>
     <title>【Vue】导航守卫（路由钩子）</title>
-    <url>/vue/vue-router-navigation-guards/</url>
+    <url>/vue-router-navigation-guards/</url>
     <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>“导航”表示路由正在发生变化</p>
 <p>vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程 中：全局的, 单个路由独享的, 或者组件级的。</p>
 <span id="more"></span>
@@ -1095,7 +1095,7 @@
   </entry>
   <entry>
     <title>【Vue】插槽（v-slot）</title>
-    <url>/vue/vue-slot/</url>
+    <url>/vue-slot/</url>
     <content><![CDATA[<h3 id="slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容"><a href="#slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容" class="headerlink" title="slot (父组件 在子组件&lt;slot&gt; &lt;/slot&gt;处插入内容)"></a>slot (父组件 在子组件<code>&lt;slot&gt; &lt;/slot&gt;</code>处插入内容)</h3><p>Vue 实现了一套内容分发的 API，将<code>&lt;slot&gt;</code>元素作为承载分发内容的出口，这是vue文档上的说明。具体来说，slot就是可以让你在组件内添加内容的‘空间’。</p>
 <span id="more"></span>
 
