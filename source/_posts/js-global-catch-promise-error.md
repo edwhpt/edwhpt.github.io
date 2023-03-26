@@ -9,7 +9,7 @@ tags:
 
 ## JS 事件监听
 
-#### 全局捕获示例：unhandledrejection
+### 全局捕获示例：unhandledrejection
 
 ```javascript
 window.addEventListener('unhandledrejection', function(event) {
@@ -25,7 +25,7 @@ new Promise(function() {
 
 <!-- more -->
 
-#### 简单封装：
+### 简单封装：
 
 ```js
 let myPromise = (promise, callback) => {
