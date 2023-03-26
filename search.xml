@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>GitHub + Hexo（NexT）搭建博客</title>
-    <url>/2023/03/25/github-hexo-blog/</url>
+    <url>/tools/github-hexo-blog/</url>
     <content><![CDATA[<p>使用 GitHub Pages + <a href="https://hexo.io/zh-cn/">Hexo</a> 搭建一个博客，采用 <a href="https://theme-next.js.org/">NexT</a> 主题。</p>
 <p>GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。</p>
 <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
@@ -83,14 +83,14 @@
         <category>Tools</category>
       </categories>
       <tags>
-        <tag>github</tag>
-        <tag>hexo</tag>
+        <tag>GitHub</tag>
+        <tag>Hexo</tag>
         <tag>hexo-theme-next</tag>
       </tags>
   </entry>
   <entry>
     <title>【JS】Cookie 和 WebStorage 的区别</title>
-    <url>/2023/03/26/js-cookie-webstorage/</url>
+    <url>/javascript/js-cookie-webstorage/</url>
     <content><![CDATA[<p>Cookie是在HTML4中使用的给客户端保存数据的，也可以和Session配合实现跟踪浏览器用户身份；</p>
 <p>WebStorage（LocalStorage&#x2F;SessionStorage）是在HTML5提出来的，纯粹为了保存数据，不会与服务器端通信。</p>
 <p>WebStorage两个主要目标：</p>
@@ -138,15 +138,15 @@
         <category>JavaScript</category>
       </categories>
       <tags>
-        <tag>js</tag>
-        <tag>cookie</tag>
-        <tag>local-storage</tag>
-        <tag>session-storage</tag>
+        <tag>JS</tag>
+        <tag>Cookie</tag>
+        <tag>localStorage</tag>
+        <tag>sessionStorage</tag>
       </tags>
   </entry>
   <entry>
     <title>【JS】Event-Loop 事件循环（宏任务/微任务）</title>
-    <url>/2023/03/26/js-eventloop/</url>
+    <url>/javascript/js-eventloop/</url>
     <content><![CDATA[<p>众所周知，JavaScript 是一门单线程语言，可是浏览器又能很好的处理异步请求，那么到底是为什么呢？</p>
 <p>JS 的执行环境一般是浏览器和 Node.js，两者稍有不同，这里只讨论浏览器环境下的情况。</p>
 <p>JS 执行过程中会产生两种任务，分别是：同步任务和异步任务。</p>
@@ -247,8 +247,897 @@
         <category>JavaScript</category>
       </categories>
       <tags>
-        <tag>js</tag>
-        <tag>event-loop</tag>
+        <tag>JS</tag>
+        <tag>Event Loop</tag>
+        <tag>Promise</tag>
+        <tag>async/await</tag>
+        <tag>setTimeout</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【JS】全局捕获 Promise 异常</title>
+    <url>/javascript/js-global-catch-promise-error/</url>
+    <content><![CDATA[<h2 id="JS-事件监听"><a href="#JS-事件监听" class="headerlink" title="JS 事件监听"></a>JS 事件监听</h2><h4 id="全局捕获示例：unhandledrejection"><a href="#全局捕获示例：unhandledrejection" class="headerlink" title="全局捕获示例：unhandledrejection"></a>全局捕获示例：unhandledrejection</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;unhandledrejection&#x27;</span>, <span class="keyword">function</span>(<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// the event object has two special properties:</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">promise</span>); <span class="comment">// [object Promise] - the promise that generated the error</span></span><br><span class="line">  <span class="title function_">alert</span>(event.<span class="property">reason</span>); <span class="comment">// Error: Whoops! - the unhandled error object</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Whoops!&quot;</span>);</span><br><span class="line">&#125;); <span class="comment">// no catch to handle the error</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h4 id="简单封装："><a href="#简单封装：" class="headerlink" title="简单封装："></a>简单封装：</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">myPromise</span> = (<span class="params">promise, callback</span>) =&gt; &#123;</span><br><span class="line">  promise.<span class="title function_">then</span>(callback).<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> <span class="title function_">reject</span>(<span class="string">&#x27;error&#x27;</span>))</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">cb</span> = (<span class="params"></span>) =&gt; <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;callback&#x27;</span>)</span><br><span class="line"><span class="title function_">myPromise</span>(p, cb)  <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Vue-钩子函数"><a href="#Vue-钩子函数" class="headerlink" title="Vue 钩子函数"></a>Vue 钩子函数</h2><h3 id="vue2：errorHandler"><a href="#vue2：errorHandler" class="headerlink" title="vue2：errorHandler"></a>vue2：errorHandler</h3><p>在 Vue2 的全局配置中提供了一个 <code>errorHandler</code> 钩子可以用于捕获全局异常，但是最低版本要求 2.2.0+</p>
+<p><code>errorHandler</code> 第一个参数 <code>err</code> 是具体的错误信息，第二个参数 <code>vm</code> 是 Vue 组件信息，第三个参数 <code>info</code> 是 Vue 特定的错误信息，比如错误所在的生命周期钩子。一般为了捕获 Vue 特定的 <code>info</code> 信息，在内部处理时还会加上一层 <code>nextTick</code> ，确保捕获的是 DOM 渲染完成之后的信息。另外最好在根据不同环境配置判断是否需要捕获异常，增加程序的灵活性</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// errorHandler 使用示例</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置项形式：&#x27;development&#x27; | [&#x27;development&#x27;, &#x27;production&#x27;]</span></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">errorLog</span>: needErrorLog &#125; = settings</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据配置判断什么环境下需要捕获异常</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkNeedErrorLog</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> env = process.<span class="property">env</span>.<span class="property">NODE_ENV</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isString</span>(needErrorLog)) &#123;</span><br><span class="line">    <span class="keyword">return</span> env === needErrorLog</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isArray</span>(needErrorLog)) &#123;</span><br><span class="line">    <span class="keyword">return</span> needErrorLog.<span class="title function_">includes</span>(env)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局异常捕获</span></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_">checkNeedErrorLog</span>()) &#123;</span><br><span class="line">  <span class="title class_">Vue</span>.<span class="property">config</span>.<span class="property">errorHandler</span> = <span class="keyword">function</span> (<span class="params">err, vm, info</span>) &#123;</span><br><span class="line">    <span class="title class_">Vue</span>.<span class="title function_">nextTick</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[<span class="subst">$&#123;projectName&#125;</span>]: <span class="subst">$&#123;err&#125;</span>。`</span>, <span class="string">`Vue info: <span class="subst">$&#123;info&#125;</span>`</span>, vm)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据<a href="https://link.juejin.cn/?target=https://cn.vuejs.org/v2/api/%23errorHandler">官网的描述</a>，不同的 Vue 版本捕获的信息不同，所以建议最好是更新 Vue 2.6.0 以上的版本，这样就可以全局捕获到 Promise 和 async &#x2F; await 抛出的异常了</p>
+<h3 id="vue3：warnHandler"><a href="#vue3：warnHandler" class="headerlink" title="vue3：warnHandler"></a>vue3：warnHandler</h3><p>在 Vue3 中，除了提供 <code>errorHandler</code> 钩子外，还提供了 <code>warnHandler</code> 钩子，两个钩子的用法相同，区别是是 <code>warnHandler</code> 只在开发环境生效，生产环境会被忽略</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">app.<span class="property">config</span>.<span class="property">warnHandler</span> = <span class="keyword">function</span>(<span class="params">msg, vm, trace</span>) &#123;</span><br><span class="line">  <span class="comment">// `trace` 是组件的继承关系追踪</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JS</tag>
+        <tag>Promise</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【JS】浅拷贝和深拷贝</title>
+    <url>/javascript/js-shallowcopy-deepcopy/</url>
+    <content><![CDATA[<p>浅拷贝和深拷贝都是创建一份数据的拷贝</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li>浅拷贝和深拷贝都复制了值和地址，都是为了解决引用类型赋值后互相影响的问题。</li>
+<li>浅拷贝<strong>只进行一层复制</strong>，深层次的引用类型还是共享内存地址，原对象和拷贝对象还是会互相影响。</li>
+<li>深拷贝就是<strong>无限层级拷贝</strong>，深拷贝后的原对象不会和拷贝对象互相影响。</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><h3 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h3><h4 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign"></a>Object.assign</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> newObj = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;, obj)</span><br></pre></td></tr></table></figure>
+
+<h4 id="数组的-slice-和-concat"><a href="#数组的-slice-和-concat" class="headerlink" title="数组的 slice() 和 concat()"></a>数组的 slice() 和 concat()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = []</span><br><span class="line"><span class="keyword">const</span> newArr = arr.<span class="title function_">slice</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = []</span><br><span class="line"><span class="keyword">const</span> newArr = [].<span class="title function_">concat</span>(arr)</span><br></pre></td></tr></table></figure>
+
+<h4 id="数组静态方法-Array-from"><a href="#数组静态方法-Array-from" class="headerlink" title="数组静态方法 Array.from()"></a>数组静态方法 Array.from()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = []</span><br><span class="line"><span class="keyword">const</span> newArr = <span class="title class_">Array</span>.<span class="title function_">from</span>(arr)</span><br></pre></td></tr></table></figure>
+
+<h4 id="扩展运算符"><a href="#扩展运算符" class="headerlink" title="扩展运算符"></a>扩展运算符</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = []</span><br><span class="line"><span class="keyword">const</span> newArr = [...arr]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h3><h4 id="字符串转换：JSON-stringify-x2F-JSON-parse"><a href="#字符串转换：JSON-stringify-x2F-JSON-parse" class="headerlink" title="字符串转换：JSON.stringify() &#x2F; JSON.parse()"></a>字符串转换：JSON.stringify() &#x2F; JSON.parse()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> newObj = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(obj))</span><br></pre></td></tr></table></figure>
+
+<h5 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h5><ul>
+<li>会忽略<code>undefined</code>、<code>symbol</code>和<code>函数</code></li>
+<li><code>NaN</code>、<code>Infinity</code>、<code>-Infinity</code> 会被序列化为 <code>null</code></li>
+<li>不能解决循环引用的问题</li>
+</ul>
+<h4 id="JS新语法：structuredClone"><a href="#JS新语法：structuredClone" class="headerlink" title="JS新语法：structuredClone()"></a>JS新语法：<a href="https://developer.mozilla.org/en-US/docs/Web/API/structuredClone">structuredClone()</a></h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> newObj = <span class="title function_">structuredClone</span>(obj)</span><br></pre></td></tr></table></figure>
+
+<h5 id="问题：-1"><a href="#问题：-1" class="headerlink" title="问题："></a>问题：</h5><ul>
+<li><code>Function</code> 类型会报错</li>
+<li>兼容性差</li>
+</ul>
+<h4 id="使用递归手动实现"><a href="#使用递归手动实现" class="headerlink" title="使用递归手动实现"></a>使用递归手动实现</h4><h5 id="简单版本"><a href="#简单版本" class="headerlink" title="简单版本"></a>简单版本</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">deepClone</span> (target) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> target !== <span class="string">&#x27;object&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// 如果是原始数据类型，直接返回</span></span><br><span class="line">    <span class="keyword">return</span> target</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> cloneTarget = &#123;&#125; <span class="comment">// 定义克隆对象</span></span><br><span class="line">  <span class="comment">// 遍历原对象</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> target) &#123;</span><br><span class="line">    <span class="comment">// 递归拷贝</span></span><br><span class="line">    cloneTarget[key] = <span class="title function_">deepClone</span>(target[key])</span><br><span class="line">  &#125;</span><br><span class="line"> 	<span class="keyword">return</span> cloneTarget <span class="comment">// 返回克隆对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="处理数组、日期、正则、null"><a href="#处理数组、日期、正则、null" class="headerlink" title="处理数组、日期、正则、null"></a>处理数组、日期、正则、null</h5><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">deepClone</span> (target) &#123;</span><br><span class="line">  <span class="keyword">if</span> (target === <span class="literal">null</span>) <span class="keyword">return</span> target <span class="comment">// 处理null</span></span><br><span class="line">  <span class="keyword">if</span> (target <span class="keyword">instanceof</span> <span class="title class_">Date</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Date</span>(target) <span class="comment">// 处理日期</span></span><br><span class="line">  <span class="keyword">if</span> (target <span class="keyword">instanceof</span> <span class="title class_">RegExp</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RegExp</span>(target) <span class="comment">// 处理正则</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> target !== <span class="string">&#x27;object&#x27;</span>)  <span class="keyword">return</span> target <span class="comment">// 处理原始数据类型</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> cloneTarget = <span class="keyword">new</span> target.<span class="title function_">constructor</span>(<span class="params"></span>) <span class="comment">// 定义克隆对象（数组）</span></span><br><span class="line"> </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> target) &#123;</span><br><span class="line">    cloneTarget[key] = <span class="title function_">deepClone</span>(target[key]) <span class="comment">// 递归拷贝</span></span><br><span class="line">  &#125;</span><br><span class="line"> 	<span class="keyword">return</span> cloneTarget <span class="comment">// 返回克隆对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="第三方工具库（Lodash）"><a href="#第三方工具库（Lodash）" class="headerlink" title="第三方工具库（Lodash）"></a>第三方工具库（Lodash）</h3><h4 id="浅拷贝：clone"><a href="#浅拷贝：clone" class="headerlink" title="浅拷贝：clone()"></a>浅拷贝：clone()</h4><h4 id="深拷贝：cloneDeep"><a href="#深拷贝：cloneDeep" class="headerlink" title="深拷贝：cloneDeep()"></a>深拷贝：cloneDeep()</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;clone, cloneDeep&#125; <span class="keyword">from</span> <span class="string">&#x27;lodash&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> cloneObj = <span class="title function_">clone</span>(obj)</span><br><span class="line"><span class="keyword">const</span> cloneDeepObj = <span class="title function_">cloneDeep</span>(obj)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="扩展资料"><a href="#扩展资料" class="headerlink" title="扩展资料"></a>扩展资料</h2><ul>
+<li><p><a href="https://juejin.cn/post/6844903775283445767#heading-5">Lodash是如何实现深拷贝的</a></p>
+</li>
+<li><p><a href="https://juejin.cn/post/6844903929705136141#heading-7">如何写出一个惊艳面试官的深拷贝?</a></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JS</tag>
+        <tag>Shallow Copy</tag>
+        <tag>Deep Copy</tag>
+        <tag>Lodash</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【优化】网站加载速度</title>
+    <url>/optimization/optimization-web-page-speed/</url>
+    <content><![CDATA[<p>网站前端的用户体验，决定了用户是否想要继续使用网站以及网站的其他功能，网站的用户体验佳，可留住更多的用户。除此之外，前端优化得好，还可以为企业节约成本。那么我们应该如何对我们前端的页面进行性能优化呢？</p>
+<p>前端性能优化可以分为三个方面：接口访问优化、静态资源优化和页面渲染速度优化。</p>
+<span id="more"></span>
+
+<h2 id="接口访问优化"><a href="#接口访问优化" class="headerlink" title="接口访问优化"></a>接口访问优化</h2><h3 id="减少http请求，合理设置-HTTP缓存"><a href="#减少http请求，合理设置-HTTP缓存" class="headerlink" title="减少http请求，合理设置 HTTP缓存"></a>减少http请求，合理设置 HTTP缓存</h3><p>http协议是无状态的应用层协议，每次发送http请求时，都需要建立连接、通信、断开连接，在服务器端每个http都需要开启独立的线程去处理。所以尽量减少http请求，尽可能地提高访问性能。</p>
+<h4 id="减少http请求的方法"><a href="#减少http请求的方法" class="headerlink" title="减少http请求的方法"></a>减少http请求的方法</h4><ol>
+<li>合并 js、css、图片等文件，合并成一个文件，浏览器就只需请求一次就可以了。图片合并要适当，不能想着优化呢，盲目地都合并成一张图片。</li>
+<li>借用浏览器缓存。恰当的缓存设置可以大大减少http请求。不懂浏览器缓存的可参考<a href="https://www.toutiao.com/i6997304997830476299/?group_id=6997304997830476299">《浏览器九大缓存方法》</a>。</li>
+<li>接口合并。前端交互，经常需要请求多个并行或串行接口，此时可以通过接口合并方式，提高接口访问速度。</li>
+<li>能使用css的尽量不使用js，能使用js的尽量不用三方插件，避免三方插件大量的库。</li>
+</ol>
+<h3 id="减少cookie传输"><a href="#减少cookie传输" class="headerlink" title="减少cookie传输"></a>减少cookie传输</h3><p>cookie 存在于 http 头，在客户端与服务器之间交换，尽可能地控制 cookie 的大小，cookie越小，响应速度越快，减少 cookie 传输，响应速度更快。</p>
+<h3 id="使用CDN提供静态文件"><a href="#使用CDN提供静态文件" class="headerlink" title="使用CDN提供静态文件"></a>使用CDN提供静态文件</h3><p>使用 CDN 可以更快地在全球范围内获取到你的静态文件，加快网页加载。</p>
+<h3 id="启用-GZIP-压缩"><a href="#启用-GZIP-压缩" class="headerlink" title="启用 GZIP 压缩"></a>启用 GZIP 压缩</h3><p>http 协议上 GZIP 编码，是一种用来改进 web 应用程序的。开启 GZIP 后，服务器会把网页内容压缩后传输，一般能压缩到原大小40%，这样网页传输速度就更快了。GZIP 有两大好处：一是减少存储空间，二是通过网络传输文件时，可以减少传输时间。</p>
+<h3 id="分域存放资源"><a href="#分域存放资源" class="headerlink" title="分域存放资源"></a>分域存放资源</h3><p>HTTP 客户端一般对同一个服务器的并发连接个数都是有限制的，通常最大并行连接为四了，剩下的会进入等待队列，等前边的执行完毕，等待的才会执行。所以利用多域名主机存放资源，增加并行连接量，缩短资源加载时间。</p>
+<h3 id="减少页面重定向"><a href="#减少页面重定向" class="headerlink" title="减少页面重定向"></a>减少页面重定向</h3><p>开启 https 可以有效防范攻击，保证用户始终访问到网站的加密连接，保护数据安全，同时省去 301&#x2F;302 跳转的时间，大大提升网站的安全系数和用户体验。</p>
+<p>如果在网站设置当用户访问域名的时候强制 https 进行 301 或者 302 跳转，但是这个过程中，用到 HTTP 因此容易发生劫持，受到第三方的攻击。所以尽可能使用https安全。</p>
+<h3 id="避免使用iframe"><a href="#避免使用iframe" class="headerlink" title="避免使用iframe"></a>避免使用iframe</h3><p>iframe 相当于本页面又嵌套了一个页面，消耗性能，还要加载嵌套页面的资源，所以更消耗时间。</p>
+<h3 id="借用浏览器缓存"><a href="#借用浏览器缓存" class="headerlink" title="借用浏览器缓存"></a>借用浏览器缓存</h3><p>ajax 请求到的数据，可以缓存到浏览器，下次使用的时候无需再次获取，直接取缓存数据就可以。这个会根据具体的项目来做，比如常用的角色类型就会缓存，获取到的普通数据为了保证实时性，不能使用缓存。</p>
+<h2 id="静态资源优化"><a href="#静态资源优化" class="headerlink" title="静态资源优化"></a>静态资源优化</h2><h3 id="压缩-html、css、js-等文件"><a href="#压缩-html、css、js-等文件" class="headerlink" title="压缩 html、css、js 等文件"></a>压缩 html、css、js 等文件</h3><p>删除不必要的空格、注释和中行，减少文件大小，显著减少用户下载时间，加快网页加载速度。可以直接使用压缩工具，可以自动删除所有不必要内容。</p>
+<h3 id="在-js-之前引用-css"><a href="#在-js-之前引用-css" class="headerlink" title="在 js 之前引用 css"></a>在 js 之前引用 css</h3><p>这是一个小细节，js 执行的时候会进入阻塞，如果放入 js 之后加载，会等待 js 执行完成之后才能加载 css，渲染页面，此时就会出现布局错乱。所以 css 文件需要非阻塞引入，以防DOM 花费更多时间才能渲染。</p>
+<h3 id="非阻塞-js"><a href="#非阻塞-js" class="headerlink" title="非阻塞 js"></a>非阻塞 js</h3><p>js 会阻止 html 文档的正常解析，当解析器到达 script 标记时，它会停止解析并执行脚本。所以我们经常把 script 引入的 js，放到 html 中最底下。如果需要让脚本位于页面顶部，建议添加非阻塞属性。经常使用 defer 和 async 来异步加载js文件。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--  使用defer  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span> <span class="attr">src</span>=<span class="string">&quot;foo.js&quot;</span> &gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--   使用async  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">async</span> <span class="attr">src</span>=<span class="string">&quot;foo.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="图片压缩"><a href="#图片压缩" class="headerlink" title="图片压缩"></a>图片压缩</h3><p>最常见的就是 css 雪碧，就是将很多很多的小图标放在一张图片上，就称为雪碧图。雪碧图最大优点就是可以减少http请求，除此也能压缩图片文件大小。使用的时候，通过设置 background-position ，移动图片的位置。除此之外，网站用到的大图，也需要在保证图片质量前提下优化到最小。</p>
+<h3 id="矢量图替代位图"><a href="#矢量图替代位图" class="headerlink" title="矢量图替代位图"></a>矢量图替代位图</h3><p>矢量图（SVG）往往比图像小很多，缩放的时候不失真，这些图像还可以通过 css 进行动画和修改，比位图方便控制。可以的话，尽量用矢量图多点。</p>
+<h3 id="JS代码相关优化"><a href="#JS代码相关优化" class="headerlink" title="JS代码相关优化"></a>JS代码相关优化</h3><ol>
+<li>尽量减少使用闭包，因为闭包所在的上下文不会被释放。</li>
+<li>js避免嵌套循环和死循环，一旦遇到死循环，浏览器会卡死。</li>
+<li>在js封装过程中，尽量做到低耦合高内聚。减少页面的冗余代码。</li>
+<li>尽量减少递归，避免死递归。</li>
+<li>尽量使用window.requestAnimationFrame替代传统的定时器。</li>
+</ol>
+<h2 id="页面渲染速度"><a href="#页面渲染速度" class="headerlink" title="页面渲染速度"></a>页面渲染速度</h2><h3 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h3><p>素材类的网站，页面一屏展示很多图片，而且图片还不能失真，图片加载太多，网页加载慢得很，所以就引用懒加载，只加载可视区的图片，避免加载可以能不需要或不必要的图像。改善页面的响应时间。</p>
+<h3 id="避免响应式布局"><a href="#避免响应式布局" class="headerlink" title="避免响应式布局"></a>避免响应式布局</h3><p>响应式网站虽然能够兼容所有终端设备，但是会出现隐藏部分无用内容，浪费带宽，加载时间还长，页面的渲染时间也长。想更多了解响应式布局，请点击<a href="https://www.toutiao.com/i6995705338322272806/?group_id=6995705338322272806">《前端响应式布局为什么是个坑？》</a>。</p>
+<h3 id="设置大小，避免重绘"><a href="#设置大小，避免重绘" class="headerlink" title="设置大小，避免重绘"></a>设置大小，避免重绘</h3><p>遇到 img 标签，会立马发送一个 http 请求，下载图片，页面继续向下渲染，等图片加载成功了，发现图片的宽高大小发生变化，影响后边排版，所以页面会重新再绘制一次这部分。所以尽可能设置图片的大小。</p>
+<h3 id="减少DOM元素"><a href="#减少DOM元素" class="headerlink" title="减少DOM元素"></a>减少DOM元素</h3><p>解析 html 内容，将标签转化为DOM节点，之后再解析其他文件，DOM元素越少，也就是标签越少，文件转化得越快，加载速度也就快了。</p>
+<h3 id="减少-Flash-的使用"><a href="#减少-Flash-的使用" class="headerlink" title="减少 Flash 的使用"></a>减少 Flash 的使用</h3><p>flash 文件比较大，加载起来耗时。除此，flash 插件还需要运行才能运行，最主要有些浏览器flash插件马上要下线了，建议尽量不用 flash。</p>
+<h3 id="文件顺序"><a href="#文件顺序" class="headerlink" title="文件顺序"></a>文件顺序</h3><p>css文件放在最顶部，优先渲染。js放在最底部，避免阻塞。</p>
+]]></content>
+      <categories>
+        <category>Optimization</category>
+      </categories>
+      <tags>
+        <tag>Optimization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【优化】Webpack构建性能</title>
+    <url>/optimization/optimization-webpack/</url>
+    <content><![CDATA[<p>当项目越来越复杂时，会面临着构建速度慢和构建出来的文件体积大的问题。webapck构建优化对于大项目是必须要考虑的一件事，下面就从速度和体积两方面来探讨构建优化的策略</p>
+<span id="more"></span>
+
+<h2 id="分析工具"><a href="#分析工具" class="headerlink" title="分析工具"></a>分析工具</h2><p>在优化之前，我们需要了解一些量化分析的工具，使用它们来帮助我们分析需要优化的点</p>
+<h3 id="webpackbar"><a href="#webpackbar" class="headerlink" title="webpackbar"></a>webpackbar</h3><p>webpackbar可以在打包时实时显示打包进度</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">WebpackBar</span> = <span class="built_in">require</span>(<span class="string">&#x27;webpackbar&#x27;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> <span class="title class_">WebpackBar</span>()]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="speed-measure-webpack-plugin"><a href="#speed-measure-webpack-plugin" class="headerlink" title="speed-measure-webpack-plugin"></a>speed-measure-webpack-plugin</h3><p><code>speed-measure-webpack-plugin</code>可以看到每个loader和plugin的耗时情况</p>
+<p>需要使用wrap方法包裹整个webpack配置项</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">SpeedMeasurePlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;speed-measure-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> smp = <span class="keyword">new</span> <span class="title class_">SpeedMeasurePlugin</span>()</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = smp.<span class="title function_">wrap</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> <span class="title class_">WebpackBar</span>()]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="webpack-bundle-analyzer"><a href="#webpack-bundle-analyzer" class="headerlink" title="webpack-bundle-analyzer"></a>webpack-bundle-analyzer</h3><p><code>webpack-bundle-analyzer</code>以可视化的方式让我们直观地看到打包的bundle中到底包含哪些模块内容，以及每一个模块的体积大小。可以根据这些信息去分析项目结构，调整打包配置，进行优化</p>
+<p>构建完成后，默认会在<code>http://127.0.0.1:8888/</code>展示分析结果</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">BundleAnalyzerPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;webpack-bundle-analyzer&#x27;</span>).<span class="property">BundleAnalyzerPlugin</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="keyword">new</span> <span class="title class_">BundleAnalyzerPlugin</span>()]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>webpack-bundle-analyzer</code>会计算出模块文件在三种情形下的大小：</p>
+<ul>
+<li>stat：文件未经过任何转换的原始大小</li>
+<li>parsed：文件经过转换后的输出大小（比如babel-loader转换ES6-&gt;ES5、UglifyJsPlugin压缩等等）</li>
+<li>gzip：parsed后的文件，经过Gzip压缩的大小 使用<code>speed-measure-webpack-plugin</code>和<code>webpack-bundle-analyzer</code>本身也会增加打包时间（<code>webpack-bundle-analyzer</code>特别耗时），所以建议这两个插件在开发分析时使用，而在生产环境去掉</li>
+</ul>
+<h2 id="优化构建速度"><a href="#优化构建速度" class="headerlink" title="优化构建速度"></a>优化构建速度</h2><h3 id="thread-loader-多进程打包"><a href="#thread-loader-多进程打包" class="headerlink" title="thread-loader 多进程打包"></a>thread-loader 多进程打包</h3><p>把它放置在其它loader之前，放置在这个<code>thread-loader</code>之后的 loaders会运行在一个单独的worker池中</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">test</span>: <span class="regexp">/\.js$/</span>,</span><br><span class="line">  <span class="attr">use</span>: [</span><br><span class="line">  	<span class="string">&#x27;thread-loader&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;babel-loader&#x27;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="cache-loader-缓存资源"><a href="#cache-loader-缓存资源" class="headerlink" title="cache-loader 缓存资源"></a>cache-loader 缓存资源</h3><p>缓存资源，提高二次构建的速度，在一些性能开销较大的 loader 之前添加此<code>cache-loader</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">test</span>: <span class="regexp">/\.js$/</span>,</span><br><span class="line">  <span class="attr">use</span>: [</span><br><span class="line">    <span class="string">&#x27;cache-loader&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;thread-loader&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;babel-loader&#x27;</span></span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="hard-source-webpack-plugin-缓存模块"><a href="#hard-source-webpack-plugin-缓存模块" class="headerlink" title="hard-source-webpack-plugin 缓存模块"></a>hard-source-webpack-plugin 缓存模块</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">HardSourceWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&quot;hard-source-webpack-plugin&quot;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>:[<span class="keyword">new</span> <span class="title class_">HardSourceWebpackPlugin</span>()]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启热更新"><a href="#开启热更新" class="headerlink" title="开启热更新"></a>开启热更新</h3><p>比如你修改了项目中某一个文件，会导致整个项目刷新，这非常耗时间。如果只刷新修改的这个模块，其他保持原状，那将大大提高修改代码的重新构建时间</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.dev.js</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//引入webpack</span></span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">&#x27;webpack&#x27;</span>);</span><br><span class="line"><span class="comment">//使用webpack提供的热更新插件</span></span><br><span class="line"> <span class="attr">plugins</span>: [</span><br><span class="line">   <span class="keyword">new</span> webpack.<span class="title class_">HotModuleReplacementPlugin</span>()</span><br><span class="line"> ],</span><br><span class="line"> <span class="comment">//最后需要在我们的devserver中配置</span></span><br><span class="line"> <span class="attr">devServer</span>: &#123;</span><br><span class="line">   <span class="attr">hot</span>: <span class="literal">true</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="exclude-amp-include"><a href="#exclude-amp-include" class="headerlink" title="exclude &amp; include"></a>exclude &amp; include</h3><ul>
+<li><code>exclude</code>：不需要处理的文件</li>
+<li><code>include</code>：需要处理的文件</li>
+</ul>
+<p>合理设置这两个属性，可以大大提高构建速度</p>
+<p>通常来说，loader会处理符合匹配规则的所有文件。比如babel-loader，会遍历项目中用到的所有js文件，对每个文件的代码进行编译转换。而node_modules里的js文件基本上都是转译好了的，不需要再次处理，所以我们用 include&#x2F;exclude 来帮我们避免这种不必要的转译</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">test</span>: <span class="regexp">/\.js$/</span>,</span><br><span class="line">  <span class="comment">//使用include来指定编译文件夹</span></span><br><span class="line">  <span class="attr">include</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;../src&#x27;</span>),</span><br><span class="line">  <span class="comment">//使用exclude排除指定文件夹</span></span><br><span class="line">  <span class="attr">exclude</span>: <span class="regexp">/node_modules/</span>,</span><br><span class="line">  <span class="attr">use</span>: [</span><br><span class="line">    <span class="string">&#x27;babel-loader&#x27;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="动态链接库"><a href="#动态链接库" class="headerlink" title="动态链接库"></a>动态链接库</h3><p>上面的babel-loader可以通过include&#x2F;exclude，避免处理node_modules里的第三方库。</p>
+<p>但如果将第三方库代码和业务代码都打包进一个bundle文件，那么处理这个bundle文件的插件，比如uglifyjs-webpack-plugin、terser-webpack-plugin等，就没办法不处理里面第三方库内容。</p>
+<p>其实第三方库代码基本都是成熟的，不用作什么处理。因此，我们可以将项目的第三方库代码分离出来。</p>
+<p>常见的处理方式有三种：</p>
+<ol>
+<li>Externals</li>
+<li>SplitChunks</li>
+<li>DllPlugin</li>
+</ol>
+<p>Externals可以避免处理第三方库，但每一个第三方库都得在html文档中增加一个script标签来引入，一个页面过多的js文件下载会影响网页性能，而且有时我们只使用第三方库中的一小部分功能，用script标签全量引入不太合理。</p>
+<p>SplitChunks在每一次构建时都会重新构建第三方库，不能有效提升构建速度。</p>
+<p>这里推荐使用DllPlugin和DLLReferencePlugin（配合使用），它们是webpack的内置插件。DllPlugin会将不频繁更新的第三方库单独打包，当这些第三方库版本没有变化时，就不需要重新构建。</p>
+<p>使用方法：</p>
+<ol>
+<li>使用DllPlugin打包第三方库</li>
+<li>使用DLLReferencePlugin引用manifest.json，去关联第1步中已经打好的包</li>
+</ol>
+<ul>
+<li><p>新建一个webpack配置文件<code>webpack.dll.js</code>用于打包第三方库（第1步）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">&#x27;webpack&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span>,</span><br><span class="line">  <span class="attr">entry</span>: &#123;</span><br><span class="line">    <span class="attr">three</span>: [<span class="string">&#x27;three&#x27;</span>, <span class="string">&#x27;dat.gui&#x27;</span>]   <span class="comment">// 第三方库数组</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;[name].dll.js&#x27;</span>,    <span class="comment">//[name]就是在entry</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist/lib&#x27;</span>),</span><br><span class="line">    <span class="attr">library</span>: <span class="string">&#x27;[name]&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="keyword">new</span> webpack.<span class="title class_">DllPlugin</span>(&#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;[name]&#x27;</span>,</span><br><span class="line">      <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist/lib/[name].json&#x27;</span>) <span class="comment">//manifest.json的存放位置</span></span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包好后，在<code>dist</code>目录下增加了一个lib文件夹</p>
+</li>
+<li><p>在<code>webpack.base.js</code>做一下修改，去关联第1步中已经打好的包（第2步）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>:[</span><br><span class="line">    <span class="comment">//修改CleanWebpackPlugin配置</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">CleanWebpackPlugin</span>(&#123;</span><br><span class="line">      <span class="attr">cleanOnceBeforeBuildPatterns</span>: [<span class="string">&#x27;!lib/**&#x27;</span>] <span class="comment">//在每次清楚dist目录时，不清理lib文件夹的内容</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">// dll相关配置</span></span><br><span class="line">    <span class="keyword">new</span> webpack.<span class="title class_">DllReferencePlugin</span>(&#123;    </span><br><span class="line">      <span class="comment">// 将manifest字段配置成我们第1步中打包出来的json文件</span></span><br><span class="line">      <span class="attr">manifest</span>: <span class="built_in">require</span>(<span class="string">&#x27;./dist/lib/three.json&#x27;</span>)  </span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>不仅仅是第三方库，业务代码中的基础库也可以通过进行DllPlugin分离</p>
+<h3 id="构建区分环境"><a href="#构建区分环境" class="headerlink" title="构建区分环境"></a>构建区分环境</h3><p>区分环境去构建是非常重要的，我们要明确知道，开发环境时我们需要哪些配置，不需要哪些配置；而最终打包生产环境时又需要哪些配置，不需要哪些配置：</p>
+<ul>
+<li><code>开发环境</code>：去除代码压缩、gzip、体积分析等优化的配置，大大提高构建速度</li>
+<li><code>生产环境</code>：需要代码压缩、gzip、体积分析等优化的配置，大大降低最终项目打包体积</li>
+</ul>
+<h3 id="合理配置hash"><a href="#合理配置hash" class="headerlink" title="合理配置hash"></a>合理配置hash</h3><p>我们要保证，改过的文件需要更新hash值，而没改过的文件依然保持原本的hash值，这样才能保证在上线后，浏览器访问时没有改变的文件会命中缓存，从而达到性能优化的目的</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line">  <span class="attr">output</span>: &#123;</span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;../dist&#x27;</span>),</span><br><span class="line">    <span class="comment">// 给js文件加上 contenthash</span></span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;js/chunk-[contenthash].js&#x27;</span>,</span><br><span class="line">    <span class="attr">clean</span>: <span class="literal">true</span>,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="提升webpack版本"><a href="#提升webpack版本" class="headerlink" title="提升webpack版本"></a>提升webpack版本</h3><p>webpack版本越新，打包的效果肯定更好</p>
+<h2 id="优化构建体积"><a href="#优化构建体积" class="headerlink" title="优化构建体积"></a>优化构建体积</h2><p>主要是打包后项目整体体积的优化，有利于项目上线后的页面加载速度提升</p>
+<h3 id="代码分割"><a href="#代码分割" class="headerlink" title="代码分割"></a>代码分割</h3><p>分离第三方库和业务代码中的基础库，可以避免单个bundle.js体积过大，加载时间过长。并且在多页面构建中，还能减少重复打包。</p>
+<p>常见的操作是通过<strong>SplitChunks</strong>和 <strong>动态链接库</strong>（如上所示）</p>
+<h3 id="模块懒加载"><a href="#模块懒加载" class="headerlink" title="模块懒加载"></a>模块懒加载</h3><p>如果不进行<code>模块懒加载</code>的话，最后整个项目代码都会被打包到一个js文件里，单个js文件体积非常大，那么当用户网页请求的时候，首屏加载时间会比较长，使用<code>模块懒加载</code>之后，大js文件会分成多个小js文件，网页加载时会按需加载，大大提升首屏加载速度</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// src/router/index.js</span></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&#x27;/login&#x27;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;login&#x27;</span>,</span><br><span class="line">    <span class="attr">component</span>: login</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">path</span>: <span class="string">&#x27;/home&#x27;</span>,</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;home&#x27;</span>,</span><br><span class="line">    <span class="comment">// 懒加载</span></span><br><span class="line">    <span class="attr">component</span>: <span class="function">() =&gt;</span> <span class="keyword">import</span>(<span class="string">&#x27;../views/home/home.vue&#x27;</span>),</span><br><span class="line">  &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="代码压缩"><a href="#代码压缩" class="headerlink" title="代码压缩"></a>代码压缩</h3><h4 id="CSS代码压缩"><a href="#CSS代码压缩" class="headerlink" title="CSS代码压缩"></a>CSS代码压缩</h4><p>CSS代码压缩使用<code>css-minimizer-webpack-plugin</code>，效果包括压缩、去重</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.prod.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">CssMinimizerPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;css-minimizer-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">optimization</span>: &#123;</span><br><span class="line">    <span class="attr">minimizer</span>: [</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">CssMinimizerPlugin</span>(), <span class="comment">// 去重压缩css</span></span><br><span class="line">    ],</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="JS代码压缩"><a href="#JS代码压缩" class="headerlink" title="JS代码压缩"></a>JS代码压缩</h4><p>常用的js代码压缩插件有：<code>uglifyjs-webpack-plugin</code> 和 <code>terser-webpack-plugin</code>。</p>
+<p>在webpack4中，生产环境默认开启代码压缩。我们也可以自己配置去覆盖默认配置，来完成更定制化的需求。</p>
+<p>v4.26.0版本之前，webpack内置的压缩插件是uglifyjs-webpack-plugin，从v4.26.0版本开始，换成了<code>terser-webpack-plugin</code>。我们这里也以<code>terser-webpack-plugin</code>为例，和普通插件使用不同，在<code>optimization.minimizer</code>中配置压缩插件</p>
+<p>使用<code>terser-webpack-plugin</code>，实现打包后JS代码的压缩</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.prod.js</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">TerserPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;terser-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">optimization</span>: &#123;</span><br><span class="line">    <span class="attr">minimizer</span>: [</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">CssMinimizerPlugin</span>(), <span class="comment">// 去重压缩css</span></span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">TerserPlugin</span>(&#123; <span class="comment">// 压缩JS代码</span></span><br><span class="line">        <span class="attr">parallel</span>: <span class="literal">true</span>,  <span class="comment">// 开启并行压缩，可以加快构建速度</span></span><br><span class="line">        <span class="attr">sourceMap</span>: <span class="literal">true</span>, <span class="comment">// 如果生产环境使用source-maps，则必须设置为true</span></span><br><span class="line">        <span class="attr">terserOptions</span>: &#123;</span><br><span class="line">          <span class="attr">compress</span>: &#123;</span><br><span class="line">            <span class="attr">drop_console</span>: <span class="literal">true</span>, <span class="comment">// 去除console</span></span><br><span class="line">          &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;), <span class="comment">// 压缩JavaScript</span></span><br><span class="line">    ],</span><br><span class="line">  &#125;</span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h3 id="图片处理"><a href="#图片处理" class="headerlink" title="图片处理"></a>图片处理</h3><h4 id="雪碧图"><a href="#雪碧图" class="headerlink" title="雪碧图"></a>雪碧图</h4><p>雪碧图将多张小图标拼接成一张大图，在HTTP1.x环境下，雪碧图可以减少HTTP请求，加速网页的显示速度。</p>
+<p>用于合成雪碧图的图标体积要小，较大的图片不建议拼接成雪碧图；同时要是网站静态图标，不是通过ajax请求动态获取的图标。所以通常是作为网站logo、icon之类的图片。</p>
+<p>开发时，可以是UI提供雪碧图，但是每新增一个图标，就要重新制作一次，重新计算偏移量，比较麻烦。通过webpack插件合成雪碧图，就可以在开发时直接使用单个小图标，在打包时，自动合成雪碧图，并自动自动修改css中的<code>background-position</code>的值。</p>
+<p>下面，我们借助<code>postcss-sprites</code>来自动合成雪碧图。</p>
+<p>首先，在<code>webpack.base.js</code>中配置<code>postcss-loader</code>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//webpack.base.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        <span class="attr">use</span>: [<span class="string">&#x27;vue-style-loader&#x27;</span>,<span class="string">&#x27;css-loader&#x27;</span>, <span class="string">&#x27;postcss-loader&#x27;</span>]  <span class="comment">//配置postcss-loader</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.less$/</span>,</span><br><span class="line">        <span class="attr">use</span>: [</span><br><span class="line">          <span class="string">&#x27;vue-style-loader&#x27;</span>,<span class="string">&#x27;css-loader&#x27;</span>, <span class="string">&#x27;postcss-loader&#x27;</span>, <span class="string">&#x27;less-loader&#x27;</span>]  <span class="comment">//配置postcss-loader</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>然后在项目根目录下新建<code>.postcssrc.js</code>，配置<code>postcss-sprites</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="string">&quot;plugins&quot;</span>: [</span><br><span class="line">    <span class="built_in">require</span>(<span class="string">&#x27;postcss-sprites&#x27;</span>)(&#123;</span><br><span class="line">      <span class="comment">// 默认会合并css中用到的所有静态图片</span></span><br><span class="line">      <span class="comment">// 使用filterBy指定需要合并的图片，比如这里这里只合并images/icon文件夹下的图片</span></span><br><span class="line">      <span class="attr">filterBy</span>: <span class="keyword">function</span> (<span class="params">image</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (image.<span class="property">url</span>.<span class="title function_">indexOf</span>(<span class="string">&#x27;/images/icon/&#x27;</span>) &gt; -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认会把图片合并到名为<code>sprite.png</code>的雪碧图中。</p>
+<p>在css中直接指定小图标当背景：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.star</span>&#123;</span><br><span class="line">  <span class="attribute">display</span>: inline-block;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  &amp;<span class="selector-class">.l1</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">url</span>(<span class="string">&#x27;../icon/star.png&#x27;</span>) no-repeat;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;<span class="selector-class">.l2</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">url</span>(<span class="string">&#x27;../icon/star2.png&#x27;</span>) no-repeat;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;<span class="selector-class">.l3</span>&#123;</span><br><span class="line">    <span class="attribute">background</span>: <span class="built_in">url</span>(<span class="string">&#x27;../icon/star3.png&#x27;</span>) no-repeat;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打包完成后可以看到，自动修改了<code>background-image</code>和<code>background-position</code>。</p>
+<h4 id="小图片转base64"><a href="#小图片转base64" class="headerlink" title="小图片转base64"></a>小图片转base64</h4><p>对于一些小图片，可以转base64，这样可以减少用户的http网络请求次数，提高访问速度。<code>webpack5</code>中<code>url-loader</code>已被废弃，改用<code>asset-module</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="attr">test</span>: <span class="regexp">/\.(png|jpe?g|gif|svg|webp)$/</span>,</span><br><span class="line">   <span class="attr">type</span>: <span class="string">&#x27;asset&#x27;</span>,</span><br><span class="line">   <span class="attr">parser</span>: &#123;</span><br><span class="line">     <span class="comment">// 转base64的条件</span></span><br><span class="line">     <span class="attr">dataUrlCondition</span>: &#123;</span><br><span class="line">        <span class="attr">maxSize</span>: <span class="number">25</span> * <span class="number">1024</span>, <span class="comment">// 25kb</span></span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="attr">generator</span>: &#123;</span><br><span class="line">     <span class="comment">// 打包到 image 文件下</span></span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;images/[contenthash][ext][query]&#x27;</span>,</span><br><span class="line">   &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="tree-shaking"><a href="#tree-shaking" class="headerlink" title="tree-shaking"></a>tree-shaking</h3><p><code>tree-shaking</code>简单说作用就是：只打包用到的代码，没用到的代码不打包，而<code>webpack5</code>默认开启<code>tree-shaking</code>，当打包的<code>mode</code>为<code>production</code>时，自动开启<code>tree-shaking</code>进行优化</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="source-map类型"><a href="#source-map类型" class="headerlink" title="source-map类型"></a>source-map类型</h3><p><code>source-map</code>的作用是：方便你报错的时候能定位到错误代码的位置。它的体积不容小觑，所以对于不同环境设置不同的类型是很有必要的。</p>
+<ul>
+<li><strong>开发环境</strong></li>
+</ul>
+<p>开发环境的时候我们需要能精准定位错误代码的位置</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.dev.js</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;development&#x27;</span>,</span><br><span class="line">  <span class="attr">devtool</span>: <span class="string">&#x27;eval-cheap-module-source-map&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>生产环境</strong></li>
+</ul>
+<p>生产环境，我们想开启<code>source-map</code>，但是又不想体积太大，那么可以换一种类型</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.prod.js</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;production&#x27;</span>,</span><br><span class="line">  <span class="attr">devtool</span>: <span class="string">&#x27;nosources-source-map&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Gzip"><a href="#Gzip" class="headerlink" title="Gzip"></a>Gzip</h3><p>开启gzip压缩，可以减小文件体积。在浏览器支持gzip的情况下，可以加快资源加载速度。服务端和客户端都可以完成gzip压缩，服务端响应请求时压缩，客户端应用构建时压缩。但压缩文件这个过程本身是需要耗费时间和CPU资源的，如果存在大量的压缩需求，会加大服务器的负担。</p>
+<p>所以可以在构建打包时候就生成gzip压缩文件，作为静态资源放在服务器上，接收到请求后直接把压缩文件返回。</p>
+<p>使用webpack生成gzip文件需要借助<code>compression-webpack-plugin</code>，使用配置如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">CompressionWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&quot;compression-webpack-plugin&quot;</span>)</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">     <span class="keyword">new</span> <span class="title class_">CompressionWebpackPlugin</span>(&#123;</span><br><span class="line">       <span class="attr">test</span>: <span class="regexp">/\.(js|css)$/</span>,         <span class="comment">//匹配要压缩的文件</span></span><br><span class="line">       <span class="attr">algorithm</span>: <span class="string">&quot;gzip&quot;</span></span><br><span class="line">     &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="最后（对比Vite）"><a href="#最后（对比Vite）" class="headerlink" title="最后（对比Vite）"></a>最后（对比Vite）</h2><p>可以考虑使用Vite替换Webpack</p>
+<p><a href="https://cn.vitejs.dev/">Vite</a> 是一种新型前端构建工具，能够显著提升前端开发体验。它主要由两部分组成：</p>
+<ul>
+<li>一个开发服务器，它基于 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">原生 ES 模块</a> 提供了 <a href="https://cn.vitejs.dev/guide/features.html">丰富的内建功能</a>，如速度快到惊人的 <a href="https://cn.vitejs.dev/guide/features.html#hot-module-replacement">模块热更新（HMR）</a>。</li>
+<li>一套构建指令，它使用 <a href="https://rollupjs.org/">Rollup</a> 打包你的代码，并且它是预配置的，可输出用于生产环境的高度优化过的静态资源。</li>
+</ul>
+<p>Vite 意在提供开箱即用的配置，同时它的 <a href="https://cn.vitejs.dev/guide/api-plugin.html">插件 API</a> 和 <a href="https://cn.vitejs.dev/guide/api-javascript.html">JavaScript API</a> 带来了高度的可扩展性，并有完整的类型支持。</p>
+<p>你可以在 <a href="https://cn.vitejs.dev/guide/why.html">为什么选 Vite</a> 中了解更多关于项目的设计初衷。</p>
+<h3 id="Webpack和Vite的区别"><a href="#Webpack和Vite的区别" class="headerlink" title="Webpack和Vite的区别"></a>Webpack和Vite的区别</h3><ul>
+<li>webpack会先打包，然后启动开发服务器，请求服务器时直接给予打包结果</li>
+<li>vite直接启动开发服务器，请求哪个模块再对该模块进行实时编译</li>
+</ul>
+<h3 id="vite优点"><a href="#vite优点" class="headerlink" title="vite优点"></a>vite优点</h3><ul>
+<li><strong>webpack服务器启动速度比vite慢</strong><br>由于vite启动的时候不需要打包，也就无需分析模块依赖、编译，所以启动速度非常快。当浏览器请求需要的模块时，再对模块进行编译，这种按需动态编译的模式，极大缩短了编译时间，当项目越大，文件越多时，vite的开发时优势越明显</li>
+<li><strong>vite热更新比webpack快</strong><br>vite在HRM方面，当某个模块内容改变时，让浏览器去重新请求该模块即可，而不是像webpack重新将该模块的所有依赖重新编译；</li>
+<li><strong>vite使用esbuild(Go 编写) 预构建依赖，而webpack基于nodejs, 比node快 10-100 倍</strong></li>
+</ul>
+<h3 id="vite缺点"><a href="#vite缺点" class="headerlink" title="vite缺点"></a>vite缺点</h3><ul>
+<li>生态不及webpack，加载器、插件不够丰富</li>
+<li>打包到生产环境时，vite使用传统的rollup进行打包，生产环境esbuild构建对于css和代码分割不够友好。所以，vite的优势是体现在开发阶段</li>
+<li>没被大规模重度使用，会隐藏一些问题</li>
+<li>项目的开发浏览器要支持esmodule，而且不能识别commonjs语法</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Optimization</category>
+      </categories>
+      <tags>
+        <tag>Optimization</tag>
+        <tag>Build</tag>
+        <tag>Webpack</tag>
+        <tag>Vite</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Q&amp;A】SSR 服务端渲染获取不到 Window 对象</title>
+    <url>/q-a/qa-ssr-window/</url>
+    <content><![CDATA[<h3 id="获取不到Window对象，怎么解决？"><a href="#获取不到Window对象，怎么解决？" class="headerlink" title="获取不到Window对象，怎么解决？"></a>获取不到Window对象，怎么解决？</h3><ol>
+<li><p>在客户端代码中对 window 对象进行特殊处理，使其在服务端渲染时不会被引用。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">window</span> !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">  <span class="comment">// Your code that uses the window object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对代码进行重构，避免对 window 对象的引用。</p>
+</li>
+</ol>
+<span id="more"></span>
+
+<h3 id="Nuxt-js中获取window对象"><a href="#Nuxt-js中获取window对象" class="headerlink" title="Nuxt.js中获取window对象"></a>Nuxt.js中获取window对象</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  beforeCreate() &#123;</span><br><span class="line">    if (process.browser) &#123;</span><br><span class="line">      if ((window.navigator.userAgent.match(/(iPhone|iPod|Android|ios|iOS|iPad|Backerry|WebOS|Symbian|Windows Phone|Phone)/i))) &#123;</span><br><span class="line">        window.location = &#x27;/mobile&#x27;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created()&#123;</span><br><span class="line">    if (process.browser) &#123; </span><br><span class="line">      console.log(window)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Next-js中获取window对象"><a href="#Next-js中获取window对象" class="headerlink" title="Next.js中获取window对象"></a>Next.js中获取window对象</h3><p>使用useEffect钩子</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">useLastSeen</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> [lastSeen, setLastSeen] = <span class="title function_">useState</span>(<span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">const</span> retrieved = <span class="title function_">useRef</span>(<span class="literal">false</span>); <span class="comment">//To get around strict mode running the hook twice</span></span><br><span class="line">    <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (retrieved.<span class="property">current</span>) <span class="keyword">return</span>;</span><br><span class="line">        retrieved.<span class="property">current</span> = <span class="literal">true</span>;</span><br><span class="line">        <span class="title function_">setLastSeen</span>(<span class="title function_">updateLastSeen</span>());</span><br><span class="line">    &#125;, []);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> lastSeen;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>判断window是否存在</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">isBrowser</span> = (<span class="params"></span>) =&gt; <span class="keyword">typeof</span> <span class="variable language_">window</span> !== <span class="string">&#x27;undefined&#x27;</span>; <span class="comment">//The approach recommended by Next.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">WindowPage</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> [lastClick, setLastClick] = <span class="title function_">useState</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isBrowser</span>()) &#123; <span class="comment">//Only add the event listener client-side</span></span><br><span class="line">        <span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span></span><br><span class="line">            <span class="title function_">setLastClick</span>(<span class="string">`<span class="subst">$&#123;e.pageX&#125;</span>, <span class="subst">$&#123;e.pageY&#125;</span>`</span>)</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">className</span>=<span class="string">&quot;m-auto rounded bg-violet-600 p-10 font-bold text-white shadow&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">            Click at: &#123;lastClick&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Q&amp;A</category>
+      </categories>
+      <tags>
+        <tag>SSR</tag>
+        <tag>Nuxt.js</tag>
+        <tag>Next.js</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】组件通信</title>
+    <url>/vue/vue-component-communication/</url>
+    <content><![CDATA[<h2 id="父子组件传值"><a href="#父子组件传值" class="headerlink" title="父子组件传值"></a>父子组件传值</h2><ul>
+<li><p>父传子：通过props</p>
+</li>
+<li><p>子传父：$emit传递，父组件v-on自定义事件接收</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="非父子组件数据传递"><a href="#非父子组件数据传递" class="headerlink" title="非父子组件数据传递"></a>非父子组件数据传递</h2><h3 id="Event-Bus"><a href="#Event-Bus" class="headerlink" title="Event Bus"></a>Event Bus</h3><p>EventBus，就是创建一个事件中心，相当于中转站。</p>
+<p>通过$emit传递，$on接收</p>
+<h3 id="Vuex-状态管理"><a href="#Vuex-状态管理" class="headerlink" title="Vuex 状态管理"></a>Vuex 状态管理</h3><p>Vuex是一个专为Vue.js应用程序开发的状态管理模式。每一个Vuex应用的核心就是store（仓库）。“store”基本上就是一个容器，它包含着你的应用中大部分的状态（state）。</p>
+<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><ol>
+<li>Vuex的状态存储是响应式的。当Vue组件从store中读取状态的时候，若store中的状态发生变化，那么相应的组件也会相应地得到高效更新。</li>
+<li>改变 store 中的状态的唯一途径就是显式地提交（commit）mutation。这样使得我们可以方便地跟踪每一个状态的变化。</li>
+</ol>
+<h4 id="主要模块："><a href="#主要模块：" class="headerlink" title="主要模块："></a>主要模块：</h4><ul>
+<li>State：定义了应用状态的数据结构，可以在这里设置默认的初始状态。</li>
+<li>Getter：允许组件从 Store 中获取数据，mapGetters 辅助函数仅仅是将 Store 中的 Getter 映射到局部计算属性。</li>
+<li>Mutation：是唯一更改 Store 中状态的方法，且必须是同步函数。</li>
+<li>Action：用于提交 Mutation，而不是直接变更状态，可以包含任意异步操作。</li>
+<li>Module：允许将单一的 Store 拆分为多个 Store 且同时保存在单一的状态树中。</li>
+</ul>
+<p>持久化控件：vuex-persistedstate</p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】基本原理</title>
+    <url>/vue/vue-fundamental/</url>
+    <content><![CDATA[<h2 id="Vue响应式原理"><a href="#Vue响应式原理" class="headerlink" title="Vue响应式原理"></a>Vue响应式原理</h2><p>当一个Vue实例创建时，vue会遍历data选项的属性，用Object.defineProperty（vue3.0使用proxy）将它们转为 getter&#x2F;setter 并且在内部追踪相关依赖，在属性被访问和修改时通知变化。每个组件实例都有相应的watcher程序实例，它会在组件渲染的过程中把属性记录为依赖，之后当依赖项的setter被调用时，会通知watcher重新计算，从而致使它关联的组件得以更新。</p>
+<span id="more"></span>
+
+<h3 id="Vue双向数据绑定"><a href="#Vue双向数据绑定" class="headerlink" title="Vue双向数据绑定"></a>Vue双向数据绑定</h3><p>View的变化能实时让Model发生变化，而Modal的变化也能实时更新到View。</p>
+<p>Vue采用数据劫持结合发布者-订阅者模式的方式，通过ES5提供的Object.defineProperty()方法来劫持（监控）各个属性的getter、setter，并在数据（对象）发生变动时通知订阅者，触发相应的监听回调。并且，由于是在不同的数据上触发同步，可以精确的将变更发送给绑定的视图，而不是对所有的数据都执行一次检测。<br>要实现Vue的数据双向绑定，大致可以划分三个模块：Observer、Compile、Watcher。</p>
+<ul>
+<li>Observer 数据监听器，负责对数据对象的所有属性进行监听（数据劫持），监听到数据变化后通知订阅者。</li>
+<li>Compile 指令解析器，扫描模板，并对指令进行解析，然后绑定指定事件。</li>
+<li>Watcher 订阅器，关联Observer和Compile，能够订阅并收到属性变动的通知，执行指令绑定的相应操作，更新视图。</li>
+</ul>
+<h3 id="版本比较"><a href="#版本比较" class="headerlink" title="版本比较"></a>版本比较</h3><p>vue是基于依赖收集的双向绑定；<br>3.0之前的版本使用Object.defineProperty，3.0版本使用Proxy。</p>
+<ul>
+<li><p>基于 数据劫持&#x2F;依赖收集 的双向绑定的优点：</p>
+<ul>
+<li>不需要显示的调用，Vue利用数据劫持+发布订阅，可以直接通知变化并且驱动视图。</li>
+<li>直接得到精确的变化数据，劫持了属性的setter，当属性值改变我们可以精确的获取变换的内容newVal，不需要额外的diff操作。</li>
+</ul>
+</li>
+<li><p>Object.defineProperty的缺点：</p>
+<ul>
+<li>不能监听数组，因为数组没有getter和setter，因为数据长度不确定，如果太长性能负担太大。</li>
+<li>只能监听属性，而不是整个对象；需要遍历属性。</li>
+<li>只能监听属性变化，不能监听属性的删减。</li>
+</ul>
+</li>
+<li><p>Proxy的优点：</p>
+<ul>
+<li>可以监听数组。</li>
+<li>监听整个对象而不是属性。</li>
+<li>13种拦截方法，强大很多。</li>
+<li>返回新对象而不是直接修改原对象，更符合immutable。</li>
+</ul>
+</li>
+<li><p>Proxy的缺点：</p>
+</li>
+<li><p>兼容性不好，且无法用polyfill磨平。</p>
+</li>
+</ul>
+<h3 id="v-model-原理"><a href="#v-model-原理" class="headerlink" title="v-model 原理"></a>v-model 原理</h3><p>我们在 vue 项目中主要使用 v-model 指令在表单 input、textarea、select 等元素上创建双向数据绑定，我们知道 v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：</p>
+<ul>
+<li>text 和 textarea 元素使用 value 属性和 input 事件；</li>
+<li>checkbox 和 radio 使用 checked 属性和 change 事件；</li>
+<li>select 字段将 value 作为 prop 并将 change 作为事件。</li>
+</ul>
+<p>以 input 表单元素为例：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;input v-model=&#x27;something&#x27;&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>相当于</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;input v-bind:value=&quot;something&quot; v-on:input=&quot;something = $event.target.value&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果在自定义组件中，v-model 默认会利用名为 value 的 prop 和名为 input 的事件，如下所示：</p>
+<p>父组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&lt;ModelChild v-model=&quot;message&quot;&gt;&lt;/ModelChild&gt;</span><br></pre></td></tr></table></figure>
+
+<p>子组件：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123; value &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  props:&#123;</span><br><span class="line">      value: String</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    test1()&#123;</span><br><span class="line">      this.$emit(&#x27;input&#x27;, &#x27;小红&#x27;)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="虚拟DOM-实现原理"><a href="#虚拟DOM-实现原理" class="headerlink" title="虚拟DOM 实现原理"></a>虚拟DOM 实现原理</h2><ul>
+<li>用 JavaScript 对象模拟真实 DOM 树，对真实 DOM 进行抽象；</li>
+<li>diff 算法 — 比较两棵虚拟 DOM 树的差异；</li>
+<li>pach 算法 — 将两个虚拟 DOM 对象的差异应用到真正的 DOM 树</li>
+</ul>
+<h2 id="组件中-data-为什么是函数"><a href="#组件中-data-为什么是函数" class="headerlink" title="组件中 data 为什么是函数"></a>组件中 data 为什么是函数</h2><p><strong>为什么组件中的 data 必须是一个函数，然后 return 一个对象，而 new Vue 实例里，data 可以直接是一个对象？</strong></p>
+<p>因为组件是用来复用的，且 JS 里对象是引用关系，如果组件中 data 是一个对象，那么这样作用域没有隔离，子组件中的 data 属性值会相互影响，如果组件中 data 选项是一个函数，那么每个实例可以维护一份被返回对象的独立的拷贝，组件实例之间的 data 属性值不会互相影响；而 new Vue 的实例，是不会被复用的，因此不存在引用对象的问题。</p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】keep-alive</title>
+    <url>/vue/vue-keepalive/</url>
+    <content><![CDATA[<h2 id="什么是-keep-alive"><a href="#什么是-keep-alive" class="headerlink" title="什么是 keep-alive ?"></a>什么是 <code>keep-alive</code> ?</h2><p>在平常开发中，有部分组件没有必要多次初始化，这时，我们需要将组件进行持久化，<strong>使组件的状态维持不变</strong>，在下一次展示时，也不会进行重新初始化组件。</p>
+<span id="more"></span>
+
+<p>也就是说，<code>keepalive</code> 是 <code>Vue</code> 内置的一个组件，可以<strong>使被包含的组件保留状态，或避免重新渲染</strong> 。也就是所谓的<strong>组件缓存</strong></p>
+<p><code>&lt;keep-alive&gt;</code>是Vue的内置组件，能在组件切换过程中将状态保留在内存中，防止重复渲染DOM。</p>
+<blockquote>
+<p><code>&lt;keep-alive&gt;</code> 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。和 <code>&lt;transition&gt;</code> 相似，<code>&lt;keep-alive&gt;</code> 是一个抽象组件：它自身不会渲染一个 <code>DOM</code> 元素，也不会出现在父组件链中。</p>
+</blockquote>
+<p><strong>prop:</strong></p>
+<ul>
+<li>include: 字符串或正则表达式。只有匹配的组件会被缓存。</li>
+<li>exclude: 字符串或正则表达式。任何匹配的组件都不会被缓存。</li>
+</ul>
+<h2 id="keep-alive的声明周期执行"><a href="#keep-alive的声明周期执行" class="headerlink" title="keep-alive的声明周期执行"></a><code>keep-alive</code>的声明周期执行</h2><ul>
+<li><p>页面第一次进入，钩子的触发顺序<br><code>created-&gt; mounted-&gt; activated</code>，<br>退出时触发 <code>deactivated </code> 当再次进入（前进或者后退）时，只触发 <code>activated</code></p>
+</li>
+<li><p>事件挂载的方法等，只执行一次的放在 <code>mounted</code> 中；组件每次进去执行的方法放在 <code>activated</code> 中；</p>
+</li>
+</ul>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!--被keep-alive包含的组件会被缓存--&gt;</span><br><span class="line">&lt;keep-alive&gt;</span><br><span class="line">    &lt;component&gt;&lt;component /&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br></pre></td></tr></table></figure>
+
+<p>被<code>keepalive</code>包含的组件不会被再次初始化，也就意味着<strong>不会重走生命周期函数</strong><br> 但是有时候是希望我们缓存的组件可以能够再次进行渲染，这时 <code>Vue</code> 为我们解决了这个问题 被包含在 <code>keep-alive</code> 中创建的组件，会多出两个生命周期的钩子: <code>activated</code> 与 <code>deactivated</code>：</p>
+<ul>
+<li><code>activated</code> 当 <code>keepalive</code> 包含的组件再次渲染的时候触发</li>
+<li><code>deactivated</code> 当 <code>keepalive</code> 包含的组件销毁的时候触发</li>
+</ul>
+<p><code>keepalive</code><strong>是一个抽象的组件，缓存的组件不会被</strong> <code>mounted</code>,<strong>为此提供</strong><code>activated</code><strong>和</strong><code>deactivated</code><strong>钩子函数</strong></p>
+<h2 id="参数理解"><a href="#参数理解" class="headerlink" title="参数理解"></a>参数理解</h2><p><code>keepalive</code> 可以接收3个属性做为参数进行匹配对应的组件进行缓存:</p>
+<ul>
+<li><code>include</code> 包含的组件(可以为字符串，数组，以及正则表达式,只有匹配的组件会被缓存)</li>
+<li><code>exclude</code> 排除的组件(以为字符串，数组，以及正则表达式,任何匹配的组件都不会被缓存)</li>
+<li><code>max</code> 缓存组件的最大值(类型为字符或者数字,可以控制缓存组件的个数)</li>
+</ul>
+<p><strong>注：当使用正则表达式或者数组时，一定要使用 <code>v-bind</code></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 将（只）缓存组件name为a或者b的组件, 结合动态组件使用 --&gt;</span><br><span class="line">&lt;keep-alive include=&quot;a,b&quot;&gt;</span><br><span class="line">  &lt;component&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 组件name为c的组件不缓存(可以保留它的状态或避免重新渲染) --&gt;</span><br><span class="line">&lt;keep-alive exclude=&quot;c&quot;&gt; </span><br><span class="line">  &lt;component&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 使用正则表达式，需使用v-bind --&gt;</span><br><span class="line">&lt;keep-alive :include=&quot;/a|b/&quot;&gt;</span><br><span class="line">  &lt;component :is=&quot;view&quot;&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 动态判断 --&gt;</span><br><span class="line">&lt;keep-alive :include=&quot;includedComponents&quot;&gt;</span><br><span class="line">  &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 如果同时使用include,exclude,那么exclude优先于include， 下面的例子只缓存a组件 --&gt;</span><br><span class="line">&lt;keep-alive include=&quot;a,b&quot; exclude=&quot;b&quot;&gt; </span><br><span class="line">  &lt;component&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 如果缓存的组件超过了max设定的值5，那么将删除第一个缓存的组件 --&gt;</span><br><span class="line">&lt;keep-alive exclude=&quot;c&quot; max=&quot;5&quot;&gt; </span><br><span class="line">  &lt;component&gt;&lt;/component&gt;</span><br><span class="line">&lt;/keep-alive&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="遇见-vue-router-结合router使用，缓存部分页面"><a href="#遇见-vue-router-结合router使用，缓存部分页面" class="headerlink" title="遇见 vue-router 结合router使用，缓存部分页面"></a>遇见 <code>vue-router</code> 结合<code>router</code>使用，缓存部分页面</h2><h3 id="所有路径下的视图组件都会被缓存"><a href="#所有路径下的视图组件都会被缓存" class="headerlink" title="所有路径下的视图组件都会被缓存"></a><strong>所有路径下的视图组件都会被缓存</strong></h3><figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">keep-alive</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">router-view</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 所有路径匹配到的视图组件都会被缓存！ --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">keep-alive</span>&gt;</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="如果只想要router-view里面的某个组件被缓存，怎么办？"><a href="#如果只想要router-view里面的某个组件被缓存，怎么办？" class="headerlink" title="如果只想要router-view里面的某个组件被缓存，怎么办？"></a><strong>如果只想要<code>router-view</code>里面的某个组件被缓存，怎么办？</strong></h3><ul>
+<li>使用 <code>include</code>&#x2F;<code>exclude</code></li>
+<li>使用 <code>meta</code> 属性</li>
+</ul>
+<p>1、用 <code>include</code> (<code>exclude</code>例子类似)</p>
+<blockquote>
+<p>缺点：需要知道组件的 name，项目复杂的时候不是很好的选择</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">keep-alive</span> <span class="attr">include</span>=<span class="string">&quot;a&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">router-view</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 只有路径匹配到的 include 为 a 组件会被缓存 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">keep-alive</span>&gt;</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>2、使用 meta 属性</p>
+<blockquote>
+<p>优点：不需要例举出需要被缓存组件名称 使用$route.meta的keepAlive属性：</p>
+</blockquote>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">keep-alive</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">router-view</span> <span class="attr">v-if</span>=<span class="string">&quot;$route.meta.keepAlive&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">keep-alive</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">router-view</span> <span class="attr">v-if</span>=<span class="string">&quot;!$route.meta.keepAlive&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>需要在<code>router</code>中设置router的元信息meta：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//...router.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Router</span>(&#123;</span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;Hello&#x27;</span>,</span><br><span class="line">      <span class="attr">component</span>: <span class="title class_">Hello</span>,</span><br><span class="line">      <span class="attr">meta</span>: &#123;</span><br><span class="line">        <span class="attr">keepAlive</span>: <span class="literal">false</span> <span class="comment">// 不需要缓存</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/page1&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;Page1&#x27;</span>,</span><br><span class="line">      <span class="attr">component</span>: <span class="title class_">Page1</span>,</span><br><span class="line">      <span class="attr">meta</span>: &#123;</span><br><span class="line">        <span class="attr">keepAlive</span>: <span class="literal">true</span> <span class="comment">// 需要被缓存</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<h3 id="【加盐】使用-router-meta-拓展"><a href="#【加盐】使用-router-meta-拓展" class="headerlink" title="【加盐】使用 router.meta 拓展"></a>【加盐】使用 router.meta 拓展</h3><p>假设这里有 3 个路由： A、B、C。</p>
+<ul>
+<li>需求：<ul>
+<li>默认显示 A</li>
+<li>B 跳到 A，A 不刷新</li>
+<li>C 跳到 A，A 刷新</li>
+</ul>
+</li>
+<li>实现方式<ul>
+<li>在 A 路由里面设置 meta 属性：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&#x27;A&#x27;</span>,</span><br><span class="line">        <span class="attr">component</span>: A,</span><br><span class="line">        <span class="attr">meta</span>: &#123;</span><br><span class="line">            <span class="attr">keepAlive</span>: <span class="literal">true</span> <span class="comment">// 需要被缓存</span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 B 组件里面设置 beforeRouteLeave：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">methods</span>: &#123;&#125;,</span><br><span class="line">        <span class="title function_">beforeRouteLeave</span>(<span class="params">to, <span class="keyword">from</span>, next</span>) &#123;</span><br><span class="line">             <span class="comment">// 设置下一个路由的 meta</span></span><br><span class="line">            to.<span class="property">meta</span>.<span class="property">keepAlive</span> = <span class="literal">true</span>;  <span class="comment">// 让 A 缓存，即不刷新</span></span><br><span class="line">            <span class="title function_">next</span>();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在 C 组件里面设置 beforeRouteLeave：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">        <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">methods</span>: &#123;&#125;,</span><br><span class="line">        <span class="title function_">beforeRouteLeave</span>(<span class="params">to, <span class="keyword">from</span>, next</span>) &#123;</span><br><span class="line">            <span class="comment">// 设置下一个路由的 meta</span></span><br><span class="line">            to.<span class="property">meta</span>.<span class="property">keepAlive</span> = <span class="literal">false</span>; <span class="comment">// 让 A 不缓存，即刷新</span></span><br><span class="line">            <span class="title function_">next</span>();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>这样便能实现 B 回到 A，A 不刷新；而 C 回到 A 则刷新。</p>
+<h2 id="防坑指南"><a href="#防坑指南" class="headerlink" title="防坑指南"></a>防坑指南</h2><p>1.<code>keep-alive</code> 先匹配被包含组件的 <code>name</code> 字段，如果 <code>name</code> 不可用，则匹配当前组件 <code>components</code> 配置中的注册名称。</p>
+<p>2.<code>keep-alive</code> 不会在函数式组件中正常工作，因为它们没有缓存实例。</p>
+<p>3.当匹配条件同时在 <code>include</code> 与 <code>exclude</code> 存在时，以 <code>exclude</code> 优先级最高(当前vue 2.4.2 version)。比如：包含于排除同时匹配到了组件A，那组件A不会被缓存。</p>
+<p>4.包含在 <code>keep-alive</code> 中，但符合 <code>exclude</code> ，不会调用 <code>activated</code> 和 <code>deactivated</code>。</p>
+<h3 id="实现前进刷新，后退不刷新"><a href="#实现前进刷新，后退不刷新" class="headerlink" title="实现前进刷新，后退不刷新"></a>实现前进刷新，后退不刷新</h3><p>感谢 <a href="https://link.juejin.cn/?target=https://www.jianshu.com/u/beced864ad95">iceuncle</a> 分享的 <a href="https://juejin.im/post/6844903555657269261">《vue实现前进刷新，后退不刷新》</a>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>路由大法不错，不需要关心哪个页面跳转过来的，只要 router.go(-1) 就能回去，不需要额外参数。</p>
+<p>在非单页应用的时候，<code>keep-alive</code> 并不能有效的缓存了&#x3D; &#x3D;</p>
+<p><strong>keep-alive生命周期钩子函数：activated、deactivated</strong></p>
+<p>使用<code>&lt;keep-alive&gt;</code>会将数据保留在内存中，如果要在每次进入页面的时候获取最新的数据，需要在<code>activated</code>阶段获取数据，承担原来<code>created</code>钩子中获取数据的任务。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="生命周期函数：就是vue在某个时间段会自动执行的函数"><a href="#生命周期函数：就是vue在某个时间段会自动执行的函数" class="headerlink" title="生命周期函数：就是vue在某个时间段会自动执行的函数"></a>生命周期函数：就是vue在某个时间段会自动执行的函数</h3><ol>
+<li><code>beforeCreate()&#123;&#125;</code>在执行的时候，data还有methods都没有被初始化</li>
+<li><code>created()&#123;&#125;</code> data还有methods都被初始化好了，如果要调用 <code>methods</code> 方法或者操作 <code>data</code> 里面的数据，最早只能在 <code>created</code> 里面进行操作。</li>
+<li><code>beforeMount()&#123;&#125;</code> 表示模板已经在内存中编辑完成了，但是尚未渲染到模板页面中。即页面中的元素，没有被真正的替换过来，只是之前写的一些模板字符串。</li>
+<li><code>mounted()&#123;&#125;</code> 表示内存中模板已经真实的挂载到页面中去了，用户可以看到渲染好的界面了</li>
+</ol>
+<ul>
+<li><strong>注意这是一个生命周期函数的最后一个函数了，执行完这个函数表示 整个vue实例已经初始化完成了，组件脱离了创建阶段，进入运行阶段。</strong></li>
+<li><strong>下面是运行期间的两个生命周期函数的钩子：</strong></li>
+</ul>
+<ol>
+<li><code>beforeUpdate()&#123;&#125;</code> 表示我们的界面还没更新 但是data里面的数据是最新的。即页面尚未和最新的data里面的数据保持同步。</li>
+<li><code>updated()&#123;&#125;</code> 表示页面和data里面的数据已经保持同步了 都是最新的。</li>
+<li><code>beforeDestory()&#123;&#125;</code> 当执行这个生命周期钩子的时候 vue的实例从运行阶段进入销毁阶段 此时实例身上的data 还有 methods处于可用的状态。</li>
+<li><code>destoryed()&#123;&#125;</code> 表示组件已经完全被销毁了 组件中所有的实例方法都是不能用了</li>
+</ol>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><ul>
+<li><a href="https://link.juejin.cn/?target=https://github.com/vuejs/vue-router/issues/811">issues#811</a></li>
+<li><a href="https://link.juejin.cn/?target=https://cn.vuejs.org/v2/api/%23keep-alive">vue#keep-alive</a></li>
+<li>[vue2.0 keep-alive最佳实践](</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>keep-alive</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】生命周期</title>
+    <url>/vue/vue-lifecycle/</url>
+    <content><![CDATA[<h2 id="什么是Vue生命周期？"><a href="#什么是Vue生命周期？" class="headerlink" title="什么是Vue生命周期？"></a>什么是Vue生命周期？</h2><p>Vue实例从创建到销毁的过程，就是生命周期。从开始创建、初始化数据、编译模版、挂载DOM -&gt; 渲染、更新 -&gt; 渲染、销毁等一系列过程，称之为Vue的生命周期。</p>
+<span id="more"></span>
+
+<h2 id="Vue生命周期的作用是什么？"><a href="#Vue生命周期的作用是什么？" class="headerlink" title="Vue生命周期的作用是什么？"></a>Vue生命周期的作用是什么？</h2><p>生命周期有多个事件钩子，让我们在控制Vue实例的过程时更容易形成好的逻辑。</p>
+<h2 id="Vue生命周期总共有几个阶段？"><a href="#Vue生命周期总共有几个阶段？" class="headerlink" title="Vue生命周期总共有几个阶段？"></a>Vue生命周期总共有几个阶段？</h2><p>总共可以分为8个阶段：创建前&#x2F;后、挂载前&#x2F;后、更新前&#x2F;后、销毁前&#x2F;后。</p>
+<h2 id="Vue生命周期钩子函数"><a href="#Vue生命周期钩子函数" class="headerlink" title="Vue生命周期钩子函数"></a>Vue生命周期钩子函数</h2><ul>
+<li>beforeCreate（创建前）在数据观测和初始化事件还未开始。</li>
+<li>created（创建后）完成数据观测，属性和方法的运算，初始化事件，$el属性还没有显示出来。</li>
+<li>beforeMount（挂在前）在挂载开始之前被调用，相关的render函数首次被调用。实例已完成以下的配置：编译模版、把data里面的数据和模板生成html。此时还没有挂载html到页面上。</li>
+<li>mounted（挂载后）在el被新创建的vm.$el替换，并挂载到实例上之后调用。实例因完成以下的配置：用上面编译好的html内容替换el属性指向的DOM对象。完成模版中的html渲染到html页面中。此过程中进行ajax交互。</li>
+<li>beforeUpdate（更新前）在数据更新之前调用，发生在虚拟DOM重新渲染和打补丁之前。可以在改钩子中进一步地更改状态，不会触发附加的重新渲染过程。</li>
+<li>upgated（更新后）在由于数据更改导致的虚拟DOM重新渲染和到布丁之后调用。调用时，组件DOM已经更新，所以可以执行依赖于DOM的操作。然而在大多数情况下，应该避免在此期间更改状态，因为这可能会导致更新无限循环。该钩子在服务端渲染期间不被调用。</li>
+<li>beforeDestroy（销毁前）在实例销毁之前调用。实例仍然完全可用。</li>
+<li>destroyed（销毁后）在实例销毁之后调用。调用后，所有的事件监听器会被移除，所有的子实例也会被销毁。该钩子在服务端渲染期间不被调用。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】nextTick()</title>
+    <url>/vue/vue-nexttick/</url>
+    <content><![CDATA[<h2 id="什么是-Vue-nextTick-？"><a href="#什么是-Vue-nextTick-？" class="headerlink" title="什么是 Vue.nextTick() ？"></a>什么是 Vue.nextTick() ？</h2><p><strong>定义：</strong>在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。</p>
+<span id="more"></span>
+
+<p>所以就衍生出了这个<strong>获取更新后的DOM的Vue方法</strong>。所以<strong>放在Vue.nextTick()回调函数中的执行的应该是会对DOM进行操作的 js</strong>代码；</p>
+<p><strong>理解：nextTick()，是将回调函数延迟在下一次dom更新数据后调用，简单的理解是：当数据更新了，在dom中渲染后，自动执行该函数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button id=&quot;firstBtn&quot; @click=&quot;testClick()&quot; ref=&quot;aa&quot;&gt;&#123;&#123;testMsg&#125;&#125;&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;HelloWorld&#x27;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      testMsg:&quot;原始值&quot;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    testClick:function()&#123;</span><br><span class="line">      let that = this;</span><br><span class="line">      that.testMsg=&quot;修改后的值&quot;;</span><br><span class="line">      console.log(that.$refs.aa.innerText);   //that.$refs.aa获取指定DOM，输出：原始值</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用this.nextTrick()</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods:&#123;</span><br><span class="line">    testClick:function()&#123;</span><br><span class="line">      let that = this;</span><br><span class="line">      that.testMsg=&quot;修改后的值&quot;;</span><br><span class="line">      that.$nextTick(function()&#123;</span><br><span class="line">        console.log(that.$refs.aa.innerText);  //输出：修改后的值</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意：Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。$nextTick 是在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后使用 $nextTick，则可以在回调中获取更新后的 DOM</p>
+<h2 id="什么时候需要用的Vue-nextTick-？"><a href="#什么时候需要用的Vue-nextTick-？" class="headerlink" title="什么时候需要用的Vue.nextTick() ？"></a>什么时候需要用的Vue.nextTick() ？</h2><ol>
+<li>Vue 生命周期的 created() 钩子函数进行的 DOM 操作一定要放在 Vue.nextTick() 的回调函数中，原因是在 created() 钩子函数执行的时候 DOM 其实并未进行任何渲染，而此时进行 DOM 操作无异于徒劳，所以此处一定要将 DOM 操作的 js 代码放进 Vue.nextTick() 的回调函数中。与之对应的就是 mounted 钩子函数，因为该钩子函数执行时所有的DOM挂载已完成</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  created()&#123;</span><br><span class="line">    let that = this;</span><br><span class="line">    that.$nextTick(function()&#123;  //不使用this.$nextTick()方法会报错</span><br><span class="line">        that.$refs.aa.innerHTML=&quot;created中更改了按钮内容&quot;;  //写入到DOM元素</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>当项目中你想在<strong>改变 DOM 元素的数据后</strong>基于新的dom做点什么，<strong>对新 DOM 一系列的 js 操作都需要放进 Vue.nextTick() 的回调函数中；</strong>通俗的理解是：更改数据后当你想立即使用js操作新的视图的时候需要使用它</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">    &lt;h3 id=&quot;h&quot;&gt;&#123;&#123;testMsg&#125;&#125;&lt;/h3&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;HelloWorld&#x27;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      testMsg:&quot;原始值&quot;,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    changeTxt() &#123;</span><br><span class="line">      let that = this;</span><br><span class="line">      that.testMsg=&quot;修改后的文本值&quot;;  //vue数据改变，改变dom结构</span><br><span class="line">      let domTxt = document.getElementById(&#x27;h&#x27;).innerText;  //后续js对dom的操作</span><br><span class="line">      console.log(domTxt);  //输出可以看到vue数据修改后DOM并没有立即更新，后续的dom都不是最新的</span><br><span class="line">      if(domTxt===&quot;原始值&quot;)&#123;</span><br><span class="line">        console.log(&quot;文本data被修改后dom内容没立即更新&quot;);</span><br><span class="line">      &#125;else &#123;</span><br><span class="line">        console.log(&quot;文本data被修改后dom内容被马上更新了&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"> </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>正确的用法是：vue改变dom元素结构后使用vue.$nextTick()方法来实现dom数据更新后延迟执行后续代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    changeTxt() &#123;</span><br><span class="line">      let that=this;</span><br><span class="line">      that.testMsg=&quot;修改后的文本值&quot;;  //修改dom结构</span><br><span class="line">       </span><br><span class="line">      that.$nextTick(function()&#123;  //使用vue.$nextTick()方法可以dom数据更新后延迟执行</span><br><span class="line">        let domTxt=document.getElementById(&#x27;h&#x27;).innerText; </span><br><span class="line">        console.log(domTxt);  //输出可以看到vue数据修改后并没有DOM没有立即更新，</span><br><span class="line">        if(domTxt===&quot;原始值&quot;)&#123;</span><br><span class="line">          console.log(&quot;文本data被修改后dom内容没立即更新&quot;);</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">          console.log(&quot;文本data被修改后dom内容被马上更新了&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在使用某个第三方插件时 ，希望在vue生成的某些dom动态发生变化时重新应用该插件，也会用到该方法，这时候就需要在 $nextTick 的回调函数中执行重新应用插件的方法</li>
+</ol>
+<h2 id="Vue-nextTick-callback-使用原理"><a href="#Vue-nextTick-callback-使用原理" class="headerlink" title="Vue.nextTick(callback) 使用原理"></a>Vue.nextTick(callback) 使用原理</h2><p>原因是，Vue是异步执行dom更新的，一旦观察到数据变化，Vue就会开启一个队列，然后把在同一个事件循环 (event loop) 当中观察到数据变化的 watcher 推送进这个队列。如果这个watcher被触发多次，只会被推送到队列一次。这种缓冲行为可以有效的去掉重复数据造成的不必要的计算和DOM操作。而在下一个事件循环时，Vue会清空队列，并进行必要的DOM更新。<br>当你设置 vm.someData &#x3D; ‘new value’，DOM 并不会马上更新，而是在异步队列被清除，也就是下一个事件循环开始时执行更新时才会进行必要的DOM更新。如果此时你想要根据更新的 DOM 状态去做某些事情，就会出现问题。。为了在数据变化之后等待 Vue 完成更新 DOM ，可以在数据变化之后立即使用 Vue.nextTick(callback) 。这样回调函数在 DOM 更新完成后就会调用。</p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Event Loop</tag>
+        <tag>Vue</tag>
+        <tag>nextTick</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】路由（vue-router）</title>
+    <url>/vue/vue-router-guide/</url>
+    <content><![CDATA[<h2 id="vue-router-是什么"><a href="#vue-router-是什么" class="headerlink" title="vue-router 是什么"></a>vue-router 是什么</h2><p>这里的路由并不是指我们平时所说的硬件路由器，<strong>这里的路由就是SPA（单页应用）的路径管理器</strong>。再通俗的说，vue-router就是WebApp的链接路径管理系统。</p>
+<span id="more"></span>
+<p>vue-router是Vue.js官方的路由插件，它和vue.js是深度集成的，适合用于构建单页面应用。vue的单页面应用是基于路由和组件的，路由用于设定访问路径，并将路径和组件映射起来。传统的页面应用，是用一些超链接来实现页面切换和跳转的。在vue-router单页面应用中，则是路径之间的切换，也就是组件的切换。<strong>路由模块的本质 就是建立起url和页面之间的映射关系</strong>。<br>至于我们为啥不能用a标签，这是因为用Vue做的都是单页应用，就相当于只有一个主的index.html页面，所以你写的<a></a>标签是不起作用的，你必须使用vue-router来进行管理。</p>
+<h2 id="vue-router-实现原理"><a href="#vue-router-实现原理" class="headerlink" title="vue-router 实现原理"></a>vue-router 实现原理</h2><p>SPA(single page application):单一页面应用程序，只有一个完整的页面；它在加载页面时，不会加载整个页面，而是只更新某个指定的容器中内容。<strong>单页面应用(SPA)的核心之一是: 更新视图而不重新请求页面</strong>;vue-router在实现单页面前端路由时，提供了两种方式：Hash模式和History模式；根据mode参数来决定采用哪一种方式。</p>
+<h3 id="Hash模式："><a href="#Hash模式：" class="headerlink" title="Hash模式："></a>Hash模式：</h3><p><strong>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。</strong> hash（#）是URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP请求中也不会不包括#；同时每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置；所以说<strong>Hash模式通过锚点值的改变，根据不同的值，渲染指定DOM位置的不同数据</strong></p>
+<h3 id="History模式："><a href="#History模式：" class="headerlink" title="History模式："></a>History模式：</h3><p>由于hash模式会在url中自带#，如果不想要很丑的 hash，我们可以用路由的 history 模式，只需要在配置路由规则时，加入”mode: ‘history’”,这种模式充分利用 history.pushState API 来完成 URL 跳转而无须重新加载页面。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//main.js文件中</span></span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">  <span class="attr">mode</span>: <span class="string">&#x27;history&#x27;</span>,</span><br><span class="line">  <span class="attr">routes</span>: [...]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>当你使用 history 模式时，URL 就像正常的 url，例如 <a href="https://link.juejin.cn/?target=http://yoursite.com/user/id">yoursite.com&#x2F;user&#x2F;id</a>，比较好看！<br>不过这种模式要玩好，还需要后台配置支持。因为我们的应用是个单页客户端应用，如果后台没有正确的配置，当用户在浏览器直接访问 <a href="https://link.juejin.cn/?target=http://oursite.com/user/id">oursite.com&#x2F;user&#x2F;id</a> 就会返回 404，这就不好看了。<br>所以呢，<strong>你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> routes = [ </span><br><span class="line">  &#123;<span class="attr">path</span>: <span class="string">&quot;/&quot;</span>, <span class="attr">name</span>: <span class="string">&quot;homeLink&quot;</span>, <span class="attr">component</span>:<span class="title class_">Home</span>&#125;</span><br><span class="line">  &#123;<span class="attr">path</span>: <span class="string">&quot;/register&quot;</span>, <span class="attr">name</span>: <span class="string">&quot;registerLink&quot;</span>, <span class="attr">component</span>: <span class="title class_">Register</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">path</span>: <span class="string">&quot;/login&quot;</span>, <span class="attr">name</span>: <span class="string">&quot;loginLink&quot;</span>, <span class="attr">component</span>: <span class="title class_">Login</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">path</span>: <span class="string">&quot;*&quot;</span>, <span class="attr">redirect</span>: <span class="string">&quot;/&quot;</span>&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>此处就设置如果URL输入错误或者是URL 匹配不到任何静态资源，就自动跳到到Home页面</p>
+<h3 id="使用路由模块来实现页面跳转的方式"><a href="#使用路由模块来实现页面跳转的方式" class="headerlink" title="使用路由模块来实现页面跳转的方式"></a>使用路由模块来实现页面跳转的方式</h3><p>方式1：直接修改地址栏</p>
+<p>方式2：this.$router.push(‘路由地址’)</p>
+<p>方式3：<code>&lt;router-link to=&quot;路由地址&quot;&gt;&lt;/router-link&gt;</code></p>
+<h2 id="vue-router-使用方式"><a href="#vue-router-使用方式" class="headerlink" title="vue-router 使用方式"></a>vue-router 使用方式</h2><ul>
+<li><p>下载 <code>npm i vue-router -S</code> </p>
+</li>
+<li><p>在main.js中引入 <code>import VueRouter from &#39;vue-router&#39;;</code> </p>
+</li>
+<li><p>安装插件 <code>Vue.use(VueRouter);</code> </p>
+</li>
+<li><p>创建路由对象并配置路由规则</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;<span class="attr">routes</span>:[&#123;<span class="attr">path</span>:<span class="string">&#x27;/home&#x27;</span>,<span class="attr">component</span>:<span class="title class_">Home</span>&#125;]&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将其路由对象传递给Vue的实例，options中加入 <code>router:router</code> </p>
+</li>
+<li><p>在app.vue中留坑 <code>&lt;router-view&gt;&lt;/router-view&gt;</code></p>
+</li>
+</ul>
+<p>具体实现请看如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//main.js文件中引入</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">VueRouter</span> <span class="keyword">from</span> <span class="string">&#x27;vue-router&#x27;</span>;</span><br><span class="line"><span class="comment">//主体</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./components/app.vue&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Home</span> <span class="keyword">from</span> <span class="string">&#x27;./components/home.vue&#x27;</span></span><br><span class="line"><span class="comment">//安装插件</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">VueRouter</span>); <span class="comment">//挂载属性</span></span><br><span class="line"><span class="comment">//创建路由对象并配置路由规则</span></span><br><span class="line"><span class="keyword">let</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123;</span><br><span class="line">    <span class="attr">routes</span>: [</span><br><span class="line">        <span class="comment">//一个个对象</span></span><br><span class="line">        &#123; <span class="attr">path</span>: <span class="string">&#x27;/home&#x27;</span>, <span class="attr">component</span>: <span class="title class_">Home</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//new Vue 启动</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Vue</span>(&#123;</span><br><span class="line">    <span class="attr">el</span>: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">    <span class="comment">//让vue知道我们的路由规则</span></span><br><span class="line">    <span class="attr">router</span>: router, <span class="comment">//可以简写router</span></span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">c</span> =&gt;</span> <span class="title function_">c</span>(<span class="title class_">App</span>),</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>最后记得在在app.vue中“留坑”</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">//app.vue中</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;!-- 留坑，非常重要 --&gt;</span><br><span class="line">        &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line">        data()&#123;</span><br><span class="line">            return &#123;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="vue-router-核心要点"><a href="#vue-router-核心要点" class="headerlink" title="vue-router 核心要点"></a>vue-router 核心要点</h2><h3 id="vue-router如何参数传递"><a href="#vue-router如何参数传递" class="headerlink" title="vue-router如何参数传递"></a>vue-router如何参数传递</h3><p><strong>①用name传递参数</strong></p>
+<p>在路由文件src&#x2F;router&#x2F;index.js里配置name属性</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">routes</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;Hello&#x27;</span>,</span><br><span class="line">      <span class="attr">component</span>: <span class="title class_">Hello</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>模板里(src&#x2F;App.vue)用<code>$router.name</code>来接收</p>
+<p>比如：<code>&lt;p&gt;&#123;&#123; $router.name&#125;&#125;&lt;/p&gt;</code></p>
+<p><strong>②通过<code>&lt;router-link&gt;</code> 标签中的to传参</strong></p>
+<p>这种传参方法的基本语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;router-link :to=&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;valueString&lt;/router-link&gt;</span><br></pre></td></tr></table></figure>
+
+<p>比如先在src&#x2F;App.vue文件中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;router-link :to=&quot;&#123;name:&#x27;hi1&#x27;,params:&#123;username:&#x27;jspang&#x27;，id:&#x27;555&#x27;&#125;&#125;&quot;&gt;Hi页面1&lt;/router-link&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后把src&#x2F;router&#x2F;index.js文件里给hi1配置的路由起个name,就叫hi1.</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;<span class="attr">path</span>:<span class="string">&#x27;/hi1&#x27;</span>,<span class="attr">name</span>:<span class="string">&#x27;hi1&#x27;</span>,<span class="attr">component</span>:<span class="title class_">Hi1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后在模板里(src&#x2F;components&#x2F;Hi1.vue)用<code>$route.params.username</code>进行接收.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;&#123;&#123;$route.params.username&#125;&#125;-&#123;&#123;$route.params.id&#125;&#125;&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>③vue-router 利用url传递参数</strong>—-在配置文件里以冒号的形式设置参数。</p>
+<p>我们在&#x2F;src&#x2F;router&#x2F;index.js文件里配置路由</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">path</span>:<span class="string">&#x27;/params/:newsId/:newsTitle&#x27;</span>,</span><br><span class="line">    <span class="attr">component</span>:<span class="title class_">Params</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们需要传递参数是新闻ID（newsId）和新闻标题（newsTitle）.所以我们在路由配置文件里制定了这两个值。 在src&#x2F;components目录下建立我们params.vue组件，也可以说是页面。我们在页面里输出了url传递的的新闻ID和新闻标题。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;&#123;&#123; msg &#125;&#125;&lt;/h2&gt;</span><br><span class="line">        &lt;p&gt;新闻ID：&#123;&#123; $route.params.newsId&#125;&#125;&lt;/p&gt;</span><br><span class="line">        &lt;p&gt;新闻标题：&#123;&#123; $route.params.newsTitle&#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#x27;params&#x27;,</span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      msg: &#x27;params page&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在App.vue文件里加入我们的<code>&lt;router-view&gt;</code>标签。这时候我们可以直接利用url传值了</p>
+<p><code>&lt;router-link to=&quot;/params/198/jspang website is very good&quot;&gt;params&lt;/router-link&gt;</code>|</p>
+<h3 id="单页面多路由区域操作"><a href="#单页面多路由区域操作" class="headerlink" title="单页面多路由区域操作"></a>单页面多路由区域操作</h3><p>在一个页面里我们有2个以上<code>&lt;router-view&gt;</code>区域，我们通过配置路由的js文件，来操作这些区域的内容</p>
+<p>①App.vue文件，在<code>&lt;router-view&gt;</code>下面新写了两行<code>&lt;router-view&gt;</code>标签,并加入了些CSS样式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;img src=&quot;./assets/logo.png&quot;&gt;</span><br><span class="line">       &lt;router-link :to=&quot;&#123;name:&#x27;HelloWorld&#x27;&#125;&quot;&gt;&lt;h1&gt;H1&lt;/h1&gt;&lt;/router-link&gt;</span><br><span class="line">       &lt;router-link :to=&quot;&#123;name:&#x27;H1&#x27;&#125;&quot;&gt;&lt;h1&gt;H2&lt;/h1&gt;&lt;/router-link&gt;</span><br><span class="line">    &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line">    &lt;router-view name=&quot;left&quot; style=&quot;float:left;width:50%;background-color:#ccc;height:300px;&quot;/&gt;</span><br><span class="line">    &lt;router-view name=&quot;right&quot; style=&quot;float:right;width:50%;background-color:yellowgreen;height:300px;&quot;/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>②需要在路由里配置这三个区域，配置主要是在components字段里进行</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Router</span>(&#123;</span><br><span class="line">  <span class="attr">routes</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;HelloWorld&#x27;</span>,</span><br><span class="line">      <span class="attr">components</span>: &#123;</span><br><span class="line">        <span class="attr">default</span>: <span class="title class_">HelloWorld</span>,</span><br><span class="line">        <span class="attr">left</span>:<span class="variable constant_">H1</span>,<span class="comment">//显示H1组件内容&#x27;I am H1 page,Welcome to H1&#x27;</span></span><br><span class="line">        <span class="attr">right</span>:<span class="variable constant_">H2</span><span class="comment">//显示H2组件内容&#x27;I am H2 page,Welcome to H2&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&#x27;/h1&#x27;</span>,</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&#x27;H1&#x27;</span>,</span><br><span class="line">      <span class="attr">components</span>: &#123;</span><br><span class="line">        <span class="attr">default</span>: <span class="title class_">HelloWorld</span>,</span><br><span class="line">        <span class="attr">left</span>:<span class="variable constant_">H2</span>,<span class="comment">//显示H2组件内容</span></span><br><span class="line">        <span class="attr">right</span>:<span class="variable constant_">H1</span><span class="comment">//显示H1组件内容</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/vue/vue-router-demo2.png" alt="img"></p>
+<h3 id="vue-router配置子路由-二级路由"><a href="#vue-router配置子路由-二级路由" class="headerlink" title="vue-router配置子路由(二级路由)"></a>vue-router配置子路由(二级路由)</h3><p>实际生活中的应用界面，通常由多层嵌套的组件组合而成。同样地，URL中各段动态路径也按某种结构对应嵌套的各层组件，例如：</p>
+<p><img src="/images/vue/vue-router-demo3.png" alt="img"></p>
+<p>**如何实现下图效果(H1页面和H2页面嵌套在主页中)**？</p>
+<p><img src="/images/vue/vue-router-demo1.png" alt="img"></p>
+<p>①首先用<router-link>标签增加了两个新的导航链接</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;router-link :to=&quot;&#123;name:&#x27;HelloWorld&#x27;&#125;&quot;&gt;主页&lt;/router-link&gt;</span><br><span class="line">&lt;router-link :to=&quot;&#123;name:&#x27;H1&#x27;&#125;&quot;&gt;H1页面&lt;/router-link&gt;</span><br><span class="line">&lt;router-link :to=&quot;&#123;name:&#x27;H2&#x27;&#125;&quot;&gt;H2页面&lt;/router-link&gt;</span><br></pre></td></tr></table></figure>
+
+<p>②在HelloWorld.vue加入<code>&lt;router-view&gt;</code>标签，给子模板提供插入位置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">   &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</span><br><span class="line">   &lt;router-view&gt;&lt;/router-view&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>③在components目录下新建两个组件模板 H1.vue 和 H2.vue 两者内容类似，以下是H1.vue页面内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">   &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</span><br><span class="line"> &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"> export default &#123;</span><br><span class="line">   data() &#123;</span><br><span class="line">     return &#123;</span><br><span class="line">       msg: &#x27;I am H1 page,Welcome to H1&#x27;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>④修改router&#x2F;index.js代码，子路由的写法是在原有的路由配置下加入children字段。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="attr">routes</span>: [</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">     <span class="attr">name</span>: <span class="string">&#x27;HelloWorld&#x27;</span>,</span><br><span class="line">     <span class="attr">component</span>: <span class="title class_">HelloWorld</span>,</span><br><span class="line">     <span class="attr">children</span>: [</span><br><span class="line">       &#123;<span class="attr">path</span>: <span class="string">&#x27;/h1&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;H1&#x27;</span>, <span class="attr">component</span>: <span class="variable constant_">H1</span>&#125;,</span><br><span class="line">       &#123;<span class="attr">path</span>: <span class="string">&#x27;/h2&#x27;</span>, <span class="attr">name</span>: <span class="string">&#x27;H2&#x27;</span>, <span class="attr">component</span>: <span class="variable constant_">H2</span>&#125;</span><br><span class="line">     ]</span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="vue-router跳转方法"><a href="#vue-router跳转方法" class="headerlink" title="vue-router跳转方法"></a>vue-router跳转方法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;button @click=&quot;goToMenu&quot; class=&quot;btn btn-success&quot;&gt;Let&#x27;s order！&lt;/button&gt;</span><br><span class="line">.....</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default&#123;</span><br><span class="line">    methods:&#123;</span><br><span class="line">      goToMenu()&#123;</span><br><span class="line">        this.$router.go(-1)//跳转到上一次浏览的页面</span><br><span class="line">        this.$router.replace(&#x27;/menu&#x27;)//指定跳转的地址</span><br><span class="line">        this.$router.replace(&#123;name:&#x27;menuLink&#x27;&#125;)// 指定跳转路由的名字下</span><br><span class="line">        this.$router.push(&#x27;/menu&#x27;)通过push进行跳转</span><br><span class="line">        this.$router.push(&#123;name:&#x27;menuLink&#x27;&#125;)通过push进行跳转路由的名字下</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="404页面的设置"><a href="#404页面的设置" class="headerlink" title="404页面的设置"></a>404页面的设置</h3><p>用户会经常输错页面，当用户输错页面时，我们希望给他一个友好的提示页面，这个页面就是我们常说的404页面。vue-router也为我们提供了这样的机制。 ①设置我们的路由配置文件（&#x2F;src&#x2F;router&#x2F;index.js）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">path</span>:<span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">   <span class="attr">component</span>:<span class="title class_">Error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里的path:’*’就是输入地址不匹配时，自动显示出Error.vue的文件内容</p>
+<p>②在&#x2F;src&#x2F;components&#x2F;文件夹下新建一个Error.vue的文件。简单输入一些有关错误页面的内容。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;&#123;&#123; msg &#125;&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data () &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      msg: &#x27;Error:404&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时我们随意输入一个错误的地址时，便会自动跳转到404页面</p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>vue-router</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】导航守卫（路由钩子）</title>
+    <url>/vue/vue-router-navigation-guards/</url>
+    <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>“导航”表示路由正在发生变化</p>
+<p>vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程 中：全局的, 单个路由独享的, 或者组件级的。</p>
+<span id="more"></span>
+
+<p>导航守卫：包括<strong>全局导航守卫</strong>和<strong>局部导航守卫</strong></p>
+<p>路由钩子函数有三种：</p>
+<ul>
+<li>全局守卫： beforeEach（全局前置守卫）、beforeResolve（全局解析守卫）、 afterEach（全局后置钩子）</li>
+<li>路由独享守卫(单个路由里面的钩子)： beforeEnter</li>
+<li>组件守卫：beforeRouteEnter、 beforeRouteUpdate、 beforeRouteLeave</li>
+</ul>
+<h2 id="全局守卫"><a href="#全局守卫" class="headerlink" title="全局守卫"></a><strong>全局守卫</strong></h2><p>vue-router全局有三个守卫</p>
+<ul>
+<li>router.beforeEach：全局前置守卫，进入路由之前</li>
+<li>router.beforeResolve：全局解析守卫，在beforeRouteEnter调用之后调用（不常用）</li>
+<li>router.afterEach ：全局后置钩子，进入路由之后</li>
+</ul>
+<h3 id="全局前置守卫：beforeEach"><a href="#全局前置守卫：beforeEach" class="headerlink" title="全局前置守卫：beforeEach"></a>全局前置守卫：beforeEach</h3><p>你可以使用 router.beforeEach 注册一个全局前置守卫：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">VueRouter</span>(&#123; ... &#125;)</span><br><span class="line">router.<span class="title function_">beforeEach</span>(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// to和from都是路由实例</span></span><br><span class="line">  <span class="comment">// to：即将跳转到的路由</span></span><br><span class="line">  <span class="comment">// from：现在的要离开的路由</span></span><br><span class="line">  <span class="comment">// next：函数</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>next: Function : 一定要调用该方法来 <strong>resolve</strong> 这个钩子。执行效果依赖 next 方法的调用参数。</li>
+<li>next() : 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 <strong>confirmed</strong> (确认的)。</li>
+<li>next(false) : 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。</li>
+<li>next(‘&#x2F;‘) <strong>或者</strong> next({ path: ‘&#x2F;‘ }) : 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true 、 name: ‘home’ 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。</li>
+<li>next(error) : (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会 被传递给 router.onError() 注册过的回调。</li>
+</ol>
+<p>注意：如果是next(‘&#x2F;‘) 或者 next({ path: ‘&#x2F;‘ })，只要带了要放行的路径，那么前面必须有判断，在什么时候给他放行，不然他会一直循环。</p>
+<h3 id="全局解析守卫：beforeResolve"><a href="#全局解析守卫：beforeResolve" class="headerlink" title="全局解析守卫：beforeResolve"></a>全局解析守卫：beforeResolve</h3><p>2.5.0 新增</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 全局解析守卫 </span></span><br><span class="line">router.<span class="title function_">beforeResolve</span>(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在 2.5.0+ 你可以用 router.beforeResolve 注册一个全局守卫。这和 router.beforeEach 类似，区别是在导航被确认之前，<strong>同时在所有组件内守卫和异步路由组件被解析之后</strong>，解析守卫就被调用。</p>
+<h3 id="全局后置钩子：afterEach"><a href="#全局后置钩子：afterEach" class="headerlink" title="全局后置钩子：afterEach"></a>全局后置钩子：afterEach</h3><p>你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 全局后置钩子</span></span><br><span class="line">router.<span class="title function_">afterEach</span>(<span class="function">(<span class="params">to,form</span>) =&gt;</span> &#123;&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>因为：afterEach被调用时，路由已经跳转完成，所以不需要next函数</p>
+<h2 id="路由独享守卫：beforeEnter"><a href="#路由独享守卫：beforeEnter" class="headerlink" title="路由独享守卫：beforeEnter"></a>路由独享守卫：beforeEnter</h2><p>如果不想在全局配置路由的话，可以为某些路由单独配置守卫</p>
+<p>比如：给mainpage页面单独配置守卫</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123; </span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/mainpage&#x27;</span>, </span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;About&#x27;</span>, </span><br><span class="line">  <span class="attr">component</span>: <span class="title class_">About</span>, <span class="comment">// 路由独享守卫 </span></span><br><span class="line">  <span class="attr">beforeEnter</span>: <span class="function">(<span class="params">to,<span class="keyword">from</span>,next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">from</span>.<span class="property">name</span> === <span class="string">&#x27;/mainpage/about&#x27;</span>) &#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;这是从about来的&quot;</span>) </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;这不是从about来的&quot;</span>) </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">next</span>(); <span class="comment">// 必须调用来进行下一步操作。否则是不会跳转的</span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="组件守卫"><a href="#组件守卫" class="headerlink" title="组件守卫"></a>组件守卫</h2><p>最后，你可以在路由组件内直接定义以下路由导航守卫：</p>
+<ul>
+<li>beforeRouteEnter()：进入路由前</li>
+<li>beforeRouteUpdate()：路由复用同一个组件时</li>
+<li>beforeRouteLeave()：离开当前路由时</li>
+</ul>
+<p>在Product中举个例子</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 全局解析守卫</span></span><br><span class="line">router.<span class="title function_">beforeResolve</span>(<span class="function">(<span class="params">to,<span class="keyword">from</span>.next</span>) =&gt;</span> &#123;&#125;)</span><br><span class="line"><span class="comment">// 全局后置钩子</span></span><br><span class="line">router.<span class="title function_">afterEach</span>(<span class="params">(to,form) =&gt; &#123;&#125;</span>)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/mainpage&#x27;</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;About&#x27;</span>,</span><br><span class="line">  <span class="attr">component</span>: <span class="title class_">About</span>,</span><br><span class="line">  <span class="comment">// 路由独享守卫</span></span><br><span class="line">  <span class="attr">beforeEnter</span>:<span class="function">(<span class="params">to,<span class="keyword">from</span>,next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">from</span>.<span class="property">name</span> === <span class="string">&#x27;/mainpage/about&#x27;</span>)&#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;这是从about来的&quot;</span>)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">&quot;这不是从about来的&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">next</span>(); <span class="comment">// 必须调用来进行下一步操作。否则是不会跳转的</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">  </span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">/* </span></span><br><span class="line"><span class="comment">    组件内守卫beforeRouteUpdate被触发的条件是：当前路由改变，但是该组件被复用的时候。</span></span><br><span class="line"><span class="comment">    比如说：product/orders到product/cart这个路由，都复用了 Product.vue 这个组件，这个时候</span></span><br><span class="line"><span class="comment">    beforeRouteUpdate就会被触发。可以获取到this实例。</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">  beforeRouteEnter (to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(to.<span class="property">name</span>);</span><br><span class="line">    <span class="comment">// 因为这个钩子调用的时候，组件实例还没有被创建出来，因此获取不到this</span></span><br><span class="line">    <span class="comment">// 如果想获取到实例的话</span></span><br><span class="line">    <span class="comment">// next(vm =&gt; &#123;</span></span><br><span class="line">    <span class="comment">//   // 这里的vm是组件的实例（this）</span></span><br><span class="line">    <span class="comment">// &#125;);</span></span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">beforeRouteUpdate</span>(<span class="params">to,<span class="keyword">from</span>,next</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(to.<span class="property">name</span>, <span class="keyword">from</span>.<span class="property">name</span>);</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 路由即将要离开的时候调用此方法</span></span><br><span class="line">  <span class="comment">// 比如说，用户编辑了一个东西，但是还么有保存，这时候他要离开这个页面，就要提醒他一下，还没保存，是否要离开</span></span><br><span class="line">  beforeRouteLeave (to, <span class="keyword">from</span>, next) &#123;</span><br><span class="line">    <span class="keyword">const</span> leave = <span class="title function_">confirm</span>(<span class="string">&quot;确定要离开吗？&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (leave) &#123;</span><br><span class="line">      <span class="title function_">next</span>() <span class="comment">// 离开</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="title function_">next</span>(<span class="literal">false</span>) <span class="comment">// 不离开</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>beforeRouteUpdate被触发的条件是：当前路由改变，但是该组件被复用的时候。</p>
+<p>比如说：product&#x2F;orders到product&#x2F;cart这个路由，都复用了 Product.vue 这个组件，这个时候</p>
+<p>beforeRouteUpdate就会被触发。可以获取到this实例。</p>
+</li>
+</ul>
+<h2 id="一个完整的导航解析流程"><a href="#一个完整的导航解析流程" class="headerlink" title="一个完整的导航解析流程"></a>一个完整的导航解析流程</h2><p>1、导航被触发。</p>
+<p>2、在失活的组件（即将离开的页面组件）里调用离开守卫。 beforeRouteLeave</p>
+<p>3、调用全局的 beforeEach 守卫。</p>
+<p>4、在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。</p>
+<p>5、在路由配置里调用（路由独享的守卫） beforeEnter。</p>
+<p>6、解析异步路由组件</p>
+<p>7、在被激活的组件（即将进入的页面组件）里调用 beforeRouteEnter。</p>
+<p>8、调用全局的 beforeResolve 守卫 (2.5+)。</p>
+<p>9、导航被确认。</p>
+<p>10、调用全局的 afterEach 钩子。所有的钩子都触发完了。</p>
+<p>11、触发 DOM 更新。</p>
+<p>12、用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数。</p>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>vue-router</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【Vue】插槽（v-slot）</title>
+    <url>/vue/vue-slot/</url>
+    <content><![CDATA[<h3 id="slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容"><a href="#slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容" class="headerlink" title="slot (父组件 在子组件&lt;slot&gt; &lt;/slot&gt;处插入内容)"></a>slot (父组件 在子组件<code>&lt;slot&gt; &lt;/slot&gt;</code>处插入内容)</h3><p>Vue 实现了一套内容分发的 API，将<code>&lt;slot&gt;</code>元素作为承载分发内容的出口，这是vue文档上的说明。具体来说，slot就是可以让你在组件内添加内容的‘空间’。</p>
+<span id="more"></span>
+
+<p>举个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 子组件 ： (假设名为：ebutton) --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt;  &lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 父组件：（引用子组件 ebutton）--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;app&#x27;&gt;</span><br><span class="line">     &lt;ebutton&gt; &lt;/ebutton&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+<p>我们知道，如果直接想要在父组件中的<code>&lt;ebutton&gt;&lt;/ebutton&gt;</code> 中添加内容，是不会在页面上渲染的。那么我们如何使添加的内容能够显示呢？在子组件内添加slot 即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 子组件 ： (假设名为：ebutton) --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt;&lt;/button&gt;</span><br><span class="line">      &lt;slot&gt;&lt;/slot&gt;       //slot 可以放在任意位置。（这个位置就是父组件添加内容的显示位置）</span><br><span class="line">  &lt;/div&gt; </span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>子组件可以在任意位置添加slot , 这个位置就是父组件添加内容的显示位置。</p>
+<h3 id="编译作用域-（父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入-data）"><a href="#编译作用域-（父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入-data）" class="headerlink" title="编译作用域 （父组件 在子组件&lt;slot&gt; &lt;/slot&gt;处插入 data）"></a>编译作用域 （父组件 在子组件<code>&lt;slot&gt; &lt;/slot&gt;</code>处插入 data）</h3><p>上面我们了解了，slot 其实就是能够让我们在父组件中添加内容到子组件的‘空间’。我们可以添加父组件内任意的data值，比如这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 父组件：（引用子组件 ebutton）--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;app&#x27;&gt;</span><br><span class="line">     &lt;ebutton&gt; &#123;&#123; parent &#125;&#125;&lt;/ebutton&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  new Vue(&#123;</span><br><span class="line">    el:&#x27;.app&#x27;,</span><br><span class="line">    data:&#123;</span><br><span class="line">      parent:&#x27;父组件&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用数据的语法完全没有变，但是，我们能否直接使用子组件内的数据呢？显然不行！！</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 子组件 ： (假设名为：ebutton)</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt; &lt;/button&gt;</span><br><span class="line">       &lt;slot&gt;&lt;/slot&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  new Vue(&#123;</span><br><span class="line">    el:&#x27;.button&#x27;,</span><br><span class="line">    data:&#123;</span><br><span class="line">      child:&#x27;子组件&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 父组件：（引用子组件 ebutton）--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;app&#x27;&gt;</span><br><span class="line">     &lt;ebutton&gt; &#123;&#123; child &#125;&#125;&lt;/ebutton&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>直接传入子组件内的数据是不可以的。因为：父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。</p>
+<h3 id="后备内容-子组件-lt-slot-gt-lt-slot-gt-设置默认值"><a href="#后备内容-子组件-lt-slot-gt-lt-slot-gt-设置默认值" class="headerlink" title="后备内容 (子组件&lt;slot&gt; &lt;/slot&gt;设置默认值)"></a>后备内容 (子组件<code>&lt;slot&gt; &lt;/slot&gt;</code>设置默认值)</h3><p>所谓的后背内容，其实就是slot的默认值，有时我没有在父组件内添加内容，那么 slot就会显示默认值，如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 子组件 ： (假设名为：ebutton) --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt;  &lt;/button&gt;</span><br><span class="line">      &lt;slot&gt; 这就是默认值 &lt;/slot&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="具名插槽-（子组件-多个-lt-slot-gt-lt-slot-gt-lt-slot-gt-lt-slot-gt-对应插入内容）"><a href="#具名插槽-（子组件-多个-lt-slot-gt-lt-slot-gt-lt-slot-gt-lt-slot-gt-对应插入内容）" class="headerlink" title="具名插槽 （子组件 多个&lt;slot &gt;&lt;/slot&gt; &lt;slot&gt;&lt;/slot&gt; 对应插入内容）"></a>具名插槽 （子组件 多个<code>&lt;slot &gt;&lt;/slot&gt;</code> <code>&lt;slot&gt;&lt;/slot&gt;</code> 对应插入内容）</h3><p>有时候，也许子组件内的slot不止一个，那么我们如何在父组件中，精确的在想要的位置，插入对应的内容呢？ 给插槽命一个名即可，即添加name属性。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 子组件 ： (假设名为：ebutton) --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt;  &lt;/button&gt;</span><br><span class="line">      &lt;slot name=&#x27;one&#x27;&gt; 这就是默认值1&lt;/slot&gt;</span><br><span class="line">      &lt;slot name=&#x27;two&#x27;&gt; 这就是默认值2 &lt;/slot&gt;</span><br><span class="line">      &lt;slot name=&#x27;three&#x27;&gt; 这就是默认值3 &lt;/slot&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>父组件通过v-slot : name 的方式添加内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 父组件：（引用子组件 ebutton）--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;app&#x27;&gt;</span><br><span class="line">     &lt;ebutton&gt; </span><br><span class="line">        &lt;template v-slot:one&gt; 这是插入到one插槽的内容 &lt;/template&gt;</span><br><span class="line">        &lt;template v-slot:two&gt; 这是插入到two插槽的内容 &lt;/template&gt;</span><br><span class="line">        &lt;template v-slot:three&gt; 这是插入到three插槽的内容 &lt;/template&gt;</span><br><span class="line">     &lt;/ebutton&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当然 vue 为了方便，书写 v-slot:one 的形式时，可以简写为 #one</p>
+<h3 id="作用域插槽-父组件-在子组件-lt-slot-gt-lt-slot-gt-处使用子组件-data"><a href="#作用域插槽-父组件-在子组件-lt-slot-gt-lt-slot-gt-处使用子组件-data" class="headerlink" title="作用域插槽 ( 父组件 在子组件 &lt;slot&gt; &lt;/slot&gt; 处使用子组件 data)"></a>作用域插槽 ( 父组件 在子组件 <code>&lt;slot&gt; &lt;/slot&gt;</code> 处使用子组件 data)</h3><p>通过slot 我们可以在父组件为子组件添加内容，通过给slot命名的方式，我们可以添加不止一个位置的内容。但是我们添加的数据都是父组件内的。上面我们说过不能直接使用子组件内的数据，但是我们是否有其他的方法，让我们能够使用子组件的数据呢？ 其实我们也可以使用v-slot的方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- 子组件 ： (假设名为：ebutton) --&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;button&#x27;&gt;</span><br><span class="line">      &lt;button&gt;  &lt;/button&gt;</span><br><span class="line">      &lt;slot name=&#x27;one&#x27; :value1=&#x27;child1&#x27;&gt; 这就是默认值1&lt;/slot&gt;    //绑定child1的数据</span><br><span class="line">      &lt;slot :value2=&#x27;child2&#x27;&gt; 这就是默认值2 &lt;/slot&gt;  //绑定child2的数据，这里我没有命名slot</span><br><span class="line">  &lt;/div&gt;           </span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  new Vue(&#123;</span><br><span class="line">    el:&#x27;.button&#x27;,</span><br><span class="line">    data:&#123;</span><br><span class="line">      child1:&#x27;数据1&#x27;,</span><br><span class="line">      child2:&#x27;数据2&#x27;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 父组件：（引用子组件 ebutton）--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class= &#x27;app&#x27;&gt;</span><br><span class="line">     &lt;ebutton&gt; </span><br><span class="line"></span><br><span class="line">        &lt;!-- 通过v-slot的语法 将插槽 one 的值赋值给slotonevalue --&gt;</span><br><span class="line">        &lt;template v-slot:one=&#x27;slotonevalue&#x27;&gt;  </span><br><span class="line">           &#123;&#123; slotonevalue.value1 &#125;&#125;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line"></span><br><span class="line">        &lt;!-- 同上，由于子组件没有给slot命名，默认值就为default --&gt;</span><br><span class="line">        &lt;template v-slot:default=&#x27;slottwovalue&#x27;&gt; </span><br><span class="line">           &#123;&#123; slottwovalue.value2 &#125;&#125;</span><br><span class="line">        &lt;/template&gt;</span><br><span class="line"></span><br><span class="line">     &lt;/ebutton&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>总结来说就是：</p>
+<ul>
+<li>首先在子组件的slot上动态绑定一个值( :key&#x3D;’value’)</li>
+<li>然后在父组件通过v-slot : name &#x3D; ‘values ’的方式将这个值赋值给 values</li>
+<li>最后通过的方式获取数据</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
+        <tag>v-slot</tag>
       </tags>
   </entry>
 </search>
