@@ -7,7 +7,6 @@ tags:
 - cookie
 - local-storage
 - session-storage
-
 ---
 
 Cookie是在HTML4中使用的给客户端保存数据的，也可以和Session配合实现跟踪浏览器用户身份；

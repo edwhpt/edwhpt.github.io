@@ -1,12 +1,11 @@
 ---
 title: GitHub + Hexo（NexT）搭建博客
 date: 2023-03-25 23:49:26
+categories: Tools
 tags:
 - github
 - hexo
 - hexo-theme-next
-categories:
-- Tools
 ---
 
 使用 GitHub Pages + [Hexo](https://hexo.io/zh-cn/) 搭建一个博客，采用 [NexT](https://theme-next.js.org/) 主题。
@@ -212,5 +211,4 @@ $ hexo clean && hexo deploy
 ```
 
 浏览 `<GitHub 用户名>.github.io` 检查你的网站能否运作
-
 
