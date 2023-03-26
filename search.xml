@@ -3,7 +3,7 @@
   <entry>
     <title>GitHub + Hexo（NexT）搭建博客</title>
     <url>/2023/03/25/github-hexo-blog/</url>
-    <content><![CDATA[<p>使用 GitHub Pages + <a href="https://hexo.io/zh-cn/">Hexo</a> 搭建一个博客，采用 <a href="https://theme-next.iissnan.com/">NexT</a> 主题。</p>
+    <content><![CDATA[<p>使用 GitHub Pages + <a href="https://hexo.io/zh-cn/">Hexo</a> 搭建一个博客，采用 <a href="https://theme-next.js.org/">NexT</a> 主题。</p>
 <p>GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。</p>
 <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
 <span id="more"></span>
@@ -37,14 +37,37 @@
 
 
 <h2 id="配置主题"><a href="#配置主题" class="headerlink" title="配置主题"></a>配置主题</h2><p>Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点目录的 <code>themes</code> 目录下， 然后修改下配置文件即可。具体到 NexT 来说，安装步骤如下。</p>
-<h3 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your-hexo-site</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<h3 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h3><p>如果你在使用 Hexo 5.0 或更新版本，最简单的安装方式是通过 npm：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo-site</span><br><span class="line">$ npm install hexo-theme-next</span><br></pre></td></tr></table></figure>
 
-<h3 id="启用主题"><a href="#启用主题" class="headerlink" title="启用主题"></a>启用主题</h3><p>在 <code>theme/next/_config.yml</code> 中找到 <code>theme</code> 字段，并将其值更改为 <code>next</code></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+<p>你也可以直接克隆整个仓库：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo-site</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用主题"><a href="#启用主题" class="headerlink" title="启用主题"></a>启用主题</h3><p>安装完成后，在 Hexo 配置文件中将 <code>theme</code> 设置为 <code>next</code></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># hexo-site/_config.yml</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>在根目录下创建 <code>_config.next.yml</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Installed through npm</span></span><br><span class="line"><span class="built_in">cp</span> node_modules/hexo-theme-next/_config.yml _config.next.yml</span><br><span class="line"><span class="comment"># Installed through Git</span></span><br><span class="line"><span class="built_in">cp</span> themes/next/_config.yml _config.next.yml</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在 GitHub 上创建名称为 <code>&lt;username&gt;.github.io</code> 的储存库</p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>本文将使用 <a href="https://docs.github.com/zh/actions">GitHub Actions</a> 部署至 GitHub Pages，此方法适用于公开或私人储存库。若你不希望将源文件夹上传到 GitHub，请参阅<a href="#%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2">一键部署</a>。 </p>
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在 GitHub 上创建名称为 <code>&lt;username&gt;.github.io</code> 的储存库</p>
+<p>将 Hexo 文件夹中的文件 push 到储存库的默认分支，默认分支通常名为 <code>main</code>，旧一点的储存库可能名为 <code>master</code></p>
+<ul>
+<li><p>将 <code>main</code> 分支 push 到 GitHub：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ git push -u origin main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认情况下 <code>public/</code> 不会被上传(也不该被上传)，确保 <code>.gitignore</code> 文件中包含一行 <code>public/</code>。整体文件夹结构应该与 <a href="https://github.com/hexojs/hexo-starter">范例储存库</a> 大致相似。</p>
+</li>
+</ul>
+<p>使用 <code>node --version</code> 指令检查你电脑上的 Node.js 版本，并记下该版本 (例如：<code>v16.y.z</code>)</p>
+<p>在储存库中建立 <code>.github/workflows/pages.yml</code>，并填入以下内容 (将 <code>16</code> 替换为上个步骤中记下的版本)：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># .github/workflows/pages.yml</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">Pages</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span> <span class="comment"># default branch</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">pages:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">permissions:</span></span><br><span class="line">      <span class="attr">contents:</span> <span class="string">write</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Use</span> <span class="string">Node.js</span> <span class="number">16.</span><span class="string">x</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-node@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">node-version:</span> <span class="string">&quot;16&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">NPM</span> <span class="string">dependencies</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/cache@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.OS</span> <span class="string">&#125;&#125;-npm-cache</span></span><br><span class="line">          <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            $&#123;&#123; runner.OS &#125;&#125;-npm-cache</span></span><br><span class="line"><span class="string"></span>      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">peaceiris/actions-gh-pages@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">publish_dir:</span> <span class="string">./public</span></span><br></pre></td></tr></table></figure>
+
+<p>当部署作业完成后，产生的页面会放在储存库中的 <code>gh-pages</code> 分支</p>
+<p>在储存库中前往 <code>Settings &gt; Pages &gt; Source</code>，并将 branch 改为 <code>gh-pages</code>。</p>
+<p>前往 <code>https://&lt;你的 GitHub 用户名&gt;.github.io</code> 查看网站。</p>
 <h3 id="一键部署"><a href="#一键部署" class="headerlink" title="一键部署"></a>一键部署</h3><p>安装 <a href="https://github.com/hexojs/hexo-deployer-git">hexo-deployer-git</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
@@ -54,9 +77,7 @@
 <p>执行部署命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>当部署作业完成后，产生的页面会放在储存库中的 <code>gh-pages</code> 分支</p>
-<p>在储存库中前往 <code>Settings &gt; Pages &gt; Source</code>，并将 branch 改为 <code>gh-pages</code></p>
-<p>前往 <code>https://&lt;username&gt;.github.io</code> 查看网站</p>
+<p>浏览 <code>&lt;GitHub 用户名&gt;.github.io</code> 检查你的网站能否运作</p>
 ]]></content>
       <categories>
         <category>Tools</category>
@@ -65,6 +86,169 @@
         <tag>github</tag>
         <tag>hexo</tag>
         <tag>hexo-theme-next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【JS】Cookie 和 WebStorage 的区别</title>
+    <url>/2023/03/26/js-cookie-webstorage/</url>
+    <content><![CDATA[<p>Cookie是在HTML4中使用的给客户端保存数据的，也可以和Session配合实现跟踪浏览器用户身份；</p>
+<p>WebStorage（LocalStorage&#x2F;SessionStorage）是在HTML5提出来的，纯粹为了保存数据，不会与服务器端通信。</p>
+<p>WebStorage两个主要目标：</p>
+<ul>
+<li>提供一种在Cookie之外存储会话数据的路径</li>
+<li>提供一种存储大量可以跨会话存在的数据的机制</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h3><ul>
+<li>Cookie、LocalStorage，SessionStorage都是在客户端保存数据的</li>
+<li>存储数据的类型：都是字符串</li>
+</ul>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li><p>生命周期</p>
+<ul>
+<li>Cookie如果不设置有效期，那么就是临时存储（存储在内存中），是会话级别的，会话结束后，Cookie也就失效了，如果设置了有效期，那么Cookie存储在硬盘里，有效期到了，就自动消失了</li>
+<li>LocalStorage的生命周期是永久的，关闭页面或浏览器之后LocalStorage中的数据也不会消失。LocalStorage除非主动删除数据，否则数据永远不会消失</li>
+<li>SessionStorage仅在当前会话下有效。sessionStorage引入了一个“浏览器窗口”的概念，SessionStorage是在同源的窗口中始终存在的数据。只要这个浏览器窗口没有关闭，即使刷新页面或者进入同源另一个页面，数据依然存在。但是SessionStorage在关闭了浏览器窗口后就会被销毁。同时独立的打开同一个窗口同一个页面，SessionStorage也是不一样的</li>
+</ul>
+</li>
+<li><p>网络流量</p>
+<p>Cookie的数据每次都会发给服务器端，而Localstorage和SessionStorage不会与服务器端通信，纯粹为了保存数据，所以Webstorage更加节约网络流量</p>
+</li>
+<li><p>大小限制</p>
+<p>Cookie大小限制在4KB，非常小；Localstorage和SessionStorage在5M</p>
+</li>
+<li><p>安全性</p>
+<p>WebStorage不会随着HTTP header发送到服务器端，所以安全性相对于Cookie来说比较高一些，不会担心截获</p>
+</li>
+<li><p>易用性</p>
+<p>WebStorage提供了一些方法，数据操作比Cookie方便</p>
+<ul>
+<li>setItem(key, value)  保存数据，以键值对的方式储存信息</li>
+<li>getItem(key)  获取数据，将键值传入，即可获取到对应的value值</li>
+<li>removeItem(key)  删除单个数据，根据键值移除对应的信息</li>
+<li>clear()  删除所有的数据</li>
+<li>key(index)  获取某个索引的key</li>
+</ul>
+</li>
+</ul>
+<h3 id="问题扩展"><a href="#问题扩展" class="headerlink" title="问题扩展"></a>问题扩展</h3><h4 id="Cookie和Session的区别"><a href="#Cookie和Session的区别" class="headerlink" title="Cookie和Session的区别"></a>Cookie和Session的区别</h4><p>session是存储服务器端，cookie是存储在客户端，所以session的安全性比cookie高。获取session里的信息是通过存放在会话cookie里的session id获取的。而session是存放在服务器的内存中里，所以session里的数据不断增加会造成服务器的负担，所以会把很重要的信息存储在session中，而把一些次要东西存储在客户端的cookie里。<br>session的信息是通过sessionid获取的，而sessionid是存放在会话cookie当中的，当浏览器关闭的时候会话cookie消失，所以sessionid也就消失了，但是session的信息还存在服务器端。</p>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
+        <tag>cookie</tag>
+        <tag>local-storage</tag>
+        <tag>session-storage</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【JS】Event-Loop 事件循环（宏任务/微任务）</title>
+    <url>/2023/03/26/js-eventloop/</url>
+    <content><![CDATA[<p>众所周知，JavaScript 是一门单线程语言，可是浏览器又能很好的处理异步请求，那么到底是为什么呢？</p>
+<p>JS 的执行环境一般是浏览器和 Node.js，两者稍有不同，这里只讨论浏览器环境下的情况。</p>
+<p>JS 执行过程中会产生两种任务，分别是：同步任务和异步任务。</p>
+<ul>
+<li>同步任务：比如声明语句、for、赋值等，读取后依据从上到下从左到右，立即执行。</li>
+<li>异步任务：比如 ajax 网络请求，setTimeout 定时函数等都属于异步任务。异步任务会通过任务队列（Event Queue）的机制（先进先出的机制）来进行协调。</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="任务队列（Event-Queue）"><a href="#任务队列（Event-Queue）" class="headerlink" title="任务队列（Event Queue）"></a>任务队列（Event Queue）</h3><p>任务队列中的任务也分为两种，分别是：宏任务（macrotask）和微任务（microtask）</p>
+<ul>
+<li>宏任务主要包括：scrip（JS 整体代码）、setTimeout、setInterval、setImmediate、I&#x2F;O、UI 交互</li>
+<li>微任务主要包括：Promise（重点关注）、process.nextTick（Node.js）、MutaionObserver</li>
+</ul>
+<p>任务队列的执行过程是：先执行一个宏任务，执行过程中如果产出新的宏&#x2F;微任务，就将他们推入相应的任务队列，之后在执行一队微任务，之后再执行宏任务，如此循环。以上不断重复的过程就叫做 Event Loop（事件循环）。</p>
+<p>每一次的循环操作被称为 Tick。<br><img src="/images/js/js-eventloop-flow.jpg" alt="event-loop flow"></p>
+<p>理解微任务和宏任务的执行执行过程</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script start&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;setTimeout&quot;</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise1&quot;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise2&quot;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script end&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>按照上面的内容，分析执行步骤：</p>
+<ol>
+<li><p>宏任务：执行整体代码（相当于 script 中的代码）：</p>
+<p>输出: script start<br>遇到 setTimeout，加入宏任务队列，当前宏任务队列（setTimeout）<br>遇到 promise，加入微任务，当前微任务队列（promise1）<br>输出：script end</p>
+</li>
+<li><p>微任务：执行微任务队列（promise1）</p>
+<p>输出：promise1，then 之后产生一个微任务，加入微任务队列，当前微任务队列（promise2）<br>执行 then，输出 promise2</p>
+</li>
+<li><p>执行渲染操作，更新界面（敲黑板划重点）。 </p>
+</li>
+<li><p>宏任务：执行 setTimeout</p>
+</li>
+</ol>
+<p><strong>输出：setTimeout</strong></p>
+<h3 id="Promise-的执行"><a href="#Promise-的执行" class="headerlink" title="Promise 的执行"></a>Promise 的执行</h3><p>new Promise(..) 中的代码，也是同步代码，会立即执行。只有 then 之后的代码，才是异步执行的代码，是一个微任务。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script start&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;timeout1&quot;</span>);</span><br><span class="line">&#125;, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise1&quot;</span>);</span><br><span class="line">  <span class="title function_">resolve</span>();</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;timeout2&quot;</span>), <span class="number">10</span>);</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;then1&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script end&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>步骤解析：</p>
+<ul>
+<li><p>当前任务队列：微任务: [], 宏任务：[script]<br>宏任务：</p>
+<p>输出：script start<br>遇到 timeout1，加入宏任务<br>遇到 Promise，输出promise1，直接 resolve，将 then 加入微任务，遇到 timeout2，加入宏任务。<br>输出：script end<br>宏任务第一个执行结束</p>
+</li>
+<li><p>当前任务队列：微任务[then1]，宏任务[timeou1, timeout2]<br>微任务：</p>
+<p>执行 then1，输出then1<br>微任务队列清空</p>
+</li>
+<li><p>当前任务队列：微任务[]，宏任务[timeou1, timeout2]<br>宏任务：</p>
+<p>输出timeout1</p>
+</li>
+<li><p>当前任务队列：微任务[]，宏任务[timeou2]</p>
+<p>微任务：为空跳过<br>宏任务：</p>
+<p>输出timeout2</p>
+</li>
+</ul>
+<h3 id="async-x2F-await-的执行"><a href="#async-x2F-await-的执行" class="headerlink" title="async&#x2F;await 的执行"></a>async&#x2F;await 的执行</h3><p>async 和 await 其实就是 Generator 和 Promise 的语法糖。</p>
+<p>async 函数和普通 函数没有什么不同，他只是表示这个函数里有异步操作的方法，并返回一个 Promise 对象</p>
+<p>翻译过来其实就是：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// async/await 写法</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">async1</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 start&quot;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">async2</span>();</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 end&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Promise 写法</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">async1</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 start&quot;</span>);</span><br><span class="line">  <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="title function_">async2</span>())</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 end&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">async1</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 start&quot;</span>);</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">async2</span>();</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async1 end&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">async2</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;async2&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">async1</span>();</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;timeout&quot;</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="keyword">function</span> (<span class="params">resolve</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise1&quot;</span>);</span><br><span class="line">  <span class="title function_">resolve</span>();</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise2&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script end&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>步骤解析：</p>
+<ul>
+<li><p>当前任务队列：宏任务：[script]，微任务: []<br>宏任务：</p>
+<p>输出：async1 start<br>遇到 async2，输出：async2，并将 then（async1 end）加入微任务<br>遇到 setTimeout，加入宏任务。<br>遇到 Promise，输出：promise1，直接 resolve，将 then（promise2）加入微任务<br>输出：script end</p>
+</li>
+<li><p>当前任务队列：微任务[async1 end, promise2]，宏任务[timeout]<br>微任务：</p>
+<p>输出：async1 end<br>async1 end 出队</p>
+<p>输出：promise2<br>promise2 出队</p>
+<p>微任务队列清空 </p>
+</li>
+<li><p>当前任务队列：微任务[]，宏任务[timeout]<br>宏任务：</p>
+<p>输出：timeout<br>timeout 出队，宏任务清空</p>
+</li>
+</ul>
+<p>“任务队列”是一个事件的队列（也可以理解成消息的队列），IO设备完成一项任务，就在”任务队列”中添加一个事件，表示相关的异步任务可以进入”执行栈”了。主线程读取”任务队列”，就是读取里面有哪些事件。</p>
+<p>“任务队列”中的事件，除了IO设备的事件以外，还包括一些用户产生的事件（比如鼠标点击、页面滚动等等）。只要指定过回调函数，这些事件发生时就会进入”任务队列”，等待主线程读取。</p>
+<p>所谓”回调函数”（callback），就是那些会被主线程挂起来的代码。异步任务必须指定回调函数，当主线程开始执行异步任务，就是执行对应的回调函数。</p>
+<p>“任务队列”是一个先进先出的数据结构，排在前面的事件，优先被主线程读取。主线程的读取过程基本上是自动的，只要执行栈一清空，”任务队列”上第一位的事件就自动进入主线程。但是，由于存在后文提到的”定时器”功能，主线程首先要检查一下执行时间，某些事件只有到了规定的时间，才能返回主线程。</p>
+<p>—-JavaScript中没有任何代码是立即执行的，都是进程空闲时尽快执行</p>
+<h3 id="setTimerout-并不准确"><a href="#setTimerout-并不准确" class="headerlink" title="setTimerout 并不准确"></a>setTimerout 并不准确</h3><p>由上我们已经知道了 setTimeout 是一个宏任务，会被添加到宏任务队列当中去，按顺序执行，如果前面有。</p>
+<p>setTimeout() 的第二个参数是为了告诉 JavaScript 再过多长时间把当前任务添加到队列中。</p>
+<p>如果队列是空的，那么添加的代码会立即执行；如果队列不是空的，那么它就要等前面的代码执行完了以后再执行。</p>
+<p>看代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getSeconds</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script start&quot;</span>);</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;promise&quot;</span>);</span><br><span class="line">  <span class="title function_">resolve</span>();</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;then1&quot;</span>);</span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getSeconds</span>() - s &gt;= <span class="number">4</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;while&quot;</span>);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;timeout&quot;</span>);</span><br><span class="line">&#125;, <span class="number">2000</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;script end&quot;</span>); </span><br></pre></td></tr></table></figure>
+
+<p>因为 then 是一个微任务，会先于 setTimeout 执行，所以，虽然 setTimeout 是在两秒后加入的宏任务，但是因为 then 中的在 while 操作被延迟了4s，所以一直推迟到了4s秒后才执行的setTimeout。</p>
+<p>所以输出的顺序是：script start、promise、script end、then1。<br>四秒后输出：while、timeout </p>
+<p>注意：关于 setTimeout 要补充的是，即便主线程为空，0 毫秒实际上也是达不到的。根据 HTML 的标准，最低是 4 毫秒。有兴趣的同学可以自行了解。</p>
+<!-- ### 异步渲染策略 -->
+<!-- 以 Vue 为例 nextTick -->
+
+
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>有个小 tip：从规范来看，microtask 优先于 task 执行，所以如果有需要优先执行的逻辑，放入 microtask 队列会比 task 更早的被执行。</p>
+<p>最后的最后，记住，JavaScript 是一门单线程语言，异步操作都是放到事件循环队列里面，等待主执行栈来执行的，并没有专门的异步执行线程。</p>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>js</tag>
+        <tag>event-loop</tag>
       </tags>
   </entry>
 </search>
