@@ -9,7 +9,7 @@ categories:
 - Tools
 ---
 
-使用 GitHub Pages + [Hexo](https://hexo.io/zh-cn/) 搭建一个博客，采用 [NexT](https://theme-next.iissnan.com/) 主题。
+使用 GitHub Pages + [Hexo](https://hexo.io/zh-cn/) 搭建一个博客，采用 [NexT](https://theme-next.js.org/) 主题。
 
 GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。
 
@@ -84,26 +84,108 @@ Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点
 
 ### 下载主题
 
+如果你在使用 Hexo 5.0 或更新版本，最简单的安装方式是通过 npm：
+
 ```bash
-$ cd your-hexo-site
-$ git clone https://github.com/iissnan/hexo-theme-next themes/next
+$ cd hexo-site
+$ npm install hexo-theme-next
+```
+
+你也可以直接克隆整个仓库：
+
+
+```bash
+$ cd hexo-site
+$ git clone https://github.com/next-theme/hexo-theme-next themes/next
 ```
 
 ### 启用主题
 
-在 `theme/next/_config.yml` 中找到 `theme` 字段，并将其值更改为 `next`
+安装完成后，在 Hexo 配置文件中将 `theme` 设置为 `next`
 
 ```yml
+# hexo-site/_config.yml
 theme: next
+```
+
+### 配置
+
+在根目录下创建 `_config.next.yml`
+
+```bash
+# Installed through npm
+cp node_modules/hexo-theme-next/_config.yml _config.next.yml
+# Installed through Git
+cp themes/next/_config.yml _config.next.yml
 ```
 
 
 
 ## 部署
 
+本文将使用 [GitHub Actions](https://docs.github.com/zh/actions) 部署至 GitHub Pages，此方法适用于公开或私人储存库。若你不希望将源文件夹上传到 GitHub，请参阅[一键部署](#一键部署)。 
+
 ### 创建仓库
 
 在 GitHub 上创建名称为 `<username>.github.io` 的储存库
+
+将 Hexo 文件夹中的文件 push 到储存库的默认分支，默认分支通常名为 `main`，旧一点的储存库可能名为 `master`
+
+- 将 `main` 分支 push 到 GitHub：
+
+  ```bash
+  $ git push -u origin main
+  ```
+
+- 默认情况下 `public/` 不会被上传(也不该被上传)，确保 `.gitignore` 文件中包含一行 `public/`。整体文件夹结构应该与 [范例储存库](https://github.com/hexojs/hexo-starter) 大致相似。
+
+使用 `node --version` 指令检查你电脑上的 Node.js 版本，并记下该版本 (例如：`v16.y.z`)
+
+在储存库中建立 `.github/workflows/pages.yml`，并填入以下内容 (将 `16` 替换为上个步骤中记下的版本)：
+
+```yml
+# .github/workflows/pages.yml
+name: Pages
+
+on:
+  push:
+    branches:
+      - main # default branch
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Cache NPM dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-npm-cache
+          restore-keys: |
+            ${{ runner.OS }}-npm-cache
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+```
+
+当部署作业完成后，产生的页面会放在储存库中的 `gh-pages` 分支
+
+在储存库中前往 `Settings > Pages > Source`，并将 branch 改为 `gh-pages`。
+
+前往 `https://<你的 GitHub 用户名>.github.io` 查看网站。
 
 ### 一键部署
 
@@ -129,10 +211,6 @@ deploy:
 $ hexo clean && hexo deploy
 ```
 
-当部署作业完成后，产生的页面会放在储存库中的 `gh-pages` 分支
-
-在储存库中前往 `Settings > Pages > Source`，并将 branch 改为 `gh-pages`
-
-前往 `https://<username>.github.io` 查看网站
+浏览 `<GitHub 用户名>.github.io` 检查你的网站能否运作
 
 
