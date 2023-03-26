@@ -1,8 +1,7 @@
 ---
 title: 【优化】Webpack构建性能
 date: 2023-03-27 00:22:25
-categories: 
-- Optimization
+categories: Optimization
 tags:
 - Optimization
 - Build
