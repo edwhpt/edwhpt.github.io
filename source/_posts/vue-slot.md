@@ -1,9 +1,9 @@
 ---
-title: Vue 插槽（slot）
+title: 【Vue】插槽（v-slot）
 date: 2023-03-26 23:15:16
 categories: Vue
 tags:
-- vue
+- Vue
 - v-slot
 ---
 

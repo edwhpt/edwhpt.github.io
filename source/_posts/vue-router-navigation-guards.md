@@ -1,9 +1,9 @@
 ---
-title: vue-router 导航守卫（钩子）
+title: 【Vue】导航守卫（路由钩子）
 date: 2023-03-26 22:13:40
 categories: Vue
 tags:
-- vue
+- Vue
 - vue-router
 ---
 ## 概念

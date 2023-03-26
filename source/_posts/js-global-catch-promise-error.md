@@ -3,8 +3,8 @@ title: 【JS】全局捕获 Promise 异常
 date: 2023-03-26 21:08:34
 categories: JavaScript
 tags:
-- js
-- promise
+- JS
+- Promise
 ---
 
 ## JS 事件监听

@@ -1,9 +1,9 @@
 ---
-title: vue-router 使用指南
+title: 【Vue】路由（vue-router）
 date: 2023-03-26 21:41:55
 categories: Vue
 tags:
-- vue
+- Vue
 - vue-router
 ---
 

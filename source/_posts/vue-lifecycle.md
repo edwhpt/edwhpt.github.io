@@ -1,9 +1,9 @@
 ---
-title: Vue 生命周期
+title: 【Vue】生命周期
 date: 2023-03-26 22:30:19
 categories: Vue
 tags: 
-- vue
+- Vue
 ---
 
 ## 什么是Vue生命周期？

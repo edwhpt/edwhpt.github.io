@@ -1,9 +1,9 @@
 ---
-title: Vue 组件通信
+title: 【Vue】组件通信
 date: 2023-03-26 22:52:04
 categories: Vue
 tags: 
-- vue
+- Vue
 ---
 ## 父子组件传值
 

@@ -3,10 +3,10 @@ title: 【JS】Cookie 和 WebStorage 的区别
 date: 2023-03-26 13:59:27
 categories: JavaScript
 tags:
-- js
-- cookie
-- local-storage
-- session-storage
+- JS
+- Cookie
+- localStorage
+- sessionStorage
 ---
 
 Cookie是在HTML4中使用的给客户端保存数据的，也可以和Session配合实现跟踪浏览器用户身份；
