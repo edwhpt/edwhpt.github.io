@@ -52,7 +52,7 @@
 
 
 <h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>本文将使用 <a href="https://docs.github.com/zh/actions">GitHub Actions</a> 部署至 GitHub Pages，此方法适用于公开或私人储存库。若你不希望将源文件夹上传到 GitHub，请参阅<a href="#%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2">一键部署</a>。 </p>
-<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>在 GitHub 上创建名称为 <code>&lt;username&gt;.github.io</code> 的储存库</p>
+<p>在 GitHub 上创建名称为 <code>&lt;username&gt;.github.io</code> 的储存库，若之前已将 Hexo 上传至其他储存库，将该储存库重命名即可</p>
 <p>将 Hexo 文件夹中的文件 push 到储存库的默认分支，默认分支通常名为 <code>main</code>，旧一点的储存库可能名为 <code>master</code></p>
 <ul>
 <li><p>将 <code>main</code> 分支 push 到 GitHub：</p>
