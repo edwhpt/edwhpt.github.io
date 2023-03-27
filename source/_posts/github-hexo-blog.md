@@ -124,9 +124,7 @@ cp themes/next/_config.yml _config.next.yml
 
 本文将使用 [GitHub Actions](https://docs.github.com/zh/actions) 部署至 GitHub Pages，此方法适用于公开或私人储存库。若你不希望将源文件夹上传到 GitHub，请参阅[一键部署](#一键部署)。 
 
-### 创建仓库
-
-在 GitHub 上创建名称为 `<username>.github.io` 的储存库
+在 GitHub 上创建名称为 `<username>.github.io` 的储存库，若之前已将 Hexo 上传至其他储存库，将该储存库重命名即可
 
 将 Hexo 文件夹中的文件 push 到储存库的默认分支，默认分支通常名为 `main`，旧一点的储存库可能名为 `master`
 
