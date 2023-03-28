@@ -1,9 +1,9 @@
 ---
-title: 【Vue2源码实现】2.数据响应式
+title: 【Vue2源码实现】2.数据响应式（observe）
 date: 2023-03-27 13:51:30
 categories: 
 - Vue
-- Vue2 Source
+- Vue2-Source
 tags:
 - Vue
 - Vue2-Source
@@ -169,3 +169,11 @@ export function observe(data) {
 
 1. 我们重写了数组的7个变异方法，其中 push、unshift、splice 这三个方法会给数组新增成员。此时需要对新增的成员再次进行观测，可以通过 `__ob__` 调用 Observer 实例上的 observeArray 方法
 
+### 注意事项
+
+> Vue 2 是基于 Object.defineProperty 实现的响应式系统 （这个方法是 ES5 中一个无法 shim 的特性，这也就是 Vue 不支持 IE8 以及更低版本浏览器的原因）
+>
+> Vue3 是基于 Proxy/Reflect 来实现的
+
+1. Object.defineProperty()  无法检测对象和数组新增的属性和数组长度变化
+2. Vue 无法检测通过索引直接修改数组元素的操作，这不是 Object.defineProperty 的原因，而是作者尤老师认为性能消耗与带来的用户体验不成正比。因为数组长度可能很大，对数组进行响应式检测会带来很大的性能消耗
