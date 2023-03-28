@@ -1,4 +1,4 @@
-title: 【Vue2源码实现】2.数据响应式(observer)
+title: 【Vue2源码学习】2.数据响应式(observer)
 date: 2023-03-27 13:51:30
 categories: 
 - Vue
@@ -171,7 +171,6 @@ export function observe(data) {
 ### 注意事项
 
 > Vue 2 是基于 Object.defineProperty 实现的响应式系统 （这个方法是 ES5 中一个无法 shim 的特性，这也就是 Vue 不支持 IE8 以及更低版本浏览器的原因）
->
 > Vue3 是基于 Proxy/Reflect 来实现的
 
 1. Object.defineProperty()  无法检测对象和数组新增的属性和数组长度变化
