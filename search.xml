@@ -1310,7 +1310,7 @@
       </tags>
   </entry>
   <entry>
-    <title>【Vue源码学习】4.模版渲染（render）</title>
+    <title>【Vue2源码学习】4.模版渲染(render)</title>
     <url>/vue2-src-04-render/</url>
     <content><![CDATA[<p>Vue的核心流程：</p>
 <ol>

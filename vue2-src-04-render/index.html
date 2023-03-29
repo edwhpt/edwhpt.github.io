@@ -22,13 +22,13 @@
 
     <meta name="description" content="Vue的核心流程：  创造了响应式数据 将模板转换成ast语法树 将 AST 语法树转换成了 render 函数 后续每次数据更新可以只执行 render 函数（无需再次执行 AST 转化的过程）  render 函数会产生 虚拟DOM（使用响应式数据）根据生成的 虚拟DOM 创造 真实DOM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Vue源码学习】4.模版渲染（render）">
+<meta property="og:title" content="【Vue2源码学习】4.模版渲染(render)">
 <meta property="og:url" content="http://example.com/vue2-src-04-render/index.html">
 <meta property="og:site_name" content="Ed&#39;s Blog">
 <meta property="og:description" content="Vue的核心流程：  创造了响应式数据 将模板转换成ast语法树 将 AST 语法树转换成了 render 函数 后续每次数据更新可以只执行 render 函数（无需再次执行 AST 转化的过程）  render 函数会产生 虚拟DOM（使用响应式数据）根据生成的 虚拟DOM 创造 真实DOM">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2023-03-29T12:58:04.000Z">
-<meta property="article:modified_time" content="2023-03-29T12:34:53.366Z">
+<meta property="article:modified_time" content="2023-03-29T12:45:49.856Z">
 <meta property="article:author" content="Edward Wong">
 <meta property="article:tag" content="Vue">
 <meta property="article:tag" content="Vue2-Source">
@@ -39,10 +39,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/vue2-src-04-render/","path":"vue2-src-04-render/","title":"【Vue源码学习】4.模版渲染（render）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/vue2-src-04-render/","path":"vue2-src-04-render/","title":"【Vue2源码学习】4.模版渲染(render)"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>【Vue源码学习】4.模版渲染（render） | Ed's Blog</title>
+<title>【Vue2源码学习】4.模版渲染(render) | Ed's Blog</title>
   
 
 
@@ -215,12 +215,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="【Vue源码学习】4.模版渲染（render） | Ed's Blog">
+      <meta itemprop="name" content="【Vue2源码学习】4.模版渲染(render) | Ed's Blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Vue源码学习】4.模版渲染（render）
+          【Vue2源码学习】4.模版渲染(render)
         </h1>
 
         <div class="post-meta-container">
@@ -232,7 +232,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-29 12:58:04 / Modified: 12:34:53" itemprop="dateCreated datePublished" datetime="2023-03-29T12:58:04+00:00">2023-03-29</time>
+      <time title="Created: 2023-03-29 12:58:04 / Modified: 12:45:49" itemprop="dateCreated datePublished" datetime="2023-03-29T12:58:04+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
