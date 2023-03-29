@@ -149,7 +149,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -194,7 +194,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-complier/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-04-render/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -212,7 +212,104 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-complier/" class="post-title-link" itemprop="url">【Vue2源码学习】3.模板编译(complier)</a>
+          <a href="/vue2-src-04-render/" class="post-title-link" itemprop="url">【Vue源码学习】4.模版渲染（render）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-03-29 12:58:04 / Modified: 12:34:53" itemprop="dateCreated datePublished" datetime="2023-03-29T12:58:04+00:00">2023-03-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vue/vue2-source/" itemprop="url" rel="index"><span itemprop="name">Vue2-Source</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Vue的核心流程：</p>
+<ol>
+<li>创造了响应式数据</li>
+<li>将模板转换成ast语法树</li>
+<li>将 <code>AST</code> 语法树转换成了 <code>render</code> 函数</li>
+<li>后续每次数据更新可以只执行 <code>render</code> 函数（无需再次执行 <code>AST</code> 转化的过程）</li>
+</ol>
+<p><code>render</code> 函数会产生 <code>虚拟DOM</code>（使用响应式数据）<br>根据生成的 <code>虚拟DOM</code> 创造 <code>真实DOM</code></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/vue2-src-04-render/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-03-complier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/conf/avatar.png">
+      <meta itemprop="name" content="Edward Wong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/vue2-src-03-complier/" class="post-title-link" itemprop="url">【Vue2源码学习】3.模板编译(complier)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -230,7 +327,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -269,7 +366,7 @@
 </blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-complier/#more" rel="contents">
+              <a class="btn" href="/vue2-src-03-complier/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -300,7 +397,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-observer/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-02-observer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -318,7 +415,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-observer/" class="post-title-link" itemprop="url">【Vue2源码学习】2.数据响应式(observer)</a>
+          <a href="/vue2-src-02-observer/" class="post-title-link" itemprop="url">【Vue2源码学习】2.数据响应式(observer)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -336,7 +433,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -365,7 +462,7 @@
           <p>响应式基本原理就是，在 Vue 的构造函数中，对 options 的 data 进行处理。即在初始化vue实例的时候，对data、props等对象的每一个属性都通过 Object.defineProperty 定义一次，在数据被set的时候，做一些操作，改变相应的视图。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-observer/#more" rel="contents">
+              <a class="btn" href="/vue2-src-02-observer/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -396,7 +493,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-rollup-build/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-01-rollup-build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -414,7 +511,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-rollup-build/" class="post-title-link" itemprop="url">【Vue2源码学习】1.使用Rollup搭建开发环境</a>
+          <a href="/vue2-src-01-rollup-build/" class="post-title-link" itemprop="url">【Vue2源码学习】1.使用Rollup搭建开发环境</a>
         </h2>
 
         <div class="post-meta-container">
@@ -432,7 +529,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -461,7 +558,7 @@
           <p>使用Rollup快速搭建开发环境</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-rollup-build/#more" rel="contents">
+              <a class="btn" href="/vue2-src-01-rollup-build/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -528,7 +625,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -620,7 +717,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -713,7 +810,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -811,7 +908,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -903,7 +1000,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -995,7 +1092,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
+      <time title="Modified: 2023-03-29 12:34:53" itemprop="dateModified" datetime="2023-03-29T12:34:53+00:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1021,103 +1118,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/vue-keepalive/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue-component-communication/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/conf/avatar.png">
-      <meta itemprop="name" content="Edward Wong">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue-component-communication/" class="post-title-link" itemprop="url">【Vue】组件通信</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-26 22:52:04" itemprop="dateCreated datePublished" datetime="2023-03-26T22:52:04+00:00">2023-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-29 04:52:29" itemprop="dateModified" datetime="2023-03-29T04:52:29+00:00">2023-03-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="父子组件传值"><a href="#父子组件传值" class="headerlink" title="父子组件传值"></a>父子组件传值</h2><ul>
-<li><p>父传子：通过props</p>
-</li>
-<li><p>子传父：$emit传递，父组件v-on自定义事件接收</p>
-</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/vue-component-communication/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
