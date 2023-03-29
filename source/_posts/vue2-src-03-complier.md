@@ -247,9 +247,9 @@ export function parseHTML(html) {const ELEMENT_TYPE = 1 // 元素类型
 
 我们会在Vue原型上扩展这些方法
 
-> _c: 执行 createElement创建虚拟节点；
+> _c: 执行 createElement创建虚拟DOM标签；
 >
-> _v: 执行 createTextVNode创建文本虚拟节点；
+> _v: 执行 createTextVNode创建虚拟DOM文本；
 >
 > _s: 处理变量；
 
