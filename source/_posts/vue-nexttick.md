@@ -3,9 +3,9 @@ title: 【Vue】nextTick()
 date: 2023-03-26 23:07:19
 categories: Vue
 tags:
-- Vue
-- nextTick
-- Event Loop
+- vue
+- next-tick
+- event-loop
 ---
 ## 什么是 Vue.nextTick() ？
 

@@ -3,11 +3,11 @@ title: 【JS】Event-Loop 事件循环（宏任务/微任务）
 date: 2023-03-26 13:26:52
 categories: JavaScript
 tags: 
-- JS
-- Event Loop
-- Promise
+- javascript
+- event-loop
+- promise
 - async/await
-- setTimeout
+- set-timeout
 ---
 
 众所周知，JavaScript 是一门单线程语言，可是浏览器又能很好的处理异步请求，那么到底是为什么呢？

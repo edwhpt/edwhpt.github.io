@@ -3,7 +3,7 @@ title: 【Vue】导航守卫（路由钩子）
 date: 2023-03-26 22:13:40
 categories: Vue
 tags:
-- Vue
+- vue
 - vue-router
 ---
 ## 概念

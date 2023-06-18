@@ -3,10 +3,9 @@ title: 【Vue2源码学习】3.模板编译(complier)
 date: 2023-03-28 17:57:28
 categories:
 - Vue
-- Vue2-Source
+- Vue2 Source
 tags:
-- Vue
-- Vue2-Source
+- vue
 ---
 
 将 `data` 数据解析到 `el` 元素上，需要将 `template` 语法转换成 `render` 函数

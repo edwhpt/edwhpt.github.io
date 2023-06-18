@@ -3,10 +3,9 @@ title: 【Vue2源码学习】2.数据响应式(observer)
 date: 2023-03-27 13:51:30
 categories: 
 - Vue
-- Vue2-Source
+- Vue2 Source
 tags:
-- Vue
-- Vue2-Source
+- vue
 ---
 
 响应式基本原理就是，在 Vue 的构造函数中，对 options 的 data 进行处理。即在初始化vue实例的时候，对data、props等对象的每一个属性都通过 Object.defineProperty 定义一次，在数据被set的时候，做一些操作，改变相应的视图。

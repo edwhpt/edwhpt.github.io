@@ -3,7 +3,7 @@ title: 【Vue】路由（vue-router）
 date: 2023-03-26 21:41:55
 categories: Vue
 tags:
-- Vue
+- vue
 - vue-router
 ---
 

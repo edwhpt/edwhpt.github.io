@@ -3,10 +3,10 @@ title: 【优化】Webpack构建性能
 date: 2023-03-27 00:22:25
 categories: Optimization
 tags:
-- Optimization
-- Build
-- Webpack
-- Vite
+- optimization
+- build
+- webpack
+- vite
 ---
 当项目越来越复杂时，会面临着构建速度慢和构建出来的文件体积大的问题。webapck构建优化对于大项目是必须要考虑的一件事，下面就从速度和体积两方面来探讨构建优化的策略
 

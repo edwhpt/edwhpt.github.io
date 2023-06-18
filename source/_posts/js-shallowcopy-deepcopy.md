@@ -3,10 +3,10 @@ title: 【JS】浅拷贝和深拷贝
 date: 2023-03-26 20:59:17
 categories: JavaScript
 tags: 
-- JS
-- Shallow Copy
-- Deep Copy
-- Lodash
+- javascript
+- shallow-copy
+- deep-copy
+- lodash
 ---
 
 浅拷贝和深拷贝都是创建一份数据的拷贝

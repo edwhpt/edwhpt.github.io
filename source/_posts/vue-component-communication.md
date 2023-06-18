@@ -3,7 +3,7 @@ title: 【Vue】组件通信
 date: 2023-03-26 22:52:04
 categories: Vue
 tags: 
-- Vue
+- vue
 ---
 ## 父子组件传值
 

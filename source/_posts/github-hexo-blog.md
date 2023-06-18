@@ -3,8 +3,8 @@ title: GitHub + Hexo（NexT）搭建博客
 date: 2023-03-25 23:49:26
 categories: Tools
 tags:
-- GitHub
-- Hexo
+- github
+- hexo
 - hexo-theme-next
 ---
 

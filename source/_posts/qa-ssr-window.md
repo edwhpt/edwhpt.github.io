@@ -3,9 +3,9 @@ title: 【Q&A】SSR 服务端渲染获取不到 Window 对象
 date: 2023-03-26 23:33:54
 categories: Q&A
 tags:
-- SSR
-- Nuxt.js
-- Next.js
+- ssr
+- nuxtjs
+- nextjs
 ---
 
 ### 获取不到Window对象，怎么解决？

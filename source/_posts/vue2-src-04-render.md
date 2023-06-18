@@ -3,10 +3,9 @@ title: 【Vue2源码学习】4.模版渲染(render)
 date: 2023-03-29 12:58:04
 categories:
 - Vue
-- Vue2-Source
+- Vue2 Source
 tags: 
-- Vue
-- Vue2-Source
+- vue
 ---
 
 Vue的核心流程：
