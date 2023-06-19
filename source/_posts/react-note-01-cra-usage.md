@@ -6,7 +6,6 @@ categories:
 tags:
 - react
 - create-react-app
-- react-note
 ---
 
 使用React脚手架工具 `create-react-app` 搭建项目
