@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/conf/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/conf/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/conf/favicon.ico">
+  <link rel="mask-icon" href="/images/conf/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha256-/4UQcSmErDzPCMAiuOiWPVVsNN2s3ZY/NsmXNcj0IFc=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"style":null,"show_result":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="将 data 数据解析到 el 元素上，需要将 template 语法转换成 render 函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Vue2源码】模板编译（complier）">
+<meta property="og:url" content="http://example.com/vue2-source-02-complier/index.html">
+<meta property="og:site_name" content="Ed&#39;s Blog">
+<meta property="og:description" content="将 data 数据解析到 el 元素上，需要将 template 语法转换成 render 函数">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-03-28T17:57:28.000Z">
+<meta property="article:modified_time" content="2023-06-19T04:11:00.639Z">
+<meta property="article:author" content="Edward Wong">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/vue2-source-02-complier/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/vue2-source-02-complier/","path":"vue2-source-02-complier/","title":"【Vue2源码】模板编译（complier）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【Vue2源码】模板编译（complier） | Ed's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ed's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-mount-%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">初始化 $mount 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-complieToFunction-%E6%96%B9%E6%B3%95%E5%AF%B9%E6%A8%A1%E7%89%88%E8%BF%9B%E8%A1%8C%E7%BC%96%E8%AF%91%E5%A4%84%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">通过 complieToFunction 方法对模版进行编译处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parse"><span class="nav-number">2.1.</span> <span class="nav-text">parse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#codegen"><span class="nav-number">2.2.</span> <span class="nav-text">codegen</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">3.</span> <span class="nav-text">Code</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Edward Wong"
+      src="/images/conf/avatar.png">
+  <p class="site-author-name" itemprop="name">Edward Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/edwhpt" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;edwhpt" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:edwhpt@gmail.com" title="E-Mail → mailto:edwhpt@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-source-02-complier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/conf/avatar.png">
+      <meta itemprop="name" content="Edward Wong">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【Vue2源码】模板编译（complier） | Ed's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Vue2源码】模板编译（complier）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-03-28 17:57:28" itemprop="dateCreated datePublished" datetime="2023-03-28T17:57:28+00:00">2023-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>将 <code>data</code> 数据解析到 <code>el</code> 元素上，需要将 <code>template</code> 语法转换成 <code>render</code> 函数</p>
+<span id="more"></span>
+
+<blockquote>
+<p>实现方式：</p>
+<ol>
+<li><p>模板引擎，性能差，需要正则匹配替换；Vue1.0的时候没有引入虚拟DOM的概念</p>
+</li>
+<li><p>采用虚拟DOM，数据变化后比较虚拟DOM的差异，最后更新需要更新的地方</p>
+<p>核心就是将template模板变成JS语法，通过JS语法生成虚拟DOM</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="初始化-mount-方法"><a href="#初始化-mount-方法" class="headerlink" title="初始化 $mount 方法"></a>初始化 <code>$mount</code> 方法</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$mount</span> = <span class="keyword">function</span>(<span class="params">el</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> vm = <span class="variable language_">this</span></span><br><span class="line">  el = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(el)</span><br><span class="line">  <span class="keyword">let</span> ops = vm.<span class="property">$options</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!ops.<span class="property">render</span>) &#123; <span class="comment">// 先找render函数</span></span><br><span class="line">    <span class="keyword">let</span> template <span class="comment">// 没有render看一下是否有template，没有template就采用el外部元素</span></span><br><span class="line">    <span class="keyword">if</span> (!ops.<span class="property">template</span> &amp;&amp; el) &#123; <span class="comment">// 没写template，但是写了el</span></span><br><span class="line">      <span class="keyword">if</span> (!ops.<span class="property">template</span> &amp;&amp; el) &#123;</span><br><span class="line">        template = el.<span class="property">outerHTML</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (el) &#123;</span><br><span class="line">          template = ops.<span class="property">template</span> <span class="comment">// 如果有el，则采用模板的内容</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (template) &#123;</span><br><span class="line">      <span class="comment">// 这里需要对模板进行编译</span></span><br><span class="line">      <span class="keyword">const</span> render = <span class="title function_">complieToFunction</span>(template)</span><br><span class="line">      ops.<span class="property">render</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ops.<span class="property">render</span> <span class="comment">// 最终就可以获取render方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>script 标签引用的vue.global.js 这个编译过程是在浏览器运行的</p>
+<p>runtime 是不包含模板编译的，整个编译过程是打包的时候通过loader来转义.vue文件的，用runtime时不能使用template</p>
+</blockquote>
+<h2 id="通过-complieToFunction-方法对模版进行编译处理"><a href="#通过-complieToFunction-方法对模版进行编译处理" class="headerlink" title="通过 complieToFunction 方法对模版进行编译处理"></a>通过 <code>complieToFunction</code> 方法对模版进行编译处理</h2><ul>
+<li>将 <code>template</code> 转化成 <code>AST</code> 语法树</li>
+<li>生成 <code>render</code> 方法（render方法返回的结果就是 <code>虚拟DOM</code>）</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">compileToFunction</span>(<span class="params">template</span>) &#123;</span><br><span class="line">    <span class="comment">// 1.将template 转化成ast语法树</span></span><br><span class="line">    <span class="keyword">let</span> ast = <span class="title function_">parseHTML</span>(template)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.生成render方法 （render方法执行后返回的结果就是 虚拟DOM）</span></span><br><span class="line">    <span class="keyword">let</span> code = <span class="title function_">codegen</span>(ast)</span><br><span class="line">    code = <span class="string">`with(this)&#123;return <span class="subst">$&#123;code&#125;</span>&#125;`</span></span><br><span class="line">    <span class="keyword">let</span> render = <span class="keyword">new</span> <span class="title class_">Function</span>(code)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> render</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="parse"><a href="#parse" class="headerlink" title="parse"></a>parse</h3><p>在Vue的 <code>$mount</code> 过程中，编译过程首先就是调用 <code>parseHTML</code> 方法，解析 <code>template</code> 模版，生成 <code>AST</code> 语法树 在这个过程，我们会用到正则表达式对字符串解析，匹配开始标签、文本内容和闭合标签等</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ncname = <span class="string">`[a-zA-Z_][\\-\\.0-9_a-zA-Z]*`</span></span><br><span class="line"><span class="keyword">const</span> qnameCapture = <span class="string">`((?:<span class="subst">$&#123;ncname&#125;</span>\\:)?<span class="subst">$&#123;ncname&#125;</span>)`</span></span><br><span class="line"><span class="keyword">const</span> startTagOpen = <span class="keyword">new</span> <span class="title class_">RegExp</span>(<span class="string">`^&lt;<span class="subst">$&#123;qnameCapture&#125;</span>`</span>) <span class="comment">// 匹配到的分组是一个 标签名 &lt;div 匹配到的是开始标签的名字</span></span><br><span class="line"><span class="keyword">const</span> endTag = <span class="keyword">new</span> <span class="title class_">RegExp</span>(<span class="string">`^&lt;\\/<span class="subst">$&#123;qnameCapture&#125;</span>[^&gt;]*&gt;`</span>) <span class="comment">// 匹配的是 &lt;/xxx&gt; 最终匹配到的分组是结束标签的名字</span></span><br><span class="line"><span class="keyword">const</span> attribute = <span class="regexp">/^\s*([^\s&quot;&#x27;&lt;&gt;\/=]+)(?:\s*(=)\s*(?:&quot;([^&quot;]*)&quot;+|&#x27;([^&#x27;]*)&#x27;+|([^\s&quot;&#x27;=&lt;&gt;`]+)))?/</span> <span class="comment">// 匹配属性，第一个分组是属性的key，value可能是分组3/分组4/分组5</span></span><br><span class="line"><span class="keyword">const</span> startTagClose = <span class="regexp">/^\s*(\/?)&gt;/</span> <span class="comment">// &lt;div&gt;  &lt;br/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>while</code> 遍历 <code>HTML</code> 字符串，利用正则去匹配开始标签、文本内容和闭合标签，然后执行 <code>advance</code> 方法将匹配到的内容在原HTML字符串中剔除，直到 <code>HTML</code> 字符串为空，结束循环</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">parseHTML</span>(<span class="params">html</span>) &#123;</span><br><span class="line">  <span class="comment">// 循环html字符串，直到其为空停止</span></span><br><span class="line">  <span class="keyword">while</span> (html) &#123;</span><br><span class="line">    <span class="comment">// 如果textEnd = 0 说明是一个开始标签或者结束标签</span></span><br><span class="line">    <span class="comment">// 如果textEnd &gt; 0 说明就是文本的结束位置</span></span><br><span class="line">    <span class="keyword">let</span> textEnd = html.<span class="title function_">indexOf</span>(<span class="string">&#x27;&lt;&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> (textEnd == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="comment">// 开始标签的解析結果，包括 标签名 和 属性</span></span><br><span class="line">      <span class="keyword">const</span> startTagMatch = <span class="title function_">parseStartTag</span>()</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (startTagMatch) &#123;</span><br><span class="line">        <span class="title function_">start</span>(startTagMatch.<span class="property">tagName</span>, startTagMatch.<span class="property">attrs</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 匹配结束标签</span></span><br><span class="line">      <span class="keyword">let</span> endTagMatch = html.<span class="title function_">match</span>(endTag)</span><br><span class="line">      <span class="keyword">if</span> (endTagMatch) &#123;</span><br><span class="line">        <span class="title function_">advance</span>(endTagMatch[<span class="number">0</span>].<span class="property">length</span>)</span><br><span class="line">        <span class="title function_">end</span>(endTagMatch[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (textEnd &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">let</span> text = html.<span class="title function_">substring</span>(<span class="number">0</span>, textEnd) <span class="comment">// 截取文本内容</span></span><br><span class="line">      <span class="keyword">if</span> (text) &#123;</span><br><span class="line">        <span class="title function_">chars</span>(text)</span><br><span class="line">        <span class="title function_">advance</span>(text.<span class="property">length</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 解析开始标签</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">parseStartTag</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> start = html.<span class="title function_">match</span>(startTagOpen)</span><br><span class="line">    <span class="keyword">if</span> (start) &#123;</span><br><span class="line">      <span class="keyword">const</span> match = &#123;</span><br><span class="line">        <span class="attr">tagName</span>: start[<span class="number">1</span>], <span class="comment">// 标签名</span></span><br><span class="line">        <span class="attr">attrs</span>: [],</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="title function_">advance</span>(start[<span class="number">0</span>].<span class="property">length</span>)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">let</span> attr, end</span><br><span class="line">      <span class="comment">// 如果不是开始标签的结束 就一直匹配下去</span></span><br><span class="line">      <span class="keyword">while</span> (!(end = html.<span class="title function_">match</span>(startTagClose)) &amp;&amp; (attr = html.<span class="title function_">match</span>(attribute))) &#123;</span><br><span class="line">        <span class="title function_">advance</span>(attr[<span class="number">0</span>].<span class="property">length</span>)</span><br><span class="line">        match.<span class="property">attrs</span>.<span class="title function_">push</span>(&#123; <span class="attr">name</span>: attr[<span class="number">1</span>], <span class="attr">value</span>: attr[<span class="number">3</span>] || attr[<span class="number">4</span>] || attr[<span class="number">5</span>] || <span class="literal">true</span> &#125;)</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 如果不是开始标签的结束</span></span><br><span class="line">      <span class="keyword">if</span> (end) &#123;</span><br><span class="line">        <span class="title function_">advance</span>(end[<span class="number">0</span>].<span class="property">length</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> match</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 剔除 template 已匹配的内容</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">advance</span>(<span class="params">n</span>) &#123;</span><br><span class="line">    html = html.<span class="title function_">substring</span>(n)</span><br><span class="line">  &#125;</span><br><span class="line">	</span><br><span class="line">  <span class="comment">// todo</span></span><br><span class="line">  <span class="comment">// 处理开始标签，利用栈型结构来构造一颗树</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">start</span>(<span class="params">tag, attrs</span>) &#123;&#125;</span><br><span class="line">	<span class="comment">// 处理文本</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">chars</span>(<span class="params">text</span>) &#123;&#125;</span><br><span class="line">  <span class="comment">// 处理结束标签</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">end</span>(<span class="params">tag</span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/htmlparser2">htmlparse2</a> 实现了同样的效果，这里通过手动实现理解相关原理</p>
+</blockquote>
+<p>当我们使用正则匹配到开始标签、文本内容和闭合标签时，分别执行 <code>start</code>、<code>chars</code>、<code>end</code>方法去处理，利用 <code>stack</code> 栈型数据结构，最终构造一颗 <code>AST</code> 语法树，即 <code>root</code></p>
+<ol>
+<li>匹配到开始标签时，就创建一个 <code>AST</code> 元素，判断如果有 <code>currentParent</code>，会把当前 <code>AST</code> 元素 push 到 <code>currentParent.chilldren</code> 中，同时把 ast元素的 parent 指向 currentParent，ast元素入栈并更新 currentParent</li>
+<li>匹配到文本时，就给 currentParent.children push一个文本 ast元素</li>
+<li>匹配到结束标签时，就弹出栈中最后一个 <code>AST</code> 元素，更新 <code>currentParent</code></li>
+</ol>
+<p>currentParent：指向的是栈中的最后一个 <code>AST</code> 节点</p>
+<blockquote>
+<p>注意：栈中的当前ast节点永远是下一个AST节点的父节点</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">parseHTML</span>(<span class="params">html</span>) &#123;<span class="keyword">const</span> <span class="variable constant_">ELEMENT_TYPE</span> = <span class="number">1</span> <span class="comment">// 元素类型</span></span><br><span class="line">  <span class="keyword">const</span> <span class="variable constant_">TEXT_TYPE</span> = <span class="number">3</span> <span class="comment">// 文本类型</span></span><br><span class="line">  <span class="keyword">const</span> stack = [] <span class="comment">// 用于存放元素的栈</span></span><br><span class="line">  <span class="keyword">let</span> currentParent <span class="comment">// 指向的是栈中的最后一个</span></span><br><span class="line">  <span class="keyword">let</span> root</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// while ...</span></span><br><span class="line">  <span class="comment">// parseStartTag ...</span></span><br><span class="line">  <span class="comment">// advance ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 最终需要转化成一颗抽象语法树</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">createASTElement</span>(<span class="params">tag, attrs</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      tag, <span class="comment">// 标签名</span></span><br><span class="line">      <span class="attr">type</span>: <span class="variable constant_">ELEMENT_TYPE</span>, <span class="comment">// 类型</span></span><br><span class="line">      attrs, <span class="comment">// 属性</span></span><br><span class="line">      <span class="attr">parent</span>: <span class="literal">null</span>,</span><br><span class="line">      <span class="attr">children</span>: [],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理开始标签，利用栈型结构 来构造一颗树</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">start</span>(<span class="params">tag, attrs</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> node = <span class="title function_">createASTElement</span>(tag, attrs) <span class="comment">// 创造一个 ast节点</span></span><br><span class="line">    <span class="keyword">if</span> (!root) &#123;</span><br><span class="line">      root = node <span class="comment">// 如果root为空，则当前是树的根节点</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (currentParent) &#123;</span><br><span class="line">      node.<span class="property">parent</span> = currentParent <span class="comment">// 只赋予了parent属性</span></span><br><span class="line">      currentParent.<span class="property">children</span>.<span class="title function_">push</span>(node) <span class="comment">// 还需要让父亲记住自己</span></span><br><span class="line">    &#125;</span><br><span class="line">    stack.<span class="title function_">push</span>(node)</span><br><span class="line">    currentParent = node <span class="comment">// currentParent为栈中的最后一个</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理文本</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">chars</span>(<span class="params">text</span>) &#123;</span><br><span class="line">    text = text.<span class="title function_">replace</span>(<span class="regexp">/\s/g</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    <span class="comment">// 文本直接放到当前指向的节点中</span></span><br><span class="line">    <span class="keyword">if</span> (text) &#123;</span><br><span class="line">      currentParent.<span class="property">children</span>.<span class="title function_">push</span>(&#123;</span><br><span class="line">        <span class="attr">type</span>: <span class="variable constant_">TEXT_TYPE</span>,</span><br><span class="line">        text,</span><br><span class="line">        <span class="attr">parent</span>: currentParent,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理结束标签</span></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">end</span>(<span class="params">tag</span>) &#123;</span><br><span class="line">    stack.<span class="title function_">pop</span>() <span class="comment">// 弹出栈中最后一个ast节点</span></span><br><span class="line">    currentParent = stack[stack.<span class="property">length</span> - <span class="number">1</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以利用AST的可视化工具网站 - <a href="https://link.juejin.cn/?target=https://astexplorer.net/">AST Exploer</a> ，使用各种parse对代码进行AST转换</p>
+</blockquote>
+<h3 id="codegen"><a href="#codegen" class="headerlink" title="codegen"></a>codegen</h3><p>编译的最后一步就是把优化后的 AST树转换成可执行的 render代码。此过程包含两部分，第一部分是使用 codegen方法生成 render代码字符串，第二部分是利用模板引擎转换成可执行的 render代码 render方法代码字符串格式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`_c(&#x27;div&#x27;, &#123;id:&quot;app&quot;,style:&#123;&quot;color&quot;:&quot; red&quot;,&quot;background&quot;:&quot; white&quot;&#125;&#125;,_v(&quot;hello,&quot;+_s(name)))`</span><br></pre></td></tr></table></figure>
+
+<p>我们会在Vue原型上扩展这些方法</p>
+<blockquote>
+<p>_c: 执行 createElement创建虚拟DOM标签；</p>
+<p>_v: 执行 createTextVNode创建虚拟DOM文本；</p>
+<p>_s: 处理变量；</p>
+</blockquote>
+<p>实现一个简单的 <code>codegen</code> 方法，深度遍历 <code>AST</code> 树去生成 <code>render</code> 代码字符串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">codegen</span>(<span class="params">ast</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> children = <span class="title function_">genChildren</span>(ast.<span class="property">children</span>)</span><br><span class="line">  <span class="keyword">let</span> code = <span class="string">`_c(&#x27;<span class="subst">$&#123;ast.tag&#125;</span>&#x27;,<span class="subst">$&#123;ast.attrs.length &gt; <span class="number">0</span> ? genProps(ast.attrs) : <span class="string">&#x27;null&#x27;</span>&#125;</span><span class="subst">$&#123;ast.children.length ? <span class="string">`,<span class="subst">$&#123;children&#125;</span>`</span> : <span class="string">&#x27;&#x27;</span>&#125;</span>)`</span></span><br><span class="line">  <span class="keyword">return</span> code</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据ast语法树的 children对象 生成相对应的 children字符串</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">genChildren</span>(<span class="params">children</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> children.<span class="title function_">map</span>(<span class="function"><span class="params">child</span> =&gt;</span> <span class="title function_">gen</span>(child)).<span class="title function_">join</span>(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> defaultTagRE = <span class="regexp">/\&#123;\&#123;((?:.|\r?\n)+?)\&#125;\&#125;/g</span> <span class="comment">// 匹配到的内容就是我们表达式的变量，例如 &#123;&#123; name &#125;&#125;</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">gen</span>(<span class="params">node</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (node.<span class="property">type</span> === <span class="number">1</span>) &#123;  <span class="comment">// 元素</span></span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">codegen</span>(node)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;  <span class="comment">// 文本</span></span><br><span class="line">    <span class="keyword">let</span> text = node.<span class="property">text</span></span><br><span class="line">    <span class="keyword">if</span> (!defaultTagRE.<span class="title function_">test</span>(text)) &#123;</span><br><span class="line">      <span class="comment">// _v(&#x27;hello&#x27;)</span></span><br><span class="line">      <span class="keyword">return</span> <span class="string">`_v(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(text)&#125;</span>)`</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">//_v( _s(name) + &#x27;hello&#x27; + _s(age))</span></span><br><span class="line">      ... 拼接 _s</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`_v(<span class="subst">$&#123;tokens.join(<span class="string">&#x27;+&#x27;</span>)&#125;</span>)`</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据ast语法树的 attrs属性对象 生成相对应的属性字符串</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">genProps</span>(<span class="params">attrs</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> str = <span class="string">&#x27;&#x27;</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; attrs.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> attr = attrs[i]</span><br><span class="line">    str += <span class="string">`<span class="subst">$&#123;attr.name&#125;</span>:<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(attr.value)&#125;</span>,`</span> <span class="comment">// id:&#x27;app&#x27;,class:&#x27;app-inner&#x27;,</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`&#123;<span class="subst">$&#123;str.slice(<span class="number">0</span>, -<span class="number">1</span>)&#125;</span>&#125;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>模板引擎的实现原理就是 <code>with</code> + <code>new Function()</code>，转换成可执行的函数，最终赋值给<code>vm.options.render</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> code = <span class="title function_">codegen</span>(ast)</span><br><span class="line">code = <span class="string">`with(this)&#123;return <span class="subst">$&#123;code&#125;</span>&#125;`</span></span><br><span class="line"><span class="keyword">let</span> render = <span class="keyword">new</span> <span class="title class_">Function</span>(code) </span><br></pre></td></tr></table></figure>
+
+<p>尤雨溪老师解读：<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/49929356/answer/118534768">如何看待Vue.js 2.0 的模板编译使用了<code>with(this)</code>的语法?</a></p>
+<blockquote>
+<p>为啥呢，因为没有什么太明显的坏处（经测试性能影响几乎可以忽略），但是 with 的作用域和模板的作用域正好契合，可以极大地简化模板编译过程。Vue 1.x 使用的正则替换 identifier path 是一个本质上 unsound 的方案，不能涵盖所有的 edge case；而走正经的 parse 到 AST 的路线会使得编译器代码量爆炸。虽然 Vue 2 的编译器是可以分离的，但凡是可能跑在浏览器里的部分，还是要考虑到尺寸问题。用 with 代码量可以很少，而且把作用域的处理交给 js 引擎来做也更可靠。</p>
+<p>用 with 的主要副作用是生成的代码不能在 strict mode &#x2F; ES module 中运行，但直接在浏览器里编译的时候因为用了 new Function()，等同于 eval，不受这一点影响。</p>
+<p>当然，最理想的情况还是可以把 with 去掉，所以在使用预编译的时候（vue-loader 或 vueify），会自动把第一遍编译生成的代码进行一次额外处理，用完整的 AST 分析来处理作用域，把 with 拿掉，顺便支持模板中的 ES2015 语法。也就是说如果用 webpack + vue 的时候，最终生成的代码是没有 with 的。</p>
+</blockquote>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><a target="_blank" rel="noopener" href="https://github.com/edwhpt/vue2-stage">https://github.com/edwhpt/vue2-stage</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/vue/" rel="tag"># vue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vue2-source-01-observer/" rel="prev" title="【Vue2源码】数据响应式（observer）">
+                  <i class="fa fa-chevron-left"></i> 【Vue2源码】数据响应式（observer）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/vue2-source-03-render/" rel="next" title="【Vue2源码】模版渲染（render）">
+                  【Vue2源码】模版渲染（render） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class=""></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward Wong</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/edwhpt" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

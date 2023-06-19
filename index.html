@@ -148,18 +148,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -211,7 +211,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/react-note-01-cra-usage/" class="post-title-link" itemprop="url">【React学习笔记】01.create-react-app 基础运用</a>
+          <a href="/react-note-01-cra-usage/" class="post-title-link" itemprop="url">【React】create-react-app 基础运用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -221,9 +221,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2023-06-18 19:54:05 / Modified: 12:36:38" itemprop="dateCreated datePublished" datetime="2023-06-18T19:54:05+00:00">2023-06-18</time>
+      <time title="Created: 2023-06-18 19:54:05" itemprop="dateCreated datePublished" datetime="2023-06-18T19:54:05+00:00">2023-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -232,10 +238,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/react/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/react/react-note/" itemprop="url" rel="index"><span itemprop="name">React Note</span></a>
         </span>
     </span>
 
@@ -283,7 +285,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-04-render/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-source-03-render/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -301,7 +303,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-04-render/" class="post-title-link" itemprop="url">【Vue2源码学习】4.模版渲染(render)</a>
+          <a href="/vue2-source-03-render/" class="post-title-link" itemprop="url">【Vue2源码】模版渲染（render）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -319,7 +321,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -328,10 +330,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/vue2-source/" itemprop="url" rel="index"><span itemprop="name">Vue2 Source</span></a>
         </span>
     </span>
 
@@ -345,17 +343,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Vue的核心流程：</p>
-<ol>
-<li>创造了响应式数据</li>
-<li>将模板转换成ast语法树</li>
-<li>将 <code>AST</code> 语法树转换成了 <code>render</code> 函数</li>
-<li>后续每次数据更新可以只执行 <code>render</code> 函数（无需再次执行 <code>AST</code> 转化的过程）</li>
-</ol>
-<p><code>render</code> 函数会产生 <code>虚拟DOM</code>（使用响应式数据）<br>根据生成的 <code>虚拟DOM</code> 创造 <code>真实DOM</code></p>
+          <p><code>render</code> 函数会产生 <code>虚拟DOM</code>（使用响应式数据），然后根据生成的 <code>虚拟DOM</code> 创造 <code>真实DOM</code></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-04-render/#more" rel="contents">
+              <a class="btn" href="/vue2-source-03-render/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -386,7 +377,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-03-complier/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-source-02-complier/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -404,7 +395,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-03-complier/" class="post-title-link" itemprop="url">【Vue2源码学习】3.模板编译(complier)</a>
+          <a href="/vue2-source-02-complier/" class="post-title-link" itemprop="url">【Vue2源码】模板编译（complier）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -422,7 +413,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -431,10 +422,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/vue2-source/" itemprop="url" rel="index"><span itemprop="name">Vue2 Source</span></a>
         </span>
     </span>
 
@@ -449,19 +436,9 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>将 <code>data</code> 数据解析到 <code>el</code> 元素上，需要将 <code>template</code> 语法转换成 <code>render</code> 函数</p>
-<blockquote>
-<p>实现方式：</p>
-<ol>
-<li><p>模板引擎，性能差，需要正则匹配替换；Vue1.0的时候没有引入虚拟DOM的概念</p>
-</li>
-<li><p>采用虚拟DOM，数据变化后比较虚拟DOM的差异，最后更新需要更新的地方</p>
-<p>核心就是将template模板变成JS语法，通过JS语法生成虚拟DOM</p>
-</li>
-</ol>
-</blockquote>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-03-complier/#more" rel="contents">
+              <a class="btn" href="/vue2-source-02-complier/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -492,7 +469,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-02-observer/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-source-01-observer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -510,7 +487,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-02-observer/" class="post-title-link" itemprop="url">【Vue2源码学习】2.数据响应式(observer)</a>
+          <a href="/vue2-source-01-observer/" class="post-title-link" itemprop="url">【Vue2源码】数据响应式（observer）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -528,7 +505,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -537,10 +514,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/vue2-source/" itemprop="url" rel="index"><span itemprop="name">Vue2 Source</span></a>
         </span>
     </span>
 
@@ -557,7 +530,7 @@
           <p>响应式基本原理就是，在 Vue 的构造函数中，对 options 的 data 进行处理。即在初始化vue实例的时候，对data、props等对象的每一个属性都通过 Object.defineProperty 定义一次，在数据被set的时候，做一些操作，改变相应的视图。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-02-observer/#more" rel="contents">
+              <a class="btn" href="/vue2-source-01-observer/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -588,7 +561,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue2-src-01-rollup-build/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/rollup-build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -606,7 +579,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/vue2-src-01-rollup-build/" class="post-title-link" itemprop="url">【Vue2源码学习】1.使用Rollup搭建开发环境</a>
+          <a href="/rollup-build/" class="post-title-link" itemprop="url">使用Rollup搭建开发环境</a>
         </h2>
 
         <div class="post-meta-container">
@@ -624,7 +597,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -632,11 +605,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/vue2-source/" itemprop="url" rel="index"><span itemprop="name">Vue2 Source</span></a>
+          <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
         </span>
     </span>
 
@@ -650,10 +619,10 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>使用Rollup快速搭建开发环境</p>
+          <p><a target="_blank" rel="noopener" href="https://www.rollupjs.com/">Rollup</a> 是一个 JavaScript 模块打包工具，可以将多个小的代码片段编译为完整的库和应用。与传统的 CommonJS 和 AMD 这一类非标准化的解决方案不同，Rollup 使用的是 ES6 版本 Javascript 中的模块标准。新的 ES 模块可以让你自由、无缝地按需使用你最喜爱的库中那些有用的单个函数。这一特性在未来将随处可用，但 Rollup 让你现在就可以，想用就用。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/vue2-src-01-rollup-build/#more" rel="contents">
+              <a class="btn" href="/rollup-build/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -684,7 +653,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/optimization-webpack/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/hexo-github-blog/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/conf/avatar.png">
@@ -702,7 +671,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/optimization-webpack/" class="post-title-link" itemprop="url">【优化】Webpack构建性能</a>
+          <a href="/hexo-github-blog/" class="post-title-link" itemprop="url">Hexo + GitHub Pages搭建个人博客</a>
         </h2>
 
         <div class="post-meta-container">
@@ -713,14 +682,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-03-27 00:22:25" itemprop="dateCreated datePublished" datetime="2023-03-27T00:22:25+00:00">2023-03-27</time>
+      <time title="Created: 2023-03-25 23:49:26" itemprop="dateCreated datePublished" datetime="2023-03-25T23:49:26+00:00">2023-03-25</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
+      <time title="Modified: 2023-06-19 04:11:00" itemprop="dateModified" datetime="2023-06-19T04:11:00+00:00">2023-06-19</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -728,7 +697,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/optimization/" itemprop="url" rel="index"><span itemprop="name">Optimization</span></a>
+          <a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
         </span>
     </span>
 
@@ -742,10 +711,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>当项目越来越复杂时，会面临着构建速度慢和构建出来的文件体积大的问题。webapck构建优化对于大项目是必须要考虑的一件事，下面就从速度和体积两方面来探讨构建优化的策略</p>
+          <p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 <a target="_blank" rel="noopener" href="http://daringfireball.net/projects/markdown/">Markdown</a>（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
+<p>GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/optimization-webpack/#more" rel="contents">
+              <a class="btn" href="/hexo-github-blog/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -768,384 +738,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/optimization-web-page-speed/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/conf/avatar.png">
-      <meta itemprop="name" content="Edward Wong">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/optimization-web-page-speed/" class="post-title-link" itemprop="url">【优化】网站加载速度</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-27 00:14:31" itemprop="dateCreated datePublished" datetime="2023-03-27T00:14:31+00:00">2023-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/optimization/" itemprop="url" rel="index"><span itemprop="name">Optimization</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>网站前端的用户体验，决定了用户是否想要继续使用网站以及网站的其他功能，网站的用户体验佳，可留住更多的用户。除此之外，前端优化得好，还可以为企业节约成本。那么我们应该如何对我们前端的页面进行性能优化呢？</p>
-<p>前端性能优化可以分为三个方面：接口访问优化、静态资源优化和页面渲染速度优化。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/optimization-web-page-speed/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/qa-ssr-window/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/conf/avatar.png">
-      <meta itemprop="name" content="Edward Wong">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/qa-ssr-window/" class="post-title-link" itemprop="url">【Q&A】SSR 服务端渲染获取不到 Window 对象</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-26 23:33:54" itemprop="dateCreated datePublished" datetime="2023-03-26T23:33:54+00:00">2023-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/q-a/" itemprop="url" rel="index"><span itemprop="name">Q&A</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="获取不到Window对象，怎么解决？"><a href="#获取不到Window对象，怎么解决？" class="headerlink" title="获取不到Window对象，怎么解决？"></a>获取不到Window对象，怎么解决？</h3><ol>
-<li><p>在客户端代码中对 window 对象进行特殊处理，使其在服务端渲染时不会被引用。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="variable language_">window</span> !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">  <span class="comment">// Your code that uses the window object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对代码进行重构，避免对 window 对象的引用。</p>
-</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/qa-ssr-window/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue-slot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/conf/avatar.png">
-      <meta itemprop="name" content="Edward Wong">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue-slot/" class="post-title-link" itemprop="url">【Vue】插槽（v-slot）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-26 23:15:16" itemprop="dateCreated datePublished" datetime="2023-03-26T23:15:16+00:00">2023-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容"><a href="#slot-父组件-在子组件-lt-slot-gt-lt-slot-gt-处插入内容" class="headerlink" title="slot (父组件 在子组件&lt;slot&gt; &lt;/slot&gt;处插入内容)"></a>slot (父组件 在子组件<code>&lt;slot&gt; &lt;/slot&gt;</code>处插入内容)</h3><p>Vue 实现了一套内容分发的 API，将<code>&lt;slot&gt;</code>元素作为承载分发内容的出口，这是vue文档上的说明。具体来说，slot就是可以让你在组件内添加内容的‘空间’。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/vue-slot/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/vue-nexttick/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/conf/avatar.png">
-      <meta itemprop="name" content="Edward Wong">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Ed's Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/vue-nexttick/" class="post-title-link" itemprop="url">【Vue】nextTick()</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-26 23:07:19" itemprop="dateCreated datePublished" datetime="2023-03-26T23:07:19+00:00">2023-03-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-06-18 12:36:38" itemprop="dateModified" datetime="2023-06-18T12:36:38+00:00">2023-06-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="什么是-Vue-nextTick-？"><a href="#什么是-Vue-nextTick-？" class="headerlink" title="什么是 Vue.nextTick() ？"></a>什么是 Vue.nextTick() ？</h2><p><strong>定义：</strong>在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/vue-nexttick/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
 
 </div>
   </main>
