@@ -1,24 +1,22 @@
 ---
-title: 【Vue2源码学习】4.模版渲染(render)
+title: 【Vue2源码】模版渲染（render）
 date: 2023-03-29 12:58:04
 categories:
 - Vue
-- Vue2 Source
 tags: 
 - vue
 ---
 
-Vue的核心流程：
+`render` 函数会产生 `虚拟DOM`（使用响应式数据），然后根据生成的 `虚拟DOM` 创造 `真实DOM`
 
+<!-- more -->
+
+Vue的核心流程：
 1. 创造了响应式数据
 2. 将模板转换成ast语法树
 3. 将 `AST` 语法树转换成了 `render` 函数
 4. 后续每次数据更新可以只执行 `render` 函数（无需再次执行 `AST` 转化的过程）
 
-`render` 函数会产生 `虚拟DOM`（使用响应式数据）
-根据生成的 `虚拟DOM` 创造 `真实DOM`
-
-<!-- more -->
 
 ### mountComponent 
 
@@ -226,4 +224,9 @@ function createElm(vnode) {
     return vnode.el
 }
 ```
+
+
+## Code
+
+https://github.com/edwhpt/vue2-stage
 

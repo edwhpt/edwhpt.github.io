@@ -1,14 +1,15 @@
 ---
-title: 【Vue2源码学习】3.模板编译(complier)
+title: 【Vue2源码】模板编译（complier）
 date: 2023-03-28 17:57:28
 categories:
 - Vue
-- Vue2 Source
 tags:
 - vue
 ---
 
 将 `data` 数据解析到 `el` 元素上，需要将 `template` 语法转换成 `render` 函数
+
+<!-- more -->
 
 > 实现方式：
 >
@@ -18,7 +19,6 @@ tags:
 >
 >    核心就是将template模板变成JS语法，通过JS语法生成虚拟DOM
 
-<!-- more -->
 
 ## 初始化 `$mount` 方法
 
@@ -309,4 +309,9 @@ let render = new Function(code)
 > 用 with 的主要副作用是生成的代码不能在 strict mode / ES module 中运行，但直接在浏览器里编译的时候因为用了 new Function()，等同于 eval，不受这一点影响。
 >
 > 当然，最理想的情况还是可以把 with 去掉，所以在使用预编译的时候（vue-loader 或 vueify），会自动把第一遍编译生成的代码进行一次额外处理，用完整的 AST 分析来处理作用域，把 with 拿掉，顺便支持模板中的 ES2015 语法。也就是说如果用 webpack + vue 的时候，最终生成的代码是没有 with 的。
+
+
+## Code
+
+https://github.com/edwhpt/vue2-stage
 

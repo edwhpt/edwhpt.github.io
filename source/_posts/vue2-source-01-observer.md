@@ -1,9 +1,8 @@
 ---
-title: 【Vue2源码学习】2.数据响应式(observer)
+title: 【Vue2源码】数据响应式（observer）
 date: 2023-03-27 13:51:30
 categories: 
 - Vue
-- Vue2 Source
 tags:
 - vue
 ---
@@ -12,7 +11,7 @@ tags:
 
 <!-- more -->
 
-### 数据观测
+## 数据观测
 
 基于 Object.defineProperty 来实现对数组和对象的劫持
 
@@ -64,7 +63,7 @@ export function observe(data) {
 }
 ```
 
-### 重写数组7个变异方法
+## 重写数组7个变异方法
 
 7个方法是指：push、pop、shift、unshift、sort、reverse、splice。（这七个都是会改变原数组的） 实现思路：面向切片编程！！！
 
@@ -117,7 +116,7 @@ methods.forEach(method => {
 })
 ```
 
-### 增加 `__ob__` 属性
+## 增加 `__ob__` 属性
 
 这是一个恶心又巧妙的属性，我们在 Observer 类内部，把 this 实例添加到了响应式数据上。相当于给所有响应式数据增加了一个标识，并且可以在响应式数据上获取 Observer 实例上的方法
 
@@ -168,10 +167,16 @@ export function observe(data) {
 
 1. 我们重写了数组的7个变异方法，其中 push、unshift、splice 这三个方法会给数组新增成员。此时需要对新增的成员再次进行观测，可以通过 `__ob__` 调用 Observer 实例上的 observeArray 方法
 
-### 注意事项
+## 注意事项
 
 > Vue 2 是基于 Object.defineProperty 实现的响应式系统 （这个方法是 ES5 中一个无法 shim 的特性，这也就是 Vue 不支持 IE8 以及更低版本浏览器的原因）
 > Vue3 是基于 Proxy/Reflect 来实现的
 
 1. Object.defineProperty()  无法检测对象和数组新增的属性和数组长度变化
 2. Vue 无法检测通过索引直接修改数组元素的操作，这不是 Object.defineProperty 的原因，而是作者尤老师认为性能消耗与带来的用户体验不成正比。因为数组长度可能很大，对数组进行响应式检测会带来很大的性能消耗
+
+
+
+## Code
+
+https://github.com/edwhpt/vue2-stage

@@ -1,32 +1,27 @@
 ---
-title: GitHub + Hexo（NexT）搭建博客
+title: Hexo + GitHub Pages搭建个人博客
 date: 2023-03-25 23:49:26
 categories: Tools
 tags:
-- github
 - hexo
-- hexo-theme-next
 ---
-
-使用 GitHub Pages + [Hexo](https://hexo.io/zh-cn/) 搭建一个博客，采用 [NexT](https://theme-next.js.org/) 主题。
-
-GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。
 
 Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 [Markdown](http://daringfireball.net/projects/markdown/)（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。
 
+GitHub Pages 允许每个账户创建一个名为 {username}.github.io 的仓库，另外它还会自动为这个仓库分配一个 github.io 的二级域名。
+
+
 <!-- more -->
 
-## 安装
+## Install
 
-在本地安装项目依赖环境
-
-### 安装前提
+### 开发环境
 
 - [Node.js](https://nodejs.org/) (Node.js 版本需不低于 10.13，建议使用 Node.js 12.0 及以上版本)
 
 - [Git](https://git-scm.com/)
 
-### 安装 Hexo
+### 安装脚手架工具 `heco-cli`
 
 ```bash
 $ npm install -g hexo-cli
@@ -34,27 +29,25 @@ $ npm install -g hexo-cli
 
 
 
-## 初始化
+## Init
 
 使用 `hexo-cli` 创建项目
 
 ```bash
-$ hexo init <folder>
-$ cd <folder>
-$ npm install
+$ hexo init <project-name>
 ```
 
 目录如下：
 
 ```
 .
-├── _config.yml
-├── package.json
-├── scaffolds
-├── source
-|   ├── _drafts
-|   └── _posts
-└── themes
+├── _config.yml       # hexo配置
+├── package.json      # 项目配置
+├── scaffolds         # 文章模板
+├── source            # 开发目录
+|   ├── _drafts       # 草稿
+|   └── _posts        # 文章
+└── themes            # hexo主题库
 ```
 
 生成静态文件
@@ -77,11 +70,11 @@ $ hexo new "My New Post"
 
 
 
-## 配置主题
+## Themes
 
-Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点目录的 `themes` 目录下， 然后修改下配置文件即可。具体到 NexT 来说，安装步骤如下。
+Hexo 安装主题的方式非常简单，只需要将主题文件拷贝至站点目录的 `themes` 目录下， 然后修改下配置文件即可。具体到 NexT 来说，安装步骤如下：
 
-### 下载主题
+### Download
 
 如果你在使用 Hexo 5.0 或更新版本，最简单的安装方式是通过 npm：
 
@@ -98,7 +91,7 @@ $ cd hexo-site
 $ git clone https://github.com/next-theme/hexo-theme-next themes/next
 ```
 
-### 启用主题
+### Usage
 
 安装完成后，在 Hexo 配置文件中将 `theme` 设置为 `next`
 
@@ -107,7 +100,7 @@ $ git clone https://github.com/next-theme/hexo-theme-next themes/next
 theme: next
 ```
 
-### 配置
+### Config
 
 在根目录下创建 `_config.next.yml`
 
@@ -120,7 +113,7 @@ cp themes/next/_config.yml _config.next.yml
 
 
 
-## 部署
+## Develop
 
 本文将使用 [GitHub Actions](https://docs.github.com/zh/actions) 部署至 GitHub Pages，此方法适用于公开或私人储存库。若你不希望将源文件夹上传到 GitHub，请参阅[一键部署](#一键部署)。 
 
@@ -210,3 +203,7 @@ $ hexo clean && hexo deploy
 
 浏览 `<GitHub 用户名>.github.io` 检查你的网站能否运作
 
+
+## Code
+
+https://github.com/edwhpt/edwhpt.github.io

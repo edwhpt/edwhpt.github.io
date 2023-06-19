@@ -1,17 +1,17 @@
 ---
-title: 【Vue2源码学习】1.使用Rollup搭建开发环境
+title: 使用Rollup搭建开发环境
 date: 2023-03-27 13:27:16
 categories: 
-- Vue
-- Vue2 Source
+- Tools
 tags:
-- vue
 - rollup
-- build
 ---
 
-使用Rollup快速搭建开发环境
+
+[Rollup](https://www.rollupjs.com/) 是一个 JavaScript 模块打包工具，可以将多个小的代码片段编译为完整的库和应用。与传统的 CommonJS 和 AMD 这一类非标准化的解决方案不同，Rollup 使用的是 ES6 版本 Javascript 中的模块标准。新的 ES 模块可以让你自由、无缝地按需使用你最喜爱的库中那些有用的单个函数。这一特性在未来将随处可用，但 Rollup 让你现在就可以，想用就用。
+
 <!-- more -->
+
 
 ### 初始化环境
 

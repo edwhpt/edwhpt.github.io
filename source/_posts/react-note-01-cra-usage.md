@@ -1,15 +1,16 @@
 ---
-title: 【React学习笔记】01.create-react-app 基础运用
+title: 【React】create-react-app 基础运用
 date: 2023-06-18 19:54:05
 categories:
 - React
-- React Note
 tags:
 - react
 - create-react-app
+- react-note
 ---
 
 使用React脚手架工具 `create-react-app` 搭建项目
+
 <!-- more -->
 
 
@@ -35,13 +36,13 @@ $ create-react-app [project-name]
 
 ```
 .
-├── node_modules ------------ # 依赖模块
-├── public ------------------ # 静态资源
-│   ├── favicon.ico --------- # 浏览器图标
-│   └── index.html ---------- # 页面模板
-├── src --------------------- # 源代码 「打包的时候一般只针对src目录进行处理」
-│   └── index.js ------------ # 入口文件
-└── package.json ------------ # 项目配置
+├── node_modules        # 依赖模块
+├── public              # 静态资源
+│   ├── favicon.ico     # 浏览器图标
+│   └── index.html      # 页面模板
+├── src                 # 源代码 「打包的时候一般只针对src目录进行处理」
+│   └── index.js        # 入口文件
+└── package.json        # 项目配置
 ```
 
 #### 项目配置
@@ -144,9 +145,8 @@ root.render(<div>Hello, World!</div>);
 </html>
 ```
 
-## Demo
 
-https://github.com/edwhpt/react-cra-demo
+## Code
 
-
+https://github.com/edwhpt/react-cra-template
 
